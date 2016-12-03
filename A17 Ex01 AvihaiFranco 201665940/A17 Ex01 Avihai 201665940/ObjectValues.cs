@@ -4,13 +4,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace A17_Ex01_Avihai_201665940
 {
-    public static class EnemyValues
+    public static class ObjectValues
     {
         public static string Enemy1 = "Enemies/Enemy0101_32x32";
         public static string Enemy2 = "Enemies/Enemy0201_32x32";
         public static string Enemy3 = "Enemies/Enemy0301_32x32";
         public static string Mothership = "Enemy0301_32x32";
         public static int EnemyWidth = 32;
+        public static int SpaceshipSize = 32;
         public static Color Enemy1Tint = Color.LightPink;
         public static Color Enemy2Tint = Color.LightBlue;
         public static Color Enemy3Tint = Color.LightYellow;

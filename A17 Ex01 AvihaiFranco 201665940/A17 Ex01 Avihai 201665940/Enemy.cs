@@ -11,7 +11,7 @@ namespace A17_Ex01_Avihai_201665940
     {
         public int Value { get; set; }
 
-        public event WallHitHandler m_WallHit;
+        public event WallHitHandler OnWallHit;
 
         private float m_timeSinceMoved;
         private float m_TimeBetweenJumps;
@@ -41,10 +41,10 @@ namespace A17_Ex01_Avihai_201665940
 
             if ((m_Position.X + m_Texture.Width >= m_Game.GraphicsDevice.Viewport.Width && m_Speed.X > 0) || (m_Position.X <= 0 && m_Speed.X < 0))
             {
-                if (m_WallHit != null)
+                if (OnWallHit != null)
                 {
                     float offset = (m_Speed.X > 0) ? m_Game.GraphicsDevice.Viewport.Width - (m_Position.X + m_Texture.Width)  : -m_Position.X;
-                    m_WallHit.Invoke(this, offset);
+                    OnWallHit.Invoke(this, offset);
                 }
             }
         }
