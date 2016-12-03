@@ -30,3 +30,5 @@ C:\Users\Admin3.65445o56po5\Documents\School\XNA-MonoGames\A17 Ex01 AvihaiFranco
 C:\Users\Admin3.65445o56po5\Documents\School\XNA-MonoGames\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\A17 Ex01 Avihai 201665940.pdb
 C:\Users\Admin3.65445o56po5\Documents\School\XNA-MonoGames\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.exe
 C:\Users\Admin3.65445o56po5\Documents\School\XNA-MonoGames\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.pdb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.exe
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.pdb

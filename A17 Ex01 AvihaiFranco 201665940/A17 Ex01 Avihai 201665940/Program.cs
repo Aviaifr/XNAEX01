@@ -12,10 +12,12 @@ namespace A17_Ex01_Avihai_201665940
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             using (var game = new SpaceInvaderGame())
+            {
                 game.Run();
+            }
         }
     }
 #endif

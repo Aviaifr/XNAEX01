@@ -13,7 +13,7 @@ namespace A17_Ex01_Avihai_201665940
         protected Vector2 m_Speed;
         protected string m_TextureString;
 
-        public SpaceObject(Game i_Game , string i_TextureString)
+        public SpaceObject(Game i_Game, string i_TextureString)
         {
             m_Game = i_Game;
             m_TextureString = i_TextureString;
@@ -32,12 +32,11 @@ namespace A17_Ex01_Avihai_201665940
             m_Texture = m_Game.Content.Load<Texture2D>(m_TextureString);
         }
         
-        abstract public void Update(GameTime i_GameTime);
+        public abstract void Update(GameTime i_GameTime);
         
         public void Draw(SpriteBatch i_SpriteBatch)
         {
             i_SpriteBatch.Draw(m_Texture, m_Position, m_Tint);
         }
-
     }
 }

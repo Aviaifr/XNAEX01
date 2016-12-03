@@ -10,6 +10,7 @@ namespace A17_Ex01_Avihai_201665940
         public static string Enemy2 = "Enemies/Enemy0201_32x32";
         public static string Enemy3 = "Enemies/Enemy0301_32x32";
         public static string Mothership = "Enemy0301_32x32";
+        public static int EnemyWidth = 32;
         public static Color Enemy1Tint = Color.LightPink;
         public static Color Enemy2Tint = Color.LightBlue;
         public static Color Enemy3Tint = Color.LightYellow;
@@ -21,7 +22,7 @@ namespace A17_Ex01_Avihai_201665940
 
         public static string GetEnemySpriteByRow(int i_Row)
         {
-            string spriteLoc = "";
+            string spriteLoc = string.Empty;
             switch (i_Row)
             {
                 case 0:
@@ -36,8 +37,10 @@ namespace A17_Ex01_Avihai_201665940
                     spriteLoc = Enemy3;
                     break;
             }
+
             return spriteLoc;
         }
+
         public static Color GetEnemyTintByRow(int i_Row)
         {
             Color enemyTint = Color.White;
@@ -55,6 +58,7 @@ namespace A17_Ex01_Avihai_201665940
                     enemyTint = Enemy3Tint;
                     break;
             }
+
             return enemyTint;
         }
 
@@ -75,6 +79,7 @@ namespace A17_Ex01_Avihai_201665940
                     enemyVal = Enemy3Value;
                     break;
             }
+
             return enemyVal;
         }
     }
