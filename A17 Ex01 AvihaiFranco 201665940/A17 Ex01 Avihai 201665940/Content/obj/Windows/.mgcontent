@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Admin3.65445o56po5/Documents/School/XNA-MonoGames/A17 Ex01 AvihaiFranco 201665940/A17 Ex01 Avihai 201665940/Content/Backgrounds/BG_Space01_1024x768.jpg</File>
+    <File>C:/Users/Admin3.65445o56po5/Documents/School/XNA-MonoGames/A17 Ex01 AvihaiFranco 201665940/A17 Ex01 Avihai 201665940/Content/Enemies/Enemy0101_32x32.png</File>
+    <File>C:/Users/Admin3.65445o56po5/Documents/School/XNA-MonoGames/A17 Ex01 AvihaiFranco 201665940/A17 Ex01 Avihai 201665940/Content/Enemies/Enemy0201_32x32.png</File>
+    <File>C:/Users/Admin3.65445o56po5/Documents/School/XNA-MonoGames/A17 Ex01 AvihaiFranco 201665940/A17 Ex01 Avihai 201665940/Content/Enemies/Enemy0301_32x32.png</File>
+    <File>C:/Users/Admin3.65445o56po5/Documents/School/XNA-MonoGames/A17 Ex01 AvihaiFranco 201665940/A17 Ex01 Avihai 201665940/Content/Enemies/MotherShip_32x120.png</File>
+    <File>C:/Users/Admin3.65445o56po5/Documents/School/XNA-MonoGames/A17 Ex01 AvihaiFranco 201665940/A17 Ex01 Avihai 201665940/Content/Spaceship/Ship01_32x32.png</File>
+    <File>C:/Users/Admin3.65445o56po5/Documents/School/XNA-MonoGames/A17 Ex01 AvihaiFranco 201665940/A17 Ex01 Avihai 201665940/Content/Shots/Bullet.png</File>
+  </SourceFiles>
+</SourceFileCollection>
