@@ -29,7 +29,11 @@ namespace A17_Ex01_Avihai_201665940
         public override void Initialize(Vector2 i_Position, Color i_Tint, Vector2 i_Speed)
         {
             base.Initialize(i_Position, i_Tint, i_Speed);
-            m_Position.X -= m_Texture.Width / 2; 
+            m_Position.X -= m_Texture.Width / 2;
+            if (i_Speed.Y < 0)
+            {
+                m_Position.Y -= m_Texture.Height;
+            }
         }
 
         private void disappear()
