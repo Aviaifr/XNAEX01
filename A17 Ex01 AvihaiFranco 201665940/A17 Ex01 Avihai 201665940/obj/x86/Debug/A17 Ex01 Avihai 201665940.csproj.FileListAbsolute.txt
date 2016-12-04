@@ -32,3 +32,33 @@ C:\Users\Admin3.65445o56po5\Documents\School\XNA-MonoGames\A17 Ex01 AvihaiFranco
 C:\Users\Admin3.65445o56po5\Documents\School\XNA-MonoGames\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.pdb
 C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.exe
 C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.pdb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\Content\Backgrounds\BG_Space01_1024x768.xnb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\Content\Enemies\Enemy0101_32x32.xnb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\Content\Enemies\Enemy0201_32x32.xnb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\Content\Enemies\Enemy0301_32x32.xnb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\Content\Enemies\MotherShip_32x120.xnb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\Content\Shots\Bullet.xnb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\Content\Spaceship\Ship01_32x32.xnb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\A17 Ex01 Avihai 201665940.exe
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\A17 Ex01 Avihai 201665940.pdb
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.RawInput.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.RawInput.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Users\Admin3.65445o56po5\Documents\GitHub\XNAEX01\A17 Ex01 AvihaiFranco 201665940\A17 Ex01 Avihai 201665940\obj\x86\Debug\A17 Ex01 Avihai 201665940.csprojResolveAssemblyReference.cache

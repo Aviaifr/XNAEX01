@@ -7,14 +7,16 @@ namespace A17_Ex01_Avihai_201665940
 {
     public delegate void WallHitHandler(SpaceObject i_ObjectHitTheWall, float i_OffsetFromHit);
 
-    public class Enemy : SpaceObject
+    public class Enemy : SpaceObject, IShootingObject
     {
         public int Value { get; set; }
 
-        public event WallHitHandler m_WallHit;
+        public event WallHitHandler OnWallHit;
+        public event ObjectFireHandler OnFire;
 
         private float m_timeSinceMoved;
         private float m_TimeBetweenJumps;
+        private static int s_fireChance = 2;
 
         public Enemy(Game i_Game, string i_TextureLocation, int i_Value)
             : base(i_Game, i_TextureLocation)
@@ -41,12 +43,38 @@ namespace A17_Ex01_Avihai_201665940
 
             if ((m_Position.X + m_Texture.Width >= m_Game.GraphicsDevice.Viewport.Width && m_Speed.X > 0) || (m_Position.X <= 0 && m_Speed.X < 0))
             {
-                if (m_WallHit != null)
+                if (OnWallHit != null)
                 {
                     float offset = (m_Speed.X > 0) ? m_Game.GraphicsDevice.Viewport.Width - (m_Position.X + m_Texture.Width)  : -m_Position.X;
-                    m_WallHit.Invoke(this, offset);
+                    OnWallHit.Invoke(this, offset);
                 }
             }
+            tryToShoot();
+        }
+
+        private void tryToShoot()
+        {
+            int randNumToFire = s_RandomGen.Next(0, 1000);
+            if (randNumToFire < s_fireChance)
+            {
+                Shoot();
+            }
+        }
+
+        public void Shoot()
+        {
+            if (OnFire != null)
+            {
+                OnFire.Invoke(this);
+            }
+        }
+
+        public Vector2 GetShotStartingPosition()
+        {
+            float x, y;
+            x = m_Position.X + (m_Texture.Width / 2);
+            y = m_Position.Y + (m_Texture.Height);
+            return new Vector2(x, y);
         }
 
         public void ChangeDirection(float i_MovementXOffset)
@@ -55,6 +83,10 @@ namespace A17_Ex01_Avihai_201665940
             m_Position.X += i_MovementXOffset;
             m_Position.Y += m_Texture.Width / 2;
             m_TimeBetweenJumps = m_TimeBetweenJumps - (m_TimeBetweenJumps * 0.04f);
+        }
+
+        public void OnMybulletDisappear()
+        {
         }
     }
 }
