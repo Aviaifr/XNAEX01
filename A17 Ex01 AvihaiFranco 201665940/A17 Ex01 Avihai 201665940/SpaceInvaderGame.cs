@@ -14,6 +14,7 @@ namespace A17_Ex01_Avihai_201665940
         private SpriteBatch m_SpriteBatch;
         private IGameObject m_Background;
         private List<IGameObject> m_MovingObjects;
+        private List<SpaceBullet> m_TempShots;
         private bool m_changeEnemyDirectionFlag;
         private float m_FixEnemyOffset;
 
@@ -27,7 +28,10 @@ namespace A17_Ex01_Avihai_201665940
         {
             m_changeEnemyDirectionFlag = false;
             m_MovingObjects = new List<IGameObject>();
-            m_MovingObjects.Add(new UserSpaceship(this, "Spaceship/Ship01_32x32"));
+            m_TempShots = new List<SpaceBullet>();
+            UserSpaceship spaceship = new UserSpaceship(this, "Spaceship/Ship01_32x32");
+            spaceship.OnUserFire += userShot;
+            m_MovingObjects.Add(spaceship);
             createEnemies();
 
             base.Initialize();
@@ -41,6 +45,7 @@ namespace A17_Ex01_Avihai_201665940
                 {
                     Enemy currEnemy = new Enemy(this, ObjectValues.GetEnemySpriteByRow(i), ObjectValues.GetEnemyValueByRow(i));
                     currEnemy.OnWallHit += enemyWallHitHandler;
+                    currEnemy.OnFire += enemyShot;
                     m_MovingObjects.Add(currEnemy);
                 }
             }
@@ -83,8 +88,19 @@ namespace A17_Ex01_Avihai_201665940
                 gameObject.Update(gameTime);
             }
 
+            HandleShots();
             checkAndChangeDirection();
             base.Update(gameTime);
+        }
+
+        private void HandleShots()
+        {
+            m_TempShots.RemoveAll(bullet => bullet.ToBeRemoved == true);
+            foreach (SpaceBullet bullet in m_TempShots)
+            {
+                m_MovingObjects.Add(bullet);
+            }
+            m_TempShots.Clear();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -121,6 +137,26 @@ namespace A17_Ex01_Avihai_201665940
             }
 
             m_changeEnemyDirectionFlag = false;
+        }
+
+        private void userShot(IShootingObject i_Shooter)
+        {
+            SpaceBullet newBullet = new SpaceBullet(this, @"Shots/Bullet");
+            newBullet.Initialize(i_Shooter.GetShotStartingPosition(), Color.Red, SpaceBullet.s_BulletSpeed * -1);
+            newBullet.NotifyDiappeared += i_Shooter.OnMybulletDisappear;
+            m_TempShots.Add(newBullet);
+        }
+
+        private void enemyShot(IShootingObject i_Shooter)
+        {
+            SpaceBullet newBullet = new SpaceBullet(this, @"Shots/Bullet");
+            newBullet.Initialize(i_Shooter.GetShotStartingPosition(), Color.Blue, SpaceBullet.s_BulletSpeed);
+            m_TempShots.Add(newBullet);
+        }
+
+        private void removeShot(SpaceBullet i_DisappearedBullet)
+        {
+            m_TempShots.Add(i_DisappearedBullet);
         }
     }
 }

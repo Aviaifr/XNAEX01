@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,6 +13,7 @@ namespace A17_Ex01_Avihai_201665940
         protected Game m_Game;
         protected Vector2 m_Speed;
         protected string m_TextureString;
+        public static Random s_RandomGen = new Random();
 
         public SpaceObject(Game i_Game, string i_TextureString)
         {

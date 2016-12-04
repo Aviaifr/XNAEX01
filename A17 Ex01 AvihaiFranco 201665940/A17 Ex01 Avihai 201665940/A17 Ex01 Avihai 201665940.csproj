@@ -40,8 +40,10 @@
   <ItemGroup>
     <Compile Include="Background.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="IShootingObject.cs" />
     <Compile Include="ObjectValues.cs" />
     <Compile Include="IGameObject.cs" />
+    <Compile Include="SpaceBullet.cs" />
     <Compile Include="SpaceInvaderGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
