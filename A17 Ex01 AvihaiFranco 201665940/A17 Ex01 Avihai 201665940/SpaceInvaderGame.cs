@@ -93,6 +93,7 @@ namespace A17_Ex01_Avihai_201665940
             base.Update(gameTime);
         }
 
+        private int a;
         private void HandleShots()
         {
             foreach (SpaceBullet bullet in m_TempShots)
