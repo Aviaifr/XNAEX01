@@ -4,8 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace A17_Ex01_Avihai_201665940
 {
-
-    public class UserSpaceship : SpaceObject , IShootingObject
+    public class UserSpaceship : SpaceObject, IShootingObject
     {
         public static int s_SpaceshipSpeed = 135;
 
@@ -103,7 +102,7 @@ namespace A17_Ex01_Avihai_201665940
             return retVal;
         }
 
-        public void OnMybulletDisappear()
+        public void OnMybulletDisappear(SpaceBullet i_DisappearedBullet)
         {
             m_Shots--;
         }

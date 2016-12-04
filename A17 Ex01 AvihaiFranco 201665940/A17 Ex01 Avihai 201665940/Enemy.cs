@@ -12,6 +12,7 @@ namespace A17_Ex01_Avihai_201665940
         public int Value { get; set; }
 
         public event WallHitHandler OnWallHit;
+
         public event ObjectFireHandler OnFire;
 
         private float m_timeSinceMoved;
@@ -49,6 +50,7 @@ namespace A17_Ex01_Avihai_201665940
                     OnWallHit.Invoke(this, offset);
                 }
             }
+
             tryToShoot();
         }
 
@@ -73,7 +75,7 @@ namespace A17_Ex01_Avihai_201665940
         {
             float x, y;
             x = m_Position.X + (m_Texture.Width / 2);
-            y = m_Position.Y + (m_Texture.Height);
+            y = m_Position.Y + m_Texture.Height;
             return new Vector2(x, y);
         }
 
@@ -85,7 +87,7 @@ namespace A17_Ex01_Avihai_201665940
             m_TimeBetweenJumps = m_TimeBetweenJumps - (m_TimeBetweenJumps * 0.04f);
         }
 
-        public void OnMybulletDisappear()
+        public void OnMybulletDisappear(SpaceBullet i_DisappearedBullet)
         {
         }
     }

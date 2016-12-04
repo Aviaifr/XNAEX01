@@ -95,11 +95,21 @@ namespace A17_Ex01_Avihai_201665940
 
         private void HandleShots()
         {
+            foreach (SpaceBullet bullet in m_TempShots)
+            {
+                if (bullet.ToBeRemoved == true)
+                {
+                    m_MovingObjects.Remove(bullet);
+                }
+            }
+
             m_TempShots.RemoveAll(bullet => bullet.ToBeRemoved == true);
+
             foreach (SpaceBullet bullet in m_TempShots)
             {
                 m_MovingObjects.Add(bullet);
             }
+
             m_TempShots.Clear();
         }
 
@@ -144,12 +154,14 @@ namespace A17_Ex01_Avihai_201665940
             SpaceBullet newBullet = new SpaceBullet(this, @"Shots/Bullet");
             newBullet.Initialize(i_Shooter.GetShotStartingPosition(), Color.Red, SpaceBullet.s_BulletSpeed * -1);
             newBullet.NotifyDiappeared += i_Shooter.OnMybulletDisappear;
+            newBullet.NotifyDiappeared += removeShot;
             m_TempShots.Add(newBullet);
         }
 
         private void enemyShot(IShootingObject i_Shooter)
         {
             SpaceBullet newBullet = new SpaceBullet(this, @"Shots/Bullet");
+            newBullet.NotifyDiappeared += removeShot;
             newBullet.Initialize(i_Shooter.GetShotStartingPosition(), Color.Blue, SpaceBullet.s_BulletSpeed);
             m_TempShots.Add(newBullet);
         }
