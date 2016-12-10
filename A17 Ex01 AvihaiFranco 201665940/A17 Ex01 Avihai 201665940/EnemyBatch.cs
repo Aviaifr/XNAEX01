@@ -88,7 +88,7 @@ namespace A17_Ex01_Avihai_201665940
                     EnemyKilled(i_Disposed, i_EventArgs);
                 }
             }
-            else
+            else if (this.Game.Components != null)
             {
                 this.Game.Components.Remove(i_Disposed as IGameComponent);
             }

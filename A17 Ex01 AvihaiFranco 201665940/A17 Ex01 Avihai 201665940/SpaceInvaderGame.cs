@@ -27,8 +27,11 @@ namespace A17_Ex01_Avihai_201665940
 
         public void Enemy_OnKill(object i_EnemyKilled, EventArgs i_eventArgs)
         {
-            PointsCollected += (i_EnemyKilled as Enemy).Value;
-            this.Window.Title = PointsCollected.ToString();
+            if (this.Components != null)
+            {
+                PointsCollected += (i_EnemyKilled as Enemy).Value;
+                this.Window.Title = PointsCollected.ToString();
+            }   
         }
 
         public void Spaceship_onHit(int i_PointsToRemove)
