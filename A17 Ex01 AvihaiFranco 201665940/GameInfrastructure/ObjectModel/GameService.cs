@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-
 namespace GameInfrastructure.ObjectModel
 {
     public abstract class GameService : RegisteredComponent
@@ -19,7 +18,7 @@ namespace GameInfrastructure.ObjectModel
         public GameService(Game i_Game)
             : base(i_Game)
         {
-            RegisterAsService();// self-regsiter as a service
+            RegisterAsService(); // self-regsiter as a service
         }
 
         /// <summary>

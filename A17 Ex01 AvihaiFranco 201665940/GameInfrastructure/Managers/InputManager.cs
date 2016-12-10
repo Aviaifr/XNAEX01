@@ -14,45 +14,51 @@ namespace GameInfrastructure.Managers
     public class InputManager : GameService, IInputManager
     {
         private KeyboardState m_PrevKeyboardState;
+
         public KeyboardState PrevKeyboardState
         {
             get { return m_PrevKeyboardState; }
         }
 
         private KeyboardState m_KeyboardState;
+
         public KeyboardState KeyboardState
         {
             get { return m_KeyboardState; }
         }
 
         private MouseState m_PrevMouseState;
+
         public MouseState PrevMouseState
         {
             get { return m_PrevMouseState; }
         }
 
         private MouseState m_MouseState;
+
         public MouseState MouseState
         {
             get { return m_MouseState; }
         }
 
         private GamePadState m_PrevGamePadState;
+
         public GamePadState PrevGamePadState
         {
             get { return m_PrevGamePadState; }
         }
 
         private GamePadState m_GamePadState;
+
         public GamePadState GamePadState
         {
             get { return m_GamePadState; }
         }
 
         public InputManager(Game i_Game)
-            // we want this component to be updated first!
             : base(i_Game, int.MinValue)
-        { }
+        {
+        }
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -99,7 +105,7 @@ namespace GameInfrastructure.Managers
         /// <returns>Returns true if held.</returns>
         public bool KeyHeld(Keys i_Key)
         {
-            return (m_KeyboardState.IsKeyDown(i_Key) && m_PrevKeyboardState.IsKeyDown(i_Key));
+            return m_KeyboardState.IsKeyDown(i_Key) && m_PrevKeyboardState.IsKeyDown(i_Key);
         }
 
         /// <summary>
@@ -109,10 +115,7 @@ namespace GameInfrastructure.Managers
         /// <returns>Return true if so.</returns>
         public bool KeyReleased(Keys i_Key)
         {
-            return (
-                m_PrevKeyboardState.IsKeyDown(i_Key)
-                &&
-                m_KeyboardState.IsKeyUp(i_Key));
+            return m_PrevKeyboardState.IsKeyDown(i_Key) && m_KeyboardState.IsKeyUp(i_Key);
         }
 
         /// <summary>
@@ -122,7 +125,7 @@ namespace GameInfrastructure.Managers
         /// <returns>Return true if so.</returns>
         public bool KeyPressed(Keys i_Key)
         {
-            return (m_PrevKeyboardState.IsKeyUp(i_Key) && m_KeyboardState.IsKeyDown(i_Key));
+            return m_PrevKeyboardState.IsKeyUp(i_Key) && m_KeyboardState.IsKeyDown(i_Key);
         }
         #endregion Keyboard Services
 
@@ -242,7 +245,6 @@ namespace GameInfrastructure.Managers
             ButtonState currState = i_ButtonState;
             ButtonState prevState = checkRelease ? ButtonState.Pressed : ButtonState.Released;
 
-            #region GamePad Controls
             if ((i_Buttons & eInputButtons.A) != 0)
             {
                 currCheck =
@@ -252,6 +254,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+
             if ((i_Buttons & eInputButtons.B) != 0)
             {
                 currCheck =
@@ -261,6 +264,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+
             if ((i_Buttons & eInputButtons.X) != 0)
             {
                 currCheck =
@@ -270,6 +274,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+
             if ((i_Buttons & eInputButtons.Y) != 0)
             {
                 currCheck =
@@ -279,6 +284,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+
             if ((i_Buttons & eInputButtons.DPadDown) != 0)
             {
                 currCheck =
@@ -288,6 +294,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+
             if ((i_Buttons & eInputButtons.DPadUp) != 0)
             {
                 currCheck =
@@ -297,6 +304,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.DPadLeft) != 0)
             {
                 currCheck =
@@ -306,6 +314,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.DPadRight) != 0)
             {
                 currCheck =
@@ -315,6 +324,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.Back) != 0)
             {
                 currCheck =
@@ -324,6 +334,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.Start) != 0)
             {
                 currCheck =
@@ -333,6 +344,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.LeftShoulder) != 0)
             {
                 currCheck =
@@ -342,6 +354,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.RightShoulder) != 0)
             {
                 currCheck =
@@ -351,6 +364,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.LeftStick) != 0)
             {
                 currCheck =
@@ -360,6 +374,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.RightStick) != 0)
             {
                 currCheck =
@@ -369,6 +384,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.LeftThumbstickDown) != 0)
             {
                 currCheck =
@@ -378,6 +394,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.LeftThumbstickUp) != 0)
             {
                 currCheck =
@@ -387,6 +404,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.LeftThumbstickLeft) != 0)
             {
                 currCheck =
@@ -396,6 +414,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.LeftThumbstickRight) != 0)
             {
                 currCheck = checkRelease == m_GamePadState.IsButtonUp(Buttons.LeftThumbstickRight)
@@ -404,6 +423,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.RightThumbstickDown) != 0)
             {
                 currCheck =
@@ -413,6 +433,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.RightThumbstickUp) != 0)
             {
                 currCheck =
@@ -422,6 +443,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.RightThumbstickLeft) != 0)
             {
                 currCheck =
@@ -431,6 +453,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.RightThumbstickRight) != 0)
             {
                 currCheck =
@@ -440,6 +463,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.LeftTrigger) != 0)
             {
                 currCheck =
@@ -449,6 +473,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
+            
             if ((i_Buttons & eInputButtons.RightTrigger) != 0)
             {
                 currCheck =
@@ -458,9 +483,7 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
-            #endregion GamePad Controls
 
-            #region Mouse Buttons
             if ((i_Buttons & eInputButtons.Left) != 0)
             {
                 currCheck =
@@ -506,10 +529,8 @@ namespace GameInfrastructure.Managers
                 atLeastOneIsTrue |= currCheck;
                 allTrue &= currCheck;
             }
-            #endregion Mouse Buttons
 
             return i_IsOneEnough ? atLeastOneIsTrue : allTrue;
-
         }
 
         /// <summary>
@@ -643,8 +664,8 @@ namespace GameInfrastructure.Managers
 
         public override string ToString()
         {
-            string status = string.Format(@"
-Keyboard.PressedKeys:       {18}
+            string status = string.Format(
+@"Keyboard.PressedKeys:       {18}
 
 GamePad.IsConnected:        {0}
 GamePad.ThumbSticks.Left    {1}
@@ -674,7 +695,6 @@ ScrollWheelDelta:   {17}
  m_GamePadState.DPad,
  m_GamePadState.Buttons,
  m_GamePadState.PacketNumber,
-
  m_MouseState.X,
  m_MouseState.Y,
  MousePositionDelta,
@@ -685,8 +705,8 @@ ScrollWheelDelta:   {17}
  m_MouseState.XButton2,
  m_MouseState.ScrollWheelValue,
  ScrollWheelDelta,
- PressedKeys
- );
+ PressedKeys );
+
             return status;
         }
     }

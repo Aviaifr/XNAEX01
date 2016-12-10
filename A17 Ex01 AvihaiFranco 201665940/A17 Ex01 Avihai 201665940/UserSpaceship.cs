@@ -10,7 +10,7 @@ namespace A17_Ex01_Avihai_201665940
 {
     public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
-        public readonly int r_SpaceshipSpeed = 135;
+        private static readonly int sr_SpaceshipSpeed = 135;
 
         public event EventHandler<EventArgs> Shoot;
 
@@ -44,11 +44,11 @@ namespace A17_Ex01_Avihai_201665940
             m_Speed = Vector2.Zero;
             if (i_InputManager.KeyHeld(Keys.Left))
             {
-                m_Speed.X = -r_SpaceshipSpeed;
+                m_Speed.X = -sr_SpaceshipSpeed;
             }
             else if (i_InputManager.KeyHeld(Keys.Right))
             {
-                m_Speed.X = r_SpaceshipSpeed;
+                m_Speed.X = sr_SpaceshipSpeed;
             }
         }
 
@@ -67,7 +67,7 @@ namespace A17_Ex01_Avihai_201665940
                 if (Shoot != null)
                 {
                     m_Shots++;
-                    Shoot.Invoke(this,EventArgs.Empty);
+                    Shoot.Invoke(this, EventArgs.Empty);
                 }
             }     
         }

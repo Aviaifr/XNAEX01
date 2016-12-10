@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using GameInfrastructure.ServiceInterfaces;
 
-
 namespace GameInfrastructure.ObjectModel
 {
     public abstract class DynamicDrawableComponent : DrawableGameComponent
@@ -22,7 +21,7 @@ namespace GameInfrastructure.ObjectModel
 
         protected string m_AssetName;
 
-        public bool IsVisible{ get; set; }
+        public bool IsVisible { get; set; }
 
         public DynamicDrawableComponent(
             string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
@@ -35,15 +34,16 @@ namespace GameInfrastructure.ObjectModel
 
         public DynamicDrawableComponent(Game i_Game)
             : base(i_Game)
-        {
-            
+        {   
         }
+
         public DynamicDrawableComponent(
             string i_AssetName,
             Game i_Game,
             int i_CallsOrder)
             : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
-        { }
+        { 
+        }
 
         public DynamicDrawableComponent(
             string i_AssetName, Game i_Game)
@@ -109,6 +109,7 @@ namespace GameInfrastructure.ObjectModel
                     collisionMgr.AddObjectToMonitor(this as ICollidable);
                 }
             }
+
             InitBounds();
         }
 
