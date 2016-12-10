@@ -1,108 +1,78 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using GameInfrastructure.Managers;
+using GameInfrastructure.ObjectModel;
+using GameInfrastructure.ServiceInterfaces;
 
 namespace A17_Ex01_Avihai_201665940
 {
-    public class UserSpaceship : SpaceObject, IShootingObject
+    public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
-        public static int s_SpaceshipSpeed = 135;
+        public readonly int r_SpaceshipSpeed = 135;
 
-        public event ObjectFireHandler OnUserFire;
+        public event EventHandler<EventArgs> Shoot;
 
-        private MouseState? m_PrevioussMouseState;
-        private KeyboardState? m_PrevioussKeyboardState;
         private int m_Shots;
 
         public UserSpaceship(Game i_Game, string i_TextureString)
             : base(i_Game, i_TextureString)
         {
-            m_PrevioussMouseState = null;
-            m_PrevioussKeyboardState = null;
             m_Shots = 0;
+            this.Tint = Color.White;
         }
 
         public override void Update(GameTime i_GameTime)
         {
-            handleKeyboard();
+            IInputManager inputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+            updateSpeedByInput(inputManager);
             m_Position.X += m_Speed.X * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            m_Position.X += getMousePositionDelta().X;
-            m_Position.X = MathHelper.Clamp(m_Position.X, 0, m_Game.GraphicsDevice.Viewport.Width - m_Texture.Width);
+            updatePositionByMouse(inputManager);
+            m_Position.X = MathHelper.Clamp(m_Position.X, 0, Game.GraphicsDevice.Viewport.Width - m_Texture.Width);
+            checkInputForShot(inputManager);
+            OnPositionChanged();
         }
 
-        private void handleKeyboard()
+        private void updatePositionByMouse(IInputManager i_InputManager)
         {
-            KeyboardState currKeyboardState = Keyboard.GetState();
-            UpdateSpeedByKeyboard(currKeyboardState);
-            checkIfUserShot(currKeyboardState);
-            m_PrevioussKeyboardState = currKeyboardState;
+            m_Position.X += i_InputManager.MousePositionDelta.X;
         }
 
-        private void checkIfUserShot(KeyboardState i_currentState)
+        private void updateSpeedByInput(IInputManager i_InputManager)
         {
-            MouseState currentMouseState = Mouse.GetState();
-            if (m_PrevioussMouseState != null && m_PrevioussMouseState.Value.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released)
+            m_Speed = Vector2.Zero;
+            if (i_InputManager.KeyHeld(Keys.Left))
             {
-                Shoot();
+                m_Speed.X = -r_SpaceshipSpeed;
             }
-            else if (m_PrevioussKeyboardState != null && m_PrevioussKeyboardState.Value.IsKeyDown(Keys.Enter) && i_currentState.IsKeyUp(Keys.Enter))
+            else if (i_InputManager.KeyHeld(Keys.Right))
             {
-                Shoot();
+                m_Speed.X = r_SpaceshipSpeed;
             }
         }
 
-        public void Shoot()
+        private void checkInputForShot(IInputManager i_InputManager)
+        {
+            if (i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.ButtonPressed(eInputButtons.Left))
+            {
+                OnShoot();
+            }
+        }
+
+        private void OnShoot()
         {
             if (m_Shots < 2)
             {
-                if (OnUserFire != null)
+                if (Shoot != null)
                 {
                     m_Shots++;
-                    OnUserFire.Invoke(this);
+                    Shoot.Invoke(this,EventArgs.Empty);
                 }
             }     
         }
 
-        public Vector2 GetShotStartingPosition()
-        {
-            float x, y;
-            x = m_Position.X + (m_Texture.Width / 2);
-            y = m_Position.Y;
-            return new Vector2(x, y);
-        }
-
-        private void UpdateSpeedByKeyboard(KeyboardState i_currentState)
-        {
-            KeyboardState currKeyboardState = Keyboard.GetState();
-            if (currKeyboardState.IsKeyDown(Keys.Left))
-            {
-                m_Speed = new Vector2(-s_SpaceshipSpeed, 0);
-            }
-            else if (currKeyboardState.IsKeyDown(Keys.Right))
-            {
-                m_Speed = new Vector2(s_SpaceshipSpeed, 0);
-            }
-            else if (currKeyboardState.IsKeyUp(Keys.Right) || currKeyboardState.IsKeyUp(Keys.Left))
-            {
-                m_Speed = Vector2.Zero;
-            }
-        }
-
-        private Vector2 getMousePositionDelta()
-        {
-            Vector2 retVal = Vector2.Zero;
-            MouseState currState = Mouse.GetState();
-            if (m_PrevioussMouseState != null)
-            {
-                retVal.X = currState.X - m_PrevioussMouseState.Value.X;
-                retVal.Y = currState.Y - m_PrevioussMouseState.Value.Y;
-            }
-
-            m_PrevioussMouseState = currState;
-            return retVal;
-        }
-
-        public void OnMybulletDisappear(SpaceBullet i_DisappearedBullet)
+        public void OnMyBulletDisappear(object i_SpaceBullet, EventArgs i_EventArgs)
         {
             m_Shots--;
         }
