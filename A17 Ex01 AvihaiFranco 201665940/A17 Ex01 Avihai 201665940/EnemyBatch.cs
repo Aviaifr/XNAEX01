@@ -40,7 +40,6 @@ namespace A17_Ex01_Avihai_201665940
         private float m_TimeSinceMoved = 0f;
         private float m_TimeBetweenJumps = 0.5f;
 
-
         public EnemyBatch(Game i_Game) : base(i_Game)
         {
             m_Enemies = new List<Enemy>();
@@ -57,10 +56,10 @@ namespace A17_Ex01_Avihai_201665940
                 for(int j = 0; j < r_BatchColumns; j++)
                 {
                     float x = (float)(j * (1.6 * r_EnemySize));
-                    float y = (float)(r_VerticalPadding + i * (1.6 * r_EnemySize));
+                    float y = (float)(r_VerticalPadding + (i * 1.6 * r_EnemySize));
                     Enemy newEnemy = new Enemy(Game, GetEnemySpriteByRow(i), GetEnemyValueByRow(i));
                     newEnemy.Tint = ObjectValues.GetEnemyTintByRow(i);
-                    newEnemy.Position = new Vector2(x , y);
+                    newEnemy.Position = new Vector2(x, y);
                     newEnemy.Shoot += enemy_OnShoot;
                     newEnemy.Disposed += onComponentDisposed;
                     newEnemy.Initialize();
@@ -69,18 +68,19 @@ namespace A17_Ex01_Avihai_201665940
             }
         }
 
-        private void enemy_OnShoot(object i_Sender,EventArgs i_EventArgs)
+        private void enemy_OnShoot(object i_Sender, EventArgs i_EventArgs)
         {
-            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.sr_Bullet, r_EnemyBulletTint);
+            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, r_EnemyBulletTint);
             newBullet.Initialize();
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
             this.Game.Components.Add(newBullet);
         }
 
-        public void onComponentDisposed(object i_Disposed,EventArgs i_EventArgs)
+        public void onComponentDisposed(object i_Disposed, EventArgs i_EventArgs)
         {
-            if (m_Enemies.Contains(i_Disposed)){
+            if (m_Enemies.Contains(i_Disposed))
+            {
                 (i_Disposed as Enemy).WasHit = true;
                 speedUpEnemies();
                 if (EnemyKilled != null)
@@ -98,18 +98,16 @@ namespace A17_Ex01_Avihai_201665940
         {
             Vector2 newBulletPos = i_EnemyShot.Position;
             newBulletPos.X += i_EnemyShot.Width / 2;
-            newBulletPos.X -= (i_newBullet.Width) / 2;
+            newBulletPos.X -= i_newBullet.Width / 2;
             newBulletPos.Y += i_EnemyShot.Height;
             i_newBullet.Position = newBulletPos;
         }
 
         public override void Update(GameTime i_GameTime)
         {
-            //TODO: check if enemies were last drawn at the bottom of the screen (end of game)
             m_TimeSinceMoved += (float)i_GameTime.ElapsedGameTime.TotalSeconds;
             if (m_TimeSinceMoved >= m_TimeBetweenJumps)
             {
-
                 if (m_EnemyHitWall)
                 {
                     m_EnemyHitWall = false;
@@ -154,11 +152,11 @@ namespace A17_Ex01_Avihai_201665940
                         m_BatchMovingRight = !m_BatchMovingRight;
                         m_EnemyHitWall = true;
                     }
-
                 }
 
                 m_TimeSinceMoved -= m_TimeBetweenJumps;
             }
+
             m_Enemies.RemoveAll(enemy => enemy.WasHit == true);
         }
 
@@ -192,8 +190,7 @@ namespace A17_Ex01_Avihai_201665940
 
         private bool batchHitWall()
         {
-            return ((m_XMax >= (Game.GraphicsDevice.Viewport.Width - r_EnemySize) && m_BatchMovingRight)
-                || (m_XMin <= 0 && !m_BatchMovingRight));
+            return (m_XMax >= (Game.GraphicsDevice.Viewport.Width - r_EnemySize) && m_BatchMovingRight) || (m_XMin <= 0 && !m_BatchMovingRight);
         }
 
         public override void Draw(GameTime gameTime)
@@ -225,7 +222,7 @@ namespace A17_Ex01_Avihai_201665940
             return spriteLoc;
         }
 
-        private  Color GetEnemyTintByRow(int i_Row)
+        private Color GetEnemyTintByRow(int i_Row)
         {
             Color enemyTint = Color.White;
             switch (i_Row)

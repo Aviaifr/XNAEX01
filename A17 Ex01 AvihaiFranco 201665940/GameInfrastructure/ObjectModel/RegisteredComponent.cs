@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-
 namespace GameInfrastructure.ObjectModel
 {
     public class RegisteredComponent : GameComponent
@@ -19,6 +18,7 @@ namespace GameInfrastructure.ObjectModel
 
         public RegisteredComponent(Game i_Game)
             : this(i_Game, int.MaxValue)
-        { }
+        {
+        }
     }
 }

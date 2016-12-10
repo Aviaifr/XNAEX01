@@ -10,13 +10,13 @@ namespace A17_Ex01_Avihai_201665940
 {
     public class SpaceBullet : Sprite, ICollidable2D
     {
-        public readonly Vector2 r_BulletSpeed = new Vector2(0, 120);
+        private static readonly Vector2 sr_BulletSpeed = new Vector2(0, 120);
 
         public SpaceBullet(Game i_Game, string i_TextureString, Color i_Tint)
             : base(i_Game, i_TextureString)
         {
             this.Tint = i_Tint;
-            this.Velocity = r_BulletSpeed;
+            this.Velocity = sr_BulletSpeed;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -26,6 +26,7 @@ namespace A17_Ex01_Avihai_201665940
             {
                 onDisappeared();
             }
+
             OnPositionChanged();
         }
 
@@ -33,7 +34,6 @@ namespace A17_Ex01_Avihai_201665940
         {
             base.Initialize();
         }
-
 
         private void onDisappeared()
         {
@@ -47,8 +47,7 @@ namespace A17_Ex01_Avihai_201665940
                 this.Dispose();
             }
             else if (this.Velocity.Y > 0 && i_Collidable is UserSpaceship)
-            {
-                
+            {   
             }
         }
     }

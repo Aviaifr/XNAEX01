@@ -17,24 +17,31 @@ namespace GameInfrastructure.ServiceInterfaces
     public interface ICollidable
     {
         event EventHandler<EventArgs> PositionChanged;
+
         event EventHandler<EventArgs> SizeChanged;
+
         event EventHandler<EventArgs> VisibleChanged;
+
         event EventHandler<EventArgs> Disposed;
 
         bool IsVisible { get; }
+
         bool IsCollidedWith(ICollidable i_Collidable);
+
         void Collided(ICollidable i_Collidable);
     }
 
     public interface ICollidable2D : ICollidable
     {
         Rectangle Bounds { get; set; }
+
         Vector2 Velocity { get; set; }
     }
 
     public interface ICollidable3D : ICollidable
     {
         BoundingBox Bounds { get; }
+
         Vector3 Velocity { get; }
     }
 }

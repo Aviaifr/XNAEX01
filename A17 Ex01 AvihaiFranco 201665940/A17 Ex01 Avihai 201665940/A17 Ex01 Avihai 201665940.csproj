@@ -42,6 +42,7 @@
     <Compile Include="EnemyBatch.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="IShootingObject.cs" />
+    <Compile Include="MothershipEnemy.cs" />
     <Compile Include="ObjectValues.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="SpaceBullet.cs" />

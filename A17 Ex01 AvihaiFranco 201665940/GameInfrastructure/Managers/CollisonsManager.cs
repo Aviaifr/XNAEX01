@@ -12,7 +12,8 @@ namespace GameInfrastructure.Managers
 
         public CollisionsManager(Game i_Game) :
             base(i_Game, int.MaxValue)
-        { }
+        { 
+        }
 
         protected override void RegisterAsService()
         {
@@ -51,7 +52,7 @@ namespace GameInfrastructure.Managers
         private void collidable_Changed(object sender, EventArgs e)
         {
             if (sender is ICollidable)
-            {// to be on the safe side :)
+            {
                 checkCollision(sender as ICollidable);
             }
         }
