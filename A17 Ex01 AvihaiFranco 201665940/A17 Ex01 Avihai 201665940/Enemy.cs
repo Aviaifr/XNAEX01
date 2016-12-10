@@ -14,13 +14,13 @@ namespace A17_Ex01_Avihai_201665940
 
         public event EventHandler<EventArgs> Shoot;
 
-        private float m_timeSinceMoved;
-        private float m_TimeBetweenJumps;
-        private static int s_fireChance = 2;
-        private float m_Direction = 1;
-        private int m_NumOfJumps;
+        protected float m_timeSinceMoved;
+        protected float m_TimeBetweenJumps;
+        protected static int s_fireChance = 2;
+        protected float m_Direction = 1;
+        protected int m_NumOfJumps;
 
-        public bool WasHit{ get; set; }
+        public bool WasHit { get; set; }
 
         public Enemy(Game i_Game, string i_TextureLocation, int i_Value)
             : base(i_Game, i_TextureLocation)
@@ -45,11 +45,13 @@ namespace A17_Ex01_Avihai_201665940
             get { return m_timeSinceMoved; }
             set { m_timeSinceMoved = value; }
         }
+
         public int NumOfJumps
         {
-            get { return m_NumOfJumps;}
+            get { return m_NumOfJumps; }
             set { m_NumOfJumps = value; }
         }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -60,18 +62,18 @@ namespace A17_Ex01_Avihai_201665940
 
         public override void Update(GameTime i_GameTime)
         {
-            m_Position.X += (m_Speed.X * m_NumOfJumps);
+            m_Position += m_Speed * m_NumOfJumps;
             tryToShoot();
             OnPositionChanged();
         }
 
-        private bool hitWall()
+        protected bool hitWall()
         {
             return (m_Position.X + m_Texture.Width >= Game.GraphicsDevice.Viewport.Width && m_Speed.X > 0)
                 || (m_Position.X <= 0 && m_Speed.X < 0);
         }
 
-        private void tryToShoot()
+        protected virtual void tryToShoot()
         {
             int randNumToFire = s_RandomGen.Next(0, 100);
             if (randNumToFire < s_fireChance)
