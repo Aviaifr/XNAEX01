@@ -1,12 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using GameInfrastructure.Managers;
+using GameInfrastructure.ObjectModel;
+using GameInfrastructure.ServiceInterfaces;
 
 namespace A17_Ex01_Avihai_201665940
 {
     public delegate void DisappearHandler(SpaceBullet i_BulletToDisappear);
 
-    public class SpaceBullet : SpaceObject
+    public class SpaceBullet : Sprite
     {
         public static Vector2 s_BulletSpeed = new Vector2(0, 120);
         
@@ -28,15 +31,16 @@ namespace A17_Ex01_Avihai_201665940
             }
         }
 
-        public override void Initialize(Vector2 i_Position, Color i_Tint, Vector2 i_Speed)
+        public override void Initialize()
         {
-            base.Initialize(i_Position, i_Tint, i_Speed);
+            base.Initialize();
             m_Position.X -= m_Texture.Width / 2;
-            if (i_Speed.Y < 0)
+            if (m_Speed.Y < 0)
             {
                 m_Position.Y -= m_Texture.Height;
             }
         }
+
 
         private void disappear()
         {

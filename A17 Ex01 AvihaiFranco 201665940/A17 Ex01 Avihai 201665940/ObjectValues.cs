@@ -6,20 +6,24 @@ namespace A17_Ex01_Avihai_201665940
 {
     public static class ObjectValues
     {
-        public static string Enemy1 = "Enemies/Enemy0101_32x32";
-        public static string Enemy2 = "Enemies/Enemy0201_32x32";
-        public static string Enemy3 = "Enemies/Enemy0301_32x32";
-        public static string Mothership = "Enemy0301_32x32";
-        public static int EnemyWidth = 32;
-        public static int SpaceshipSize = 32;
-        public static Color Enemy1Tint = Color.LightPink;
-        public static Color Enemy2Tint = Color.LightBlue;
-        public static Color Enemy3Tint = Color.LightYellow;
-        public static Color MothershipTint = Color.White;
-        public static int Enemy1Value = 240;
-        public static int Enemy2Value = 170;
-        public static int Enemy3Value = 140;
-        public static int MothershipValue = 650;
+        public static readonly string r_Background = @"Backgrounds/BG_Space01_1024x768";
+        public static readonly string r_UserShip = "Spaceship/Ship01_32x32";
+        public static readonly string r_Enemy1 = "Enemies/Enemy0101_32x32";
+        public static readonly string r_Enemy2 = "Enemies/Enemy0201_32x32";
+        public static readonly string r_Enemy3 = "Enemies/Enemy0301_32x32";
+        public static readonly string r_Mothership = "Enemy0301_32x32";
+        public static readonly int r_EnemyWidth = 32;
+        public static readonly int r_SpaceshipSize = 32;
+        public static readonly Color r_Enemy1Tint = Color.LightPink;
+        public static readonly Color r_Enemy2Tint = Color.LightBlue;
+        public static readonly Color r_Enemy3Tint = Color.LightYellow;
+        public static readonly Color r_MothershipTint = Color.White;
+        public static readonly Color r_UserShipBulletTint = Color.Red;
+        public static readonly Color r_EnemyBulletTint = Color.Blue;
+        public static readonly int r_Enemy1Value = 240;
+        public static readonly int r_Enemy2Value = 170;
+        public static readonly int r_Enemy3Value = 140;
+        public static readonly int r_MothershipValue = 650;
 
         public static string GetEnemySpriteByRow(int i_Row)
         {
@@ -27,15 +31,15 @@ namespace A17_Ex01_Avihai_201665940
             switch (i_Row)
             {
                 case 0:
-                    spriteLoc = Enemy1;
+                    spriteLoc = r_Enemy1;
                     break;
                 case 1:
                 case 2:
-                    spriteLoc = Enemy2;
+                    spriteLoc = r_Enemy2;
                     break;
                 case 3:
                 case 4:
-                    spriteLoc = Enemy3;
+                    spriteLoc = r_Enemy3;
                     break;
             }
 
@@ -48,15 +52,15 @@ namespace A17_Ex01_Avihai_201665940
             switch (i_Row)
             {
                 case 0:
-                    enemyTint = Enemy1Tint;
+                    enemyTint = r_Enemy1Tint;
                     break;
                 case 1:
                 case 2:
-                    enemyTint = Enemy2Tint;
+                    enemyTint = r_Enemy2Tint;
                     break;
                 case 3:
                 case 4:
-                    enemyTint = Enemy3Tint;
+                    enemyTint = r_Enemy3Tint;
                     break;
             }
 
@@ -69,15 +73,15 @@ namespace A17_Ex01_Avihai_201665940
             switch (i_Row)
             {
                 case 0:
-                    enemyVal = Enemy1Value;
+                    enemyVal = r_Enemy1Value;
                     break;
                 case 1:
                 case 2:
-                    enemyVal = Enemy2Value;
+                    enemyVal = r_Enemy2Value;
                     break;
                 case 3:
                 case 4:
-                    enemyVal = Enemy3Value;
+                    enemyVal = r_Enemy3Value;
                     break;
             }
 

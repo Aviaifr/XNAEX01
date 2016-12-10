@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using GameInfrastructure.Managers;
+using GameInfrastructure.ObjectModel;
+using GameInfrastructure.ServiceInterfaces;
 
 namespace A17_Ex01_Avihai_201665940
 {
-    public class UserSpaceship : SpaceObject, IShootingObject
+    public class UserSpaceship : Sprite, IShootingObject
     {
         public static int s_SpaceshipSpeed = 135;
 
@@ -20,6 +23,7 @@ namespace A17_Ex01_Avihai_201665940
             m_PrevioussMouseState = null;
             m_PrevioussKeyboardState = null;
             m_Shots = 0;
+            m_Tint = Color.Blue;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -27,7 +31,7 @@ namespace A17_Ex01_Avihai_201665940
             handleKeyboard();
             m_Position.X += m_Speed.X * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
             m_Position.X += getMousePositionDelta().X;
-            m_Position.X = MathHelper.Clamp(m_Position.X, 0, m_Game.GraphicsDevice.Viewport.Width - m_Texture.Width);
+            m_Position.X = MathHelper.Clamp(m_Position.X, 0, Game.GraphicsDevice.Viewport.Width - m_Texture.Width);
         }
 
         private void handleKeyboard()

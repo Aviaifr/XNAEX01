@@ -2,12 +2,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using GameInfrastructure.Managers;
+using GameInfrastructure.ObjectModel;
+using GameInfrastructure.ServiceInterfaces;
 
 namespace A17_Ex01_Avihai_201665940
 {
-    public delegate void WallHitHandler(SpaceObject i_ObjectHitTheWall, float i_OffsetFromHit);
+    public delegate void WallHitHandler(Sprite i_ObjectHitTheWall, float i_OffsetFromHit);
 
-    public class Enemy : SpaceObject, IShootingObject
+    public class Enemy : Sprite, IShootingObject
     {
         public int Value { get; set; }
 
@@ -18,40 +21,54 @@ namespace A17_Ex01_Avihai_201665940
         private float m_timeSinceMoved;
         private float m_TimeBetweenJumps;
         private static int s_fireChance = 2;
-
+        private float m_Direction = 1;
+        private int m_NumOfJumps;
         public Enemy(Game i_Game, string i_TextureLocation, int i_Value)
             : base(i_Game, i_TextureLocation)
         {
             Value = i_Value;
         }
 
-        public override void Initialize(Vector2 i_Position, Color i_Tint, Vector2 i_Speed)
+        public float Direction
         {
+            get { return m_Direction; }
+            set { m_Direction = value; }
+        }
+
+        public float TimeBetweenJumps
+        {
+            get { return m_TimeBetweenJumps; }
+        }
+
+        public float TimeSinceMoved
+        {
+            get { return m_timeSinceMoved; }
+            set { m_timeSinceMoved = value; }
+        }
+        public int NumOfJumps
+        {
+            get { return m_NumOfJumps;}
+            set { m_NumOfJumps = value; }
+        }
+        public override void Initialize()
+        {
+            base.Initialize();
             m_timeSinceMoved = 0;
-            base.Initialize(i_Position, i_Tint, i_Speed);
-            m_Speed.X = m_Texture.Width;
+            //base.Initialize(i_Position, i_Tint, i_Speed); TODO: figure this out
+            m_Speed.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
         }
 
         public override void Update(GameTime i_GameTime)
         {
-            m_timeSinceMoved += (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            if (m_timeSinceMoved >= m_TimeBetweenJumps)
-            {
-                m_Position.X += m_Speed.X * m_timeSinceMoved;
-                m_timeSinceMoved = m_timeSinceMoved - m_TimeBetweenJumps;
-            }
-
-            if ((m_Position.X + m_Texture.Width >= m_Game.GraphicsDevice.Viewport.Width && m_Speed.X > 0) || (m_Position.X <= 0 && m_Speed.X < 0))
-            {
-                if (OnWallHit != null)
-                {
-                    float offset = (m_Speed.X > 0) ? m_Game.GraphicsDevice.Viewport.Width - (m_Position.X + m_Texture.Width)  : -m_Position.X;
-                    OnWallHit.Invoke(this, offset);
-                }
-            }
-
+            m_Position.X += (m_Speed.X * m_NumOfJumps);
             tryToShoot();
+        }
+
+        private bool hitWall()
+        {
+            return (m_Position.X + m_Texture.Width >= Game.GraphicsDevice.Viewport.Width && m_Speed.X > 0)
+                || (m_Position.X <= 0 && m_Speed.X < 0);
         }
 
         private void tryToShoot()
@@ -65,10 +82,7 @@ namespace A17_Ex01_Avihai_201665940
 
         public void Shoot()
         {
-            if (OnFire != null)
-            {
-                OnFire.Invoke(this);
-            }
+           // SpaceBullet bullet = new SpaceBullet(Game,ObjectValues.)
         }
 
         public Vector2 GetShotStartingPosition()
@@ -79,12 +93,9 @@ namespace A17_Ex01_Avihai_201665940
             return new Vector2(x, y);
         }
 
-        public void ChangeDirection(float i_MovementXOffset)
+        public void ChangeDirection()
         {
             m_Speed.X *= -1;
-            m_Position.X += i_MovementXOffset;
-            m_Position.Y += m_Texture.Width / 2;
-            m_TimeBetweenJumps = m_TimeBetweenJumps - (m_TimeBetweenJumps * 0.04f);
         }
 
         public void OnMybulletDisappear(SpaceBullet i_DisappearedBullet)
