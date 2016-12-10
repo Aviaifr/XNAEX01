@@ -4,9 +4,8 @@ using GameInfrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace Infrastructure.Managers
+namespace GameInfrastructure.Managers
 {
-    // TODO 10: Implement the collisions manager service:
     public class CollisionsManager : GameService, ICollisionsManager
     {
         protected readonly List<ICollidable> m_Collidables = new List<ICollidable>();

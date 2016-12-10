@@ -17,9 +17,19 @@ namespace A17_Ex01_Avihai_201665940
         private SpriteBatch m_SpriteBatch;
         private Background m_Background;
         private List<IGameObject> m_MovingObjects;
-        private List<SpaceBullet> m_TempShots;
-        private bool m_changeEnemyDirectionFlag;
         private float m_FixEnemyOffset;
+        private int PointsCollected { get; set; }
+
+        public void Enemy_OnKill(object i_EnemyKilled, EventArgs i_eventArgs)
+        {
+            PointsCollected += (i_EnemyKilled as Enemy).Value;
+            //this.Window.Title = PointsCollected.ToString();
+        }
+
+        public void Spaceship_onHit(int i_PointsToRemove)
+        {
+            PointsCollected = (int)MathHelper.Clamp(PointsCollected - ObjectValues.sr_SpaceshipValue,0, int.MaxValue);
+        }
 
         public SpaceInvaderGame()
         {
@@ -29,63 +39,37 @@ namespace A17_Ex01_Avihai_201665940
 
         protected override void Initialize()
         {
-            m_changeEnemyDirectionFlag = false;
+            System.Windows.Forms.MessageBox.Show("Test");
             m_MovingObjects = new List<IGameObject>();
-            m_TempShots = new List<SpaceBullet>();
-            m_Background = new Background(this, ObjectValues.r_Background);
+            m_Background = new Background(this, ObjectValues.sr_Background);
             Components.Add(m_Background);
 
-            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.r_UserShip);
-            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.r_SpaceshipSize);
-            spaceship.OnUserFire += userShot;
+            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.sr_UserShip);
+            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.sr_SpaceshipSize);
+            spaceship.Shoot += spaceship_Shot;
             Components.Add(spaceship);
 
             EnemyBatch enemyBatch = new EnemyBatch(this);
+            enemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(enemyBatch);
 
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
+            new InputManager(this);
+            new CollisionsManager(this);
             base.Initialize();
         }
 
-        //private void createEnemies()
-        //{
-        //    for (int i = 0; i < EnemyRows; i++)
-        //    {
-        //        for (int j = 0; j < EnemyCols; j++)
-        //        {
-        //            Enemy currEnemy = new Enemy(this, ObjectValues.GetEnemySpriteByRow(i), ObjectValues.GetEnemyValueByRow(i));
-        //            currEnemy.OnWallHit += enemyWallHitHandler;
-        //            currEnemy.OnFire += enemyShot;
-        //            Components.Add(currEnemy);
-        //        }
-        //    }
-        //}
-
         private Vector2 getEnemyPosition(int i_row, int i_col)
         {
-            float y = (3 * ObjectValues.r_EnemyWidth) + ((1.6f * ObjectValues.r_EnemyWidth) * i_row);
-            float x = (1.6f * ObjectValues.r_EnemyWidth) * i_col;
+            float y = (3 * ObjectValues.sr_EnemyWidth) + ((1.6f * ObjectValues.sr_EnemyWidth) * i_row);
+            float x = (1.6f * ObjectValues.sr_EnemyWidth) * i_col;
             return new Vector2(x, y);
         }
 
         protected override void LoadContent()
         {
-            int counter = 0;
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-            //m_Background = new Background(this, ObjectValues.r_Background);
-            //foreach (IGameObject gameObject in m_MovingObjects)
-            //{
-            //    if (gameObject is Enemy)
-            //    {
-            //        gameObject.Initialize(getEnemyPosition(counter / EnemyCols, counter % EnemyCols), ObjectValues.GetEnemyTintByRow(counter / EnemyCols), new Vector2());
-            //        counter++;
-            //    }
-            //    else
-            //    {
-            //        gameObject.Initialize(new Vector2(0, GraphicsDevice.Viewport.Height - (ObjectValues.r_SpaceshipSize * 2)), Color.White, Vector2.Zero);  
-            //    }
-            //}
             base.LoadContent();
         }
 
@@ -95,74 +79,44 @@ namespace A17_Ex01_Avihai_201665940
 
         protected override void Update(GameTime gameTime)
         {
-            //foreach (IGameObject gameObject in m_MovingObjects)
-            //{
-            //    gameObject.Update(gameTime);
-            //}
-
-            //HandleShots();
-            //checkAndChangeDirection();
             base.Update(gameTime);
         }
-
-        //private void HandleShots()
-        //{
-        //    foreach (SpaceBullet bullet in m_TempShots)
-        //    {
-        //        if (bullet.ToBeRemoved == true)
-        //        {
-        //            m_MovingObjects.Remove(bullet);
-        //        }
-        //    }
-
-        //    m_TempShots.RemoveAll(bullet => bullet.ToBeRemoved == true);
-
-        //    foreach (SpaceBullet bullet in m_TempShots)
-        //    {
-        //        m_MovingObjects.Add(bullet);
-        //    }
-
-        //    m_TempShots.Clear();
-        //}
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-            //m_SpriteBatch.Begin();
-            //m_Background.Draw(gameTime);   
             base.Draw(gameTime);
-            //m_SpriteBatch.End();
         }
 
         private void enemyWallHitHandler(Sprite i_ObjectHitTheWall, float i_XFixOffset)
         {
-            m_changeEnemyDirectionFlag = true;
             m_FixEnemyOffset = i_XFixOffset;
         }
 
 
-
-        private void userShot(IShootingObject i_Shooter)
+        private void spaceship_Shot(object i_Sender,EventArgs i_EventArgs)
         {
-        //    SpaceBullet newBullet = new SpaceBullet(this, @"Shots/Bullet");
-        //    newBullet.Initialize(i_Shooter.GetShotStartingPosition(), Color.Red, SpaceBullet.s_BulletSpeed * -1);
-        //    newBullet.NotifyDiappeared += i_Shooter.OnMybulletDisappear;
-        //    newBullet.NotifyDiappeared += removeShot;
-        //    m_TempShots.Add(newBullet);
+            SpaceBullet newBullet = new SpaceBullet(this,ObjectValues.sr_Bullet,ObjectValues.sr_UserShipBulletTint);
+            newBullet.Initialize();
+            setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);
+            newBullet.Disposed += (i_Sender as UserSpaceship).OnMyBulletDisappear;
+            newBullet.Disposed += onComponentDisposed;
+            newBullet.Velocity *= -1; 
+            this.Components.Add(newBullet);
         }
 
-        private void enemyShot(IShootingObject i_Shooter)
+        private void setNewSpaceshipBulletPosition(UserSpaceship i_Spaceship, SpaceBullet i_newBullet)
         {
-        //    SpaceBullet newBullet = new SpaceBullet(this, @"Shots/Bullet");
-        //    newBullet.NotifyDiappeared += removeShot;
-        //    newBullet.Initialize(i_Shooter.GetShotStartingPosition(), Color.Blue, SpaceBullet.s_BulletSpeed);
-        //    m_TempShots.Add(newBullet);
+            Vector2 newBulletPos = i_Spaceship.Position;
+            newBulletPos.X += i_Spaceship.Width / 2;
+            newBulletPos.X -= i_newBullet.Width / 2;
+            newBulletPos.Y -= i_newBullet.Height;
+            i_newBullet.Position = newBulletPos;
         }
 
-        private void removeShot(SpaceBullet i_DisappearedBullet)
+        public void onComponentDisposed(object i_Disposed,EventArgs i_EventArgs)
         {
-            m_TempShots.Add(i_DisappearedBullet);
+            Components.Remove(i_Disposed as IGameComponent);
         }
     }
 }

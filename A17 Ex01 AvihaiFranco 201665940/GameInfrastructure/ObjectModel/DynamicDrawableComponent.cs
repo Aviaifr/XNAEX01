@@ -15,6 +15,43 @@ namespace GameInfrastructure.ObjectModel
     public abstract class DynamicDrawableComponent : DrawableGameComponent
     {
         public event EventHandler<EventArgs> Disposed;
+
+        public event EventHandler<EventArgs> PositionChanged;
+
+        public event EventHandler<EventArgs> SizeChanged;
+
+        protected string m_AssetName;
+
+        public bool IsVisible{ get; set; }
+
+        public DynamicDrawableComponent(
+            string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
+            : base(i_Game)
+        {
+            this.AssetName = i_AssetName;
+            this.UpdateOrder = i_UpdateOrder;
+            this.DrawOrder = i_DrawOrder;
+        }
+
+        public DynamicDrawableComponent(Game i_Game)
+            : base(i_Game)
+        {
+            
+        }
+        public DynamicDrawableComponent(
+            string i_AssetName,
+            Game i_Game,
+            int i_CallsOrder)
+            : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
+        { }
+
+        public DynamicDrawableComponent(
+            string i_AssetName, Game i_Game)
+            : base(i_Game)
+        {
+            this.AssetName = i_AssetName;
+        }
+
         protected virtual void OnDisposed(object sender, EventArgs args)
         {
             if (Disposed != null)
@@ -22,20 +59,18 @@ namespace GameInfrastructure.ObjectModel
                 Disposed.Invoke(sender, args);
             }
         }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             OnDisposed(this, EventArgs.Empty);
         }
 
-        protected string m_AssetName;
-
         protected ContentManager ContentManager
         {
             get { return this.Game.Content; }
         }
 
-        public event EventHandler<EventArgs> PositionChanged;
         protected virtual void OnPositionChanged()
         {
             if (PositionChanged != null)
@@ -44,7 +79,6 @@ namespace GameInfrastructure.ObjectModel
             }
         }
 
-        public event EventHandler<EventArgs> SizeChanged;
         protected virtual void OnSizeChanged()
         {
             if (SizeChanged != null)
@@ -59,40 +93,9 @@ namespace GameInfrastructure.ObjectModel
             set { m_AssetName = value; }
         }
 
-        public DynamicDrawableComponent(
-            string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
-            : base(i_Game)
-        {
-            this.AssetName = i_AssetName;
-            this.UpdateOrder = i_UpdateOrder;
-            this.DrawOrder = i_DrawOrder;
-
-            //this.Game.Components.Add(this);
-        }
-
-        public DynamicDrawableComponent(
-            string i_AssetName,
-            Game i_Game,
-            int i_CallsOrder)
-            : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
-        { }
-
-        public DynamicDrawableComponent(
-            string i_AssetName, Game i_Game)
-            : base(i_Game)
-        {
-            this.AssetName = i_AssetName;
-
-            //this.Game.Components.Add(this);
-        }
-
-        public DynamicDrawableComponent(Game i_Game) : base(i_Game)
-        {
-            //this.Game.Components.Add(this);
-        }
-
         public override void Initialize()
         {
+            this.IsVisible = true;
             base.Initialize();
 
             if (this is ICollidable)
@@ -106,30 +109,14 @@ namespace GameInfrastructure.ObjectModel
                     collisionMgr.AddObjectToMonitor(this as ICollidable);
                 }
             }
-
-            InitBounds();   // a call to an abstract method;
-        }
-
-#if DEBUG
-        protected bool m_ShowBoundingBox = true;
-#else
-        protected bool m_ShowBoundingBox = false;
-#endif
-
-        public bool ShowBoundingBox
-        {
-            get { return m_ShowBoundingBox; }
-            set { m_ShowBoundingBox = value; }
+            InitBounds();
         }
 
         protected abstract void InitBounds();
 
         public override void Draw(GameTime gameTime)
         {
-            //DrawBoundingBox();
             base.Draw(gameTime);
         }
-
-        //protected abstract void DrawBoundingBox(); TODO: check when we really need this
     }
 }

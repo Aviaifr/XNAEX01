@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
@@ -7,49 +8,48 @@ using GameInfrastructure.ServiceInterfaces;
 
 namespace A17_Ex01_Avihai_201665940
 {
-    public delegate void DisappearHandler(SpaceBullet i_BulletToDisappear);
-
-    public class SpaceBullet : Sprite
+    public class SpaceBullet : Sprite, ICollidable2D
     {
-        public static Vector2 s_BulletSpeed = new Vector2(0, 120);
-        
-        public bool ToBeRemoved { get; private set; }
+        public readonly Vector2 r_BulletSpeed = new Vector2(0, 120);
 
-        public event DisappearHandler NotifyDiappeared;
-
-        public SpaceBullet(Game i_Game, string i_TextureString)
+        public SpaceBullet(Game i_Game, string i_TextureString, Color i_Tint)
             : base(i_Game, i_TextureString)
         {
+            this.Tint = i_Tint;
+            this.Velocity = r_BulletSpeed;
         }
 
         public override void Update(GameTime i_GameTime)
         {
             m_Position.Y += m_Speed.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            if (m_Position.Y >= m_Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
+            if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
             {
-                disappear();
+                onDisappeared();
             }
+            OnPositionChanged();
         }
 
         public override void Initialize()
         {
             base.Initialize();
-            m_Position.X -= m_Texture.Width / 2;
-            if (m_Speed.Y < 0)
-            {
-                m_Position.Y -= m_Texture.Height;
-            }
         }
 
 
-        private void disappear()
+        private void onDisappeared()
         {
-            if (NotifyDiappeared != null && this.ToBeRemoved == false)
-            {
-                NotifyDiappeared.Invoke(this);
-            }
+            Dispose();
+        }
 
-            this.ToBeRemoved = true;
+        public override void Collided(ICollidable i_Collidable)
+        {
+            if (this.Velocity.Y < 0 && i_Collidable is Enemy)
+            {
+                this.Dispose();
+            }
+            else if (this.Velocity.Y > 0 && i_Collidable is UserSpaceship)
+            {
+                
+            }
         }
     }
 }

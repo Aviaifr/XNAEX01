@@ -18,12 +18,10 @@ namespace GameInfrastructure.ObjectModel
         protected Color m_Tint;
         protected Game m_Game;
         protected Vector2 m_Speed;
-        protected string m_TextureString;
         public static Random s_RandomGen = new Random();
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
-            //m_TextureString = i_TextureString;
         }
 
         public Sprite(Game i_Game) : base(i_Game) { }
@@ -35,6 +33,12 @@ namespace GameInfrastructure.ObjectModel
         {
             get { return m_Position; }
             set { m_Position = value; }
+        }
+
+        public Vector2 Velocity
+        {
+            get { return m_Speed; }
+            set { m_Speed = value; }
         }
 
         public Color Tint
@@ -58,6 +62,9 @@ namespace GameInfrastructure.ObjectModel
                     m_Width,
                     m_Height);
             }
+            set{
+                Bounds = value;
+            }
         }
 
         public virtual bool IsCollidedWith(ICollidable i_Source)
@@ -71,42 +78,14 @@ namespace GameInfrastructure.ObjectModel
 
             return collided;
         }
-        // -- end of TODO 14
 
-        // TODO 15: Implement a basic collision reaction between two ICollidable2D objects
         public virtual void Collided(ICollidable i_Collidable)
         {
         }
 
-        //public override void Initialize()
-        //{
-        //    base.Initialize();
-        //}
-
-        //public virtual void Initialize(Vector2 i_Position, Color i_Tint, Vector2 i_Speed)
-        //{
-        //    m_Position = i_Position;
-        //    m_Tint = i_Tint;
-        //    m_Speed = i_Speed;
-        //    LoadContent();
-        //}
-
-        //protected void LoadContent()
-        //{
-        //    m_Texture = m_Game.Content.Load<Texture2D>(m_TextureString);
-        //}
-
-        //public abstract void Update(GameTime i_GameTime);
-
-        //public void Draw(SpriteBatch i_SpriteBatch)
-        //{
-        //    i_SpriteBatch.Draw(m_Texture, m_Position, m_Tint);
-        //}
-
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            //SpriteBatch spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             spriteBatch.Begin();
             spriteBatch.Draw(m_Texture, m_Position, m_Tint);
             spriteBatch.End();
@@ -146,6 +125,6 @@ namespace GameInfrastructure.ObjectModel
             m_Height = m_Texture.Height;
             //m_Position = Vector2.Zero; TODO: why was this here?
         }
-
+         
     }
 }

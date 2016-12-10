@@ -29,10 +29,13 @@ namespace A17_Ex01_Avihai_201665940
         private readonly int r_Enemy2Value = 170;
         private readonly int r_Enemy3Value = 140;
         private readonly float r_EnemySize = 32;
+        private readonly Color r_EnemyButtletTint = Color.Blue;
+
+        public event EventHandler<EventArgs> EnemyKilled;
 
         private List<Enemy> m_Enemies;
         private bool m_EnemyHitWall;
-        private float m_XMax, m_XMin, m_YMax;
+        private float m_XMax, m_XMin;
         private bool m_BatchMovingRight = true;
         private float m_TimeSinceMoved = 0f;
         private float m_TimeBetweenJumps = 0.5f;
@@ -49,7 +52,6 @@ namespace A17_Ex01_Avihai_201665940
 
         public override void Initialize()
         {
-            //base.Initialize();
             for(int i = 0; i < r_BatchRows; i++)
             {
                 for(int j = 0; j < r_BatchColumns; j++)
@@ -57,19 +59,48 @@ namespace A17_Ex01_Avihai_201665940
                     float x = (float)(j * (1.6 * r_EnemySize));
                     float y = (float)(r_VerticalPadding + i * (1.6 * r_EnemySize));
                     Enemy newEnemy = new Enemy(Game, GetEnemySpriteByRow(i), GetEnemyValueByRow(i));
-                    //Game.Components.Remove(newEnemy);
                     newEnemy.Tint = ObjectValues.GetEnemyTintByRow(i);
                     newEnemy.Position = new Vector2(x , y);
-                    newEnemy.OnFire += Enemy_OnFire;
+                    newEnemy.Shoot += enemy_OnShoot;
+                    newEnemy.Disposed += onComponentDisposed;
                     newEnemy.Initialize();
                     m_Enemies.Add(newEnemy);
                 }
             }
         }
 
-        private void Enemy_OnFire(IShootingObject i_ShootingObject)
+        private void enemy_OnShoot(object i_Sender,EventArgs i_EventArgs)
         {
-            throw new NotImplementedException();
+            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.sr_Bullet, r_EnemyBulletTint);
+            newBullet.Initialize();
+            newBullet.Disposed += onComponentDisposed;
+            setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
+            this.Game.Components.Add(newBullet);
+        }
+
+        public void onComponentDisposed(object i_Disposed,EventArgs i_EventArgs)
+        {
+            if (m_Enemies.Contains(i_Disposed)){
+                (i_Disposed as Enemy).WasHit = true;
+                speedUpEnemies();
+                if (EnemyKilled != null)
+                {
+                    EnemyKilled(i_Disposed, i_EventArgs);
+                }
+            }
+            else
+            {
+                this.Game.Components.Remove(i_Disposed as IGameComponent);
+            }
+        }
+
+        private void setNewEnemyBulletPosition(Enemy i_EnemyShot, SpaceBullet i_newBullet)
+        {
+            Vector2 newBulletPos = i_EnemyShot.Position;
+            newBulletPos.X += i_EnemyShot.Width / 2;
+            newBulletPos.X -= (i_newBullet.Width) / 2;
+            newBulletPos.Y += i_EnemyShot.Height;
+            i_newBullet.Position = newBulletPos;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -82,7 +113,7 @@ namespace A17_Ex01_Avihai_201665940
                 if (m_EnemyHitWall)
                 {
                     m_EnemyHitWall = false;
-                    m_TimeBetweenJumps -= m_TimeBetweenJumps * 0.04f;
+                    speedUpEnemies();
                     foreach (Enemy enemy in m_Enemies)
                     {
                         Vector2 newPosition = enemy.Position;
@@ -128,6 +159,12 @@ namespace A17_Ex01_Avihai_201665940
 
                 m_TimeSinceMoved -= m_TimeBetweenJumps;
             }
+            m_Enemies.RemoveAll(enemy => enemy.WasHit == true);
+        }
+
+        private void speedUpEnemies()
+        {
+            m_TimeBetweenJumps -= m_TimeBetweenJumps * 0.04f;
         }
 
         private float getOffset()

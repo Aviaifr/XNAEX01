@@ -8,25 +8,25 @@ using GameInfrastructure.ServiceInterfaces;
 
 namespace A17_Ex01_Avihai_201665940
 {
-    public delegate void WallHitHandler(Sprite i_ObjectHitTheWall, float i_OffsetFromHit);
-
-    public class Enemy : Sprite, IShootingObject
+    public class Enemy : Sprite, IShootingObject, ICollidable2D
     {
         public int Value { get; set; }
 
-        public event WallHitHandler OnWallHit;
-
-        public event ObjectFireHandler OnFire;
+        public event EventHandler<EventArgs> Shoot;
 
         private float m_timeSinceMoved;
         private float m_TimeBetweenJumps;
         private static int s_fireChance = 2;
         private float m_Direction = 1;
         private int m_NumOfJumps;
+
+        public bool WasHit{ get; set; }
+
         public Enemy(Game i_Game, string i_TextureLocation, int i_Value)
             : base(i_Game, i_TextureLocation)
         {
             Value = i_Value;
+            WasHit = false;
         }
 
         public float Direction
@@ -54,7 +54,6 @@ namespace A17_Ex01_Avihai_201665940
         {
             base.Initialize();
             m_timeSinceMoved = 0;
-            //base.Initialize(i_Position, i_Tint, i_Speed); TODO: figure this out
             m_Speed.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
         }
@@ -63,6 +62,7 @@ namespace A17_Ex01_Avihai_201665940
         {
             m_Position.X += (m_Speed.X * m_NumOfJumps);
             tryToShoot();
+            OnPositionChanged();
         }
 
         private bool hitWall()
@@ -73,16 +73,19 @@ namespace A17_Ex01_Avihai_201665940
 
         private void tryToShoot()
         {
-            int randNumToFire = s_RandomGen.Next(0, 1000);
+            int randNumToFire = s_RandomGen.Next(0, 100);
             if (randNumToFire < s_fireChance)
             {
-                Shoot();
+                OnShoot();
             }
         }
 
-        public void Shoot()
+        private void OnShoot()
         {
-           // SpaceBullet bullet = new SpaceBullet(Game,ObjectValues.)
+            if (this.Shoot != null)
+            {
+                Shoot.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public Vector2 GetShotStartingPosition()
@@ -98,8 +101,19 @@ namespace A17_Ex01_Avihai_201665940
             m_Speed.X *= -1;
         }
 
-        public void OnMybulletDisappear(SpaceBullet i_DisappearedBullet)
+        public void OnMyBulletDisappear(object i_SpaceBullet, EventArgs i_EventArgs)
         {
+        }
+
+        public override void Collided(ICollidable i_Collidable)
+        {
+            if (i_Collidable is SpaceBullet)
+            {
+                if ((i_Collidable as SpaceBullet).Velocity.Y < 0)
+                {
+                    this.Dispose();
+                }
+            }
         }
     }
 }

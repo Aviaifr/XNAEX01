@@ -13,7 +13,6 @@ namespace A17_Ex01_Avihai_201665940
         public Background(Game i_Game, string i_TextureString) : 
             base(i_Game, i_TextureString, int.MinValue)
         {
-            m_TextureString = i_TextureString;
             m_Position = Vector2.Zero;
             m_Tint = Color.Gray;
             Initialize();
