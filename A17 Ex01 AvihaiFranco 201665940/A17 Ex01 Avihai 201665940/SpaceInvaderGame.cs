@@ -18,17 +18,25 @@ namespace A17_Ex01_Avihai_201665940
         private Background m_Background;
         private List<IGameObject> m_MovingObjects;
         private float m_FixEnemyOffset;
-        private int PointsCollected { get; set; }
+
+        private int PointsCollected
+        {
+            get;
+            set; 
+        }
 
         public void Enemy_OnKill(object i_EnemyKilled, EventArgs i_eventArgs)
         {
-            PointsCollected += (i_EnemyKilled as Enemy).Value;
-            //this.Window.Title = PointsCollected.ToString();
+            if (this.Components != null)
+            {
+                PointsCollected += (i_EnemyKilled as Enemy).Value;
+                this.Window.Title = PointsCollected.ToString();
+            }   
         }
 
         public void Spaceship_onHit(int i_PointsToRemove)
         {
-            PointsCollected = (int)MathHelper.Clamp(PointsCollected - ObjectValues.sr_SpaceshipValue,0, int.MaxValue);
+            PointsCollected = (int)MathHelper.Clamp(PointsCollected - ObjectValues.SpaceshipValue, 0, int.MaxValue);
         }
 
         public SpaceInvaderGame()
@@ -41,17 +49,22 @@ namespace A17_Ex01_Avihai_201665940
         {
             System.Windows.Forms.MessageBox.Show("Test");
             m_MovingObjects = new List<IGameObject>();
-            m_Background = new Background(this, ObjectValues.sr_Background);
+            m_Background = new Background(this, ObjectValues.BackgroundTextureString);
             Components.Add(m_Background);
 
-            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.sr_UserShip);
-            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.sr_SpaceshipSize);
+            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.UserShipTextureString);
+            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
             spaceship.Shoot += spaceship_Shot;
             Components.Add(spaceship);
 
             EnemyBatch enemyBatch = new EnemyBatch(this);
             enemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(enemyBatch);
+
+            MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString);
+            mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
+            mothershipEnemy.MothershipKilled += Enemy_OnKill;
+            Components.Add(mothershipEnemy);
 
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
@@ -62,8 +75,8 @@ namespace A17_Ex01_Avihai_201665940
 
         private Vector2 getEnemyPosition(int i_row, int i_col)
         {
-            float y = (3 * ObjectValues.sr_EnemyWidth) + ((1.6f * ObjectValues.sr_EnemyWidth) * i_row);
-            float x = (1.6f * ObjectValues.sr_EnemyWidth) * i_col;
+            float y = (3 * ObjectValues.EnemyWidth) + ((1.6f * ObjectValues.EnemyWidth) * i_row);
+            float x = (1.6f * ObjectValues.EnemyWidth) * i_col;
             return new Vector2(x, y);
         }
 
@@ -93,10 +106,9 @@ namespace A17_Ex01_Avihai_201665940
             m_FixEnemyOffset = i_XFixOffset;
         }
 
-
-        private void spaceship_Shot(object i_Sender,EventArgs i_EventArgs)
+        private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
-            SpaceBullet newBullet = new SpaceBullet(this,ObjectValues.sr_Bullet,ObjectValues.sr_UserShipBulletTint);
+            SpaceBullet newBullet = new SpaceBullet(this, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint);
             newBullet.Initialize();
             setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);
             newBullet.Disposed += (i_Sender as UserSpaceship).OnMyBulletDisappear;
@@ -114,7 +126,7 @@ namespace A17_Ex01_Avihai_201665940
             i_newBullet.Position = newBulletPos;
         }
 
-        public void onComponentDisposed(object i_Disposed,EventArgs i_EventArgs)
+        public void onComponentDisposed(object i_Disposed, EventArgs i_EventArgs)
         {
             Components.Remove(i_Disposed as IGameComponent);
         }

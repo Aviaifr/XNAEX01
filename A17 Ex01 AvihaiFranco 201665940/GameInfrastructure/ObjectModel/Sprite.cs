@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.ServiceInterfaces;
 
-
 namespace GameInfrastructure.ObjectModel
 {
     public abstract class Sprite : DynamicDrawableComponent
@@ -19,15 +18,20 @@ namespace GameInfrastructure.ObjectModel
         protected Game m_Game;
         protected Vector2 m_Speed;
         public static Random s_RandomGen = new Random();
+        protected int m_Width;
+        protected int m_Height;
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
         }
 
-        public Sprite(Game i_Game) : base(i_Game) { }
+        public Sprite(Game i_Game) : base(i_Game)
+        {
+        }
 
-        public Sprite(Game i_Game, string i_TesxtureString, int i_CallsOrder): base(i_TesxtureString, i_Game, i_CallsOrder)
-        { }
+        public Sprite(Game i_Game, string i_TesxtureString, int i_CallsOrder) : base(i_TesxtureString, i_Game, i_CallsOrder)
+        {
+        }
 
         public Vector2 Position
         {
@@ -62,7 +66,9 @@ namespace GameInfrastructure.ObjectModel
                     m_Width,
                     m_Height);
             }
-            set{
+
+            set
+            {
                 Bounds = value;
             }
         }
@@ -85,13 +91,15 @@ namespace GameInfrastructure.ObjectModel
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            spriteBatch.Begin();
-            spriteBatch.Draw(m_Texture, m_Position, m_Tint);
-            spriteBatch.End();
+            if (this.IsVisible)
+            {
+                SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+                spriteBatch.Begin();
+                spriteBatch.Draw(m_Texture, m_Position, m_Tint);
+                spriteBatch.End();
+            }
         }
 
-        protected int m_Width;
         public int Width
         {
             get { return m_Width; }
@@ -105,7 +113,6 @@ namespace GameInfrastructure.ObjectModel
             }
         }
 
-        protected int m_Height;
         public int Height
         {
             get { return m_Height; }
@@ -123,8 +130,6 @@ namespace GameInfrastructure.ObjectModel
         {
             m_Width = m_Texture.Width;
             m_Height = m_Texture.Height;
-            //m_Position = Vector2.Zero; TODO: why was this here?
-        }
-         
+        }    
     }
 }
