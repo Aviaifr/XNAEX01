@@ -15,8 +15,8 @@ namespace A17_Ex01_Avihai_201665940
         private static readonly Vector2 sr_MothershipSpeed = new Vector2(105f, 0f);
         private static readonly int sr_AppearChance = 1;
 
-        public MothershipEnemy(Game i_Game, string i_TextureLocation)
-            : base(i_Game, i_TextureLocation, ObjectValues.MothershipValue)
+        public MothershipEnemy(Game i_Game, string i_TextureLocation, int i_Value)
+            : base(i_Game, i_TextureLocation, i_Value)
         {
         }
 
