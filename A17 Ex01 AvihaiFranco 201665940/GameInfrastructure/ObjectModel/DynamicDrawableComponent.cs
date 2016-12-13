@@ -19,6 +19,10 @@ namespace GameInfrastructure.ObjectModel
 
         public event EventHandler<EventArgs> SizeChanged;
 
+        public event EventHandler<EventArgs> Hit;
+
+        public event EventHandler<EventArgs> Destroyed;
+
         protected string m_AssetName;
 
         public bool IsVisible { get; set; }
@@ -57,6 +61,22 @@ namespace GameInfrastructure.ObjectModel
             if (Disposed != null)
             {
                 Disposed.Invoke(sender, args);
+            }
+        }
+
+        protected virtual void onDestroyed()
+        {
+            if(Destroyed != null)
+            {
+                Destroyed(this, EventArgs.Empty);
+            }
+        }
+
+        protected virtual void onHit()
+        {
+            if (Hit != null)
+            {
+                Hit(this, EventArgs.Empty);
             }
         }
 

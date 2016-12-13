@@ -11,6 +11,7 @@ namespace A17_Ex01_Avihai_201665940
     public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
         private static readonly int sr_SpaceshipSpeed = 135;
+        private MouseState? m_PrevMouseState;
 
         public event EventHandler<EventArgs> Shoot;
 
@@ -36,7 +37,17 @@ namespace A17_Ex01_Avihai_201665940
 
         private void updatePositionByMouse(IInputManager i_InputManager)
         {
-            m_Position.X += i_InputManager.MousePositionDelta.X;
+            //inputmanager does not initialize the prevState to be nullable in order to move the shi relative to its starting point
+            MouseState currState = Mouse.GetState();
+            Vector2 mouseDelta = Vector2.Zero;
+            if(m_PrevMouseState != null)
+            {
+                mouseDelta.X = currState.X - m_PrevMouseState.Value.X;
+                mouseDelta.Y = currState.Y - m_PrevMouseState.Value.Y;
+            }
+
+            m_Position.X += mouseDelta.X;
+            m_PrevMouseState = currState;
         }
 
         private void updateSpeedByInput(IInputManager i_InputManager)
@@ -52,9 +63,9 @@ namespace A17_Ex01_Avihai_201665940
             }
         }
 
-        private void checkInputForShot(IInputManager i_InputManager)
+        private void checkInputForShot(IInputManager i_InputManager) //TODO: added space for convenience
         {
-            if (i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.ButtonPressed(eInputButtons.Left))
+            if (i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.KeyPressed(Keys.Space) || i_InputManager.ButtonPressed(eInputButtons.Left))
             {
                 OnShoot();
             }
@@ -76,5 +87,24 @@ namespace A17_Ex01_Avihai_201665940
         {
             m_Shots--;
         }
+
+        public override void Collided(ICollidable i_Collidable)
+        {
+            if(i_Collidable is SpaceBullet)
+            {
+                if((i_Collidable as SpaceBullet).Velocity.Y > 0)
+                {
+                    onHit();
+                }
+            }
+            else if(i_Collidable is Enemy)
+            {
+                onDestroyed();
+            }
+            base.Collided(i_Collidable);
+        }
+
     }
+
+    
 }
