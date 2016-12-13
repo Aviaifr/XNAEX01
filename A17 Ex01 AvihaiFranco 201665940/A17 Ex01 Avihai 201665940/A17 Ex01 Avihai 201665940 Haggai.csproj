@@ -9,7 +9,7 @@
     <ProjectGuid>{71CF28FA-5027-431B-81DB-87F911B42E9E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>A17_Ex01_Avihai_201665940</RootNamespace>
+    <RootNamespace>Space_Invaders</RootNamespace>
     <AssemblyName>A17 Ex01 Avihai 201665940</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
@@ -44,7 +44,6 @@
     <Compile Include="IShootingObject.cs" />
     <Compile Include="MothershipEnemy.cs" />
     <Compile Include="ObjectValues.cs" />
-    <Compile Include="IGameObject.cs" />
     <Compile Include="SpaceBullet.cs" />
     <Compile Include="SpaceInvaderGame.cs" />
     <Compile Include="Program.cs" />

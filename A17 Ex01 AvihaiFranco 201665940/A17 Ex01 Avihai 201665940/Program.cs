@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
 #if WINDOWS || LINUX
     /// <summary>

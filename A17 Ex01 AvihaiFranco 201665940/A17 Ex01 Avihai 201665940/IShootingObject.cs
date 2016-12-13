@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {   
     public interface IShootingObject
     {

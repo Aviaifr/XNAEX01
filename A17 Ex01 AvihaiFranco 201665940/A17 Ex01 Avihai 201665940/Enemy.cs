@@ -6,7 +6,7 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
     public class Enemy : Sprite, IShootingObject, ICollidable2D
     {
@@ -16,7 +16,7 @@ namespace A17_Ex01_Avihai_201665940
 
         protected float m_timeSinceMoved;
         protected float m_TimeBetweenJumps;
-        protected static int s_fireChance = 2;
+        protected static int s_fireChance = 1;
         protected float m_Direction = 1;
         protected int m_NumOfJumps;
 
