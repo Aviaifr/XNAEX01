@@ -6,7 +6,7 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
     public class SpaceBullet : Sprite, ICollidable2D
     {
@@ -42,12 +42,9 @@ namespace A17_Ex01_Avihai_201665940
 
         public override void Collided(ICollidable i_Collidable)
         {
-            if (this.Velocity.Y < 0 && i_Collidable is Enemy)
+            if ((this.Velocity.Y < 0 && i_Collidable is Enemy) || (this.Velocity.Y > 0 && i_Collidable is UserSpaceship))
             {
                 this.Dispose();
-            }
-            else if (this.Velocity.Y > 0 && i_Collidable is UserSpaceship)
-            {   
             }
         }
     }

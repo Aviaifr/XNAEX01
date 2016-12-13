@@ -10,9 +10,9 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
-    class SpaceShipPlayer : Player, I2DPlayer
+    public class SpaceShipPlayer : Player, I2DPlayer
     {
         private readonly int r_MaxLives = 3;
 
@@ -65,7 +65,6 @@ namespace A17_Ex01_Avihai_201665940
             }
         }
 
-        //automatically register to component's hit and destroy events by base class
         protected override void registerToComponentEvents()
         {
             base.registerToComponentEvents();

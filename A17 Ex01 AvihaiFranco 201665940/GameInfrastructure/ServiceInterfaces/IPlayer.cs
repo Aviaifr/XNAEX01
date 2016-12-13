@@ -12,17 +12,20 @@ namespace GameInfrastructure.ServiceInterfaces
     public interface IPlayer
     {
         event EventHandler<EventArgs> PlayerDead;
+
         event EventHandler<EventArgs> PlayerHit;
+        
         DynamicDrawableComponent GameComponent { get; set; }
 
         int Score { get; set; }
-        int Lives { get; set; }
 
+        int Lives { get; set; }
     }
 
     public interface I2DPlayer : IPlayer
     {
         Vector2 GameComponentPosition { get; set; }
+
         Rectangle GameComponentBounds { get; }
     }
 }

@@ -10,7 +10,7 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
     public class EnemyBatch : Sprite
     {
@@ -66,7 +66,7 @@ namespace A17_Ex01_Avihai_201665940
                     float x = (float)(j * (1.6 * r_EnemySize));
                     float y = (float)(r_VerticalPadding + (i * 1.6 * r_EnemySize));
                     Enemy newEnemy = new Enemy(Game, GetEnemySpriteByRow(i), GetEnemyValueByRow(i));
-                    newEnemy.Tint = ObjectValues.GetEnemyTintByRow(i);
+                    newEnemy.Tint = GetEnemyTintByRow(i);
                     newEnemy.Position = new Vector2(x, y);
                     newEnemy.Shoot += enemy_OnShoot;
                     newEnemy.Disposed += onComponentDisposed;
@@ -78,7 +78,7 @@ namespace A17_Ex01_Avihai_201665940
 
         private void enemy_OnShoot(object i_Sender, EventArgs i_EventArgs)
         {
-            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.sr_BulletTextureString, r_EnemyBulletTint);
+            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, r_EnemyBulletTint);
             newBullet.Initialize();
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
@@ -91,13 +91,14 @@ namespace A17_Ex01_Avihai_201665940
             {
                 (i_Disposed as Enemy).WasHit = true;
                 speedUpEnemies();
-            }
-            else if (this.Game.Components != null)
-            {
                 if (EnemyKilled != null)
                 {
                     EnemyKilled(i_Disposed, i_EventArgs);
                 }
+            }
+            else if (this.Game.Components != null)
+            {
+                this.Game.Components.Remove(i_Disposed as IGameComponent);
             }
         }
 

@@ -7,7 +7,7 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
     public class SpaceInvaderGame : Game
     {
@@ -18,6 +18,7 @@ namespace A17_Ex01_Avihai_201665940
         private SpriteBatch m_SpriteBatch;
         private Background m_Background;
         private EnemyBatch m_EnemyBatch;
+
         private int PointsCollected
         {
             get;
@@ -41,7 +42,6 @@ namespace A17_Ex01_Avihai_201665940
 
         private void checkWin()
         {
-            this.Window.Title = m_EnemyBatch.EnemyCount.ToString();
             if (m_EnemyBatch.EnemyCount == 0)
             {
                 GameOver(eGameOverType.PlayerWins);
@@ -51,10 +51,6 @@ namespace A17_Ex01_Avihai_201665940
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
         {
             resetPlayerSpaceShipPosition();
-            if (this.Window != null)
-            {
-                this.Window.Title = m_Player.Score.ToString();
-            }
         }
 
         private void resetPlayerSpaceShipPosition()
@@ -70,7 +66,7 @@ namespace A17_Ex01_Avihai_201665940
 
         public void GameOver(eGameOverType i_GameOverType)
         {
-            string msgTitle = String.Empty;
+            string msgTitle = string.Empty;
             switch (i_GameOverType)
             {
                 case eGameOverType.GameOver:
@@ -80,7 +76,8 @@ namespace A17_Ex01_Avihai_201665940
                     msgTitle = "Player Wins!!";
                     break;
             }
-            System.Windows.Forms.MessageBox.Show(String.Format("Final Score: {0}", m_Player.Score.ToString()),msgTitle);
+
+            System.Windows.Forms.MessageBox.Show(string.Format("Final Score: {0}", m_Player.Score.ToString()), msgTitle);
             this.Exit();
         }
 
@@ -92,11 +89,12 @@ namespace A17_Ex01_Avihai_201665940
 
         protected override void Initialize()
         {
-            m_Background = new Background(this, ObjectValues.sr_BackgroundTextureString);
+            this.Window.Title = "Space Invaders";
+            m_Background = new Background(this, ObjectValues.BackgroundTextureString);
             Components.Add(m_Background);
 
-            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.sr_UserShipTextureString);
-            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.sr_SpaceshipSize);
+            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.UserShipTextureString);
+            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
             spaceship.Shoot += spaceship_Shot;
             Components.Add(spaceship);
             m_Player = new SpaceShipPlayer(spaceship);
@@ -107,8 +105,8 @@ namespace A17_Ex01_Avihai_201665940
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(m_EnemyBatch);
 
-            MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.sr_MothershipTextureString, ObjectValues.sr_MothershipValue);
-            mothershipEnemy.Position = new Vector2(0, ObjectValues.sr_EnemyWidth);
+            MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
+            mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
             mothershipEnemy.MothershipKilled += Enemy_OnKill;
             Components.Add(mothershipEnemy);
 
@@ -121,8 +119,8 @@ namespace A17_Ex01_Avihai_201665940
 
         private Vector2 getEnemyPosition(int i_row, int i_col)
         {
-            float y = (3 * ObjectValues.sr_EnemyWidth) + ((1.6f * ObjectValues.sr_EnemyWidth) * i_row);
-            float x = (1.6f * ObjectValues.sr_EnemyWidth) * i_col;
+            float y = (3 * ObjectValues.EnemyWidth) + ((1.6f * ObjectValues.EnemyWidth) * i_row);
+            float x = (1.6f * ObjectValues.EnemyWidth) * i_col;
             return new Vector2(x, y);
         }
 
@@ -140,7 +138,7 @@ namespace A17_Ex01_Avihai_201665940
 
         private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
-            SpaceBullet newBullet = new SpaceBullet(this, ObjectValues.sr_BulletTextureString, ObjectValues.sr_UserShipBulletTint);
+            SpaceBullet newBullet = new SpaceBullet(this, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint);
             newBullet.Initialize();
             setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);
             newBullet.Disposed += (i_Sender as UserSpaceship).OnMyBulletDisappear;
