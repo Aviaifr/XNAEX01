@@ -44,7 +44,6 @@
     <Compile Include="IShootingObject.cs" />
     <Compile Include="MothershipEnemy.cs" />
     <Compile Include="ObjectValues.cs" />
-    <Compile Include="IGameObject.cs" />
     <Compile Include="SpaceBullet.cs" />
     <Compile Include="SpaceInvaderGame.cs" />
     <Compile Include="Program.cs" />

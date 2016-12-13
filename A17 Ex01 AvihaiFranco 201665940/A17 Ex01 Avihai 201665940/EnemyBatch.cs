@@ -40,6 +40,14 @@ namespace A17_Ex01_Avihai_201665940
         private float m_TimeSinceMoved = 0f;
         private float m_TimeBetweenJumps = 0.5f;
 
+        public int EnemyCount
+        { 
+            get
+            {
+                return this.m_Enemies.Count - m_Enemies.Count<Enemy>(enemy => enemy.WasHit == true);
+            }
+        }
+
         public EnemyBatch(Game i_Game) : base(i_Game)
         {
             m_Enemies = new List<Enemy>();
@@ -70,7 +78,7 @@ namespace A17_Ex01_Avihai_201665940
 
         private void enemy_OnShoot(object i_Sender, EventArgs i_EventArgs)
         {
-            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, r_EnemyBulletTint);
+            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.sr_BulletTextureString, r_EnemyBulletTint);
             newBullet.Initialize();
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
@@ -83,14 +91,13 @@ namespace A17_Ex01_Avihai_201665940
             {
                 (i_Disposed as Enemy).WasHit = true;
                 speedUpEnemies();
+            }
+            else if (this.Game.Components != null)
+            {
                 if (EnemyKilled != null)
                 {
                     EnemyKilled(i_Disposed, i_EventArgs);
                 }
-            }
-            else if (this.Game.Components != null)
-            {
-                this.Game.Components.Remove(i_Disposed as IGameComponent);
             }
         }
 

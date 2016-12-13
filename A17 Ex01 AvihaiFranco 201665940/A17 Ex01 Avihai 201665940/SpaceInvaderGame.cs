@@ -17,13 +17,17 @@ namespace A17_Ex01_Avihai_201665940
         private SpaceShipPlayer m_Player;
         private SpriteBatch m_SpriteBatch;
         private Background m_Background;
-        private List<IGameObject> m_MovingObjects;
-        private float m_FixEnemyOffset;
-
+        private EnemyBatch m_EnemyBatch;
         private int PointsCollected
         {
             get;
             set; 
+        }
+
+        public enum eGameOverType
+        {
+            GameOver,
+            PlayerWins
         }
 
         public void Enemy_OnKill(object i_EnemyKilled, EventArgs i_eventArgs)
@@ -31,8 +35,17 @@ namespace A17_Ex01_Avihai_201665940
             if (this.Components != null)
             {
                 m_Player.Score += (i_EnemyKilled as Enemy).Value;
-                this.Window.Title = m_Player.Score.ToString();
-            }   
+                checkWin();
+            }
+        }
+
+        private void checkWin()
+        {
+            this.Window.Title = m_EnemyBatch.EnemyCount.ToString();
+            if (m_EnemyBatch.EnemyCount == 0)
+            {
+                GameOver(eGameOverType.PlayerWins);
+            }
         }
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
@@ -52,19 +65,24 @@ namespace A17_Ex01_Avihai_201665940
 
         public void Player_OnKilled(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            GameOver();
+            GameOver(eGameOverType.GameOver);
         }
 
-        public void GameOver()
+        public void GameOver(eGameOverType i_GameOverType)
         {
-            System.Windows.Forms.MessageBox.Show("Final Score: " + m_Player.Score.ToString(),"Game Over!");
+            string msgTitle = String.Empty;
+            switch (i_GameOverType)
+            {
+                case eGameOverType.GameOver:
+                    msgTitle = "Game Over!";
+                    break;
+                case eGameOverType.PlayerWins:
+                    msgTitle = "Player Wins!!";
+                    break;
+            }
+            System.Windows.Forms.MessageBox.Show(String.Format("Final Score: {0}", m_Player.Score.ToString()),msgTitle);
             this.Exit();
         }
-
-        //public void Spaceship_onHit(int i_PointsToRemove)
-        //{
-        //    PointsCollected = (int)MathHelper.Clamp(PointsCollected - ObjectValues.SpaceshipValue, 0, int.MaxValue);
-        //}
 
         public SpaceInvaderGame()
         {
@@ -74,25 +92,23 @@ namespace A17_Ex01_Avihai_201665940
 
         protected override void Initialize()
         {
-            m_MovingObjects = new List<IGameObject>();
-            m_Background = new Background(this, ObjectValues.BackgroundTextureString);
+            m_Background = new Background(this, ObjectValues.sr_BackgroundTextureString);
             Components.Add(m_Background);
 
-            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.UserShipTextureString);
-            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
+            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.sr_UserShipTextureString);
+            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.sr_SpaceshipSize);
             spaceship.Shoot += spaceship_Shot;
             Components.Add(spaceship);
             m_Player = new SpaceShipPlayer(spaceship);
             m_Player.PlayerHit += Player_OnHit;
-            m_Player.PlayerDead += Player_OnKilled;
-            
+            m_Player.PlayerDead += Player_OnKilled;            
 
-            EnemyBatch enemyBatch = new EnemyBatch(this);
-            enemyBatch.EnemyKilled += Enemy_OnKill;
-            Components.Add(enemyBatch);
+            m_EnemyBatch = new EnemyBatch(this);
+            m_EnemyBatch.EnemyKilled += Enemy_OnKill;
+            Components.Add(m_EnemyBatch);
 
-            MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
-            mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
+            MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.sr_MothershipTextureString, ObjectValues.sr_MothershipValue);
+            mothershipEnemy.Position = new Vector2(0, ObjectValues.sr_EnemyWidth);
             mothershipEnemy.MothershipKilled += Enemy_OnKill;
             Components.Add(mothershipEnemy);
 
@@ -105,8 +121,8 @@ namespace A17_Ex01_Avihai_201665940
 
         private Vector2 getEnemyPosition(int i_row, int i_col)
         {
-            float y = (3 * ObjectValues.EnemyWidth) + ((1.6f * ObjectValues.EnemyWidth) * i_row);
-            float x = (1.6f * ObjectValues.EnemyWidth) * i_col;
+            float y = (3 * ObjectValues.sr_EnemyWidth) + ((1.6f * ObjectValues.sr_EnemyWidth) * i_row);
+            float x = (1.6f * ObjectValues.sr_EnemyWidth) * i_col;
             return new Vector2(x, y);
         }
 
@@ -116,29 +132,15 @@ namespace A17_Ex01_Avihai_201665940
             base.LoadContent();
         }
 
-        protected override void UnloadContent()
-        {
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
         }
 
-        private void enemyWallHitHandler(Sprite i_ObjectHitTheWall, float i_XFixOffset)
-        {
-            m_FixEnemyOffset = i_XFixOffset;
-        }
-
         private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
-            SpaceBullet newBullet = new SpaceBullet(this, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint);
+            SpaceBullet newBullet = new SpaceBullet(this, ObjectValues.sr_BulletTextureString, ObjectValues.sr_UserShipBulletTint);
             newBullet.Initialize();
             setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);
             newBullet.Disposed += (i_Sender as UserSpaceship).OnMyBulletDisappear;
