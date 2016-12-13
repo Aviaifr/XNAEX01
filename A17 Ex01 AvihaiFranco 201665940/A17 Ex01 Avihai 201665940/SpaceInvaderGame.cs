@@ -14,6 +14,7 @@ namespace A17_Ex01_Avihai_201665940
         public static int EnemyRows = 5;
         public static int EnemyCols = 9;
         private GraphicsDeviceManager m_Graphics;
+        private SpaceShipPlayer m_Player;
         private SpriteBatch m_SpriteBatch;
         private Background m_Background;
         private List<IGameObject> m_MovingObjects;
@@ -29,15 +30,41 @@ namespace A17_Ex01_Avihai_201665940
         {
             if (this.Components != null)
             {
-                PointsCollected += (i_EnemyKilled as Enemy).Value;
-                this.Window.Title = PointsCollected.ToString();
+                m_Player.Score += (i_EnemyKilled as Enemy).Value;
+                this.Window.Title = m_Player.Score.ToString();
             }   
         }
 
-        public void Spaceship_onHit(int i_PointsToRemove)
+        public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            PointsCollected = (int)MathHelper.Clamp(PointsCollected - ObjectValues.SpaceshipValue, 0, int.MaxValue);
+            resetPlayerSpaceShipPosition();
+            if (this.Window != null)
+            {
+                this.Window.Title = m_Player.Score.ToString();
+            }
         }
+
+        private void resetPlayerSpaceShipPosition()
+        {
+            m_Player.GameComponentPosition = new Vector2
+                (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
+        }
+
+        public void Player_OnKilled(object i_HitPlayer, EventArgs i_EventArgs)
+        {
+            GameOver();
+        }
+
+        public void GameOver()
+        {
+            System.Windows.Forms.MessageBox.Show("Final Score: " + m_Player.Score.ToString(),"Game Over!");
+            this.Exit();
+        }
+
+        //public void Spaceship_onHit(int i_PointsToRemove)
+        //{
+        //    PointsCollected = (int)MathHelper.Clamp(PointsCollected - ObjectValues.SpaceshipValue, 0, int.MaxValue);
+        //}
 
         public SpaceInvaderGame()
         {
@@ -47,7 +74,6 @@ namespace A17_Ex01_Avihai_201665940
 
         protected override void Initialize()
         {
-            System.Windows.Forms.MessageBox.Show("Test");
             m_MovingObjects = new List<IGameObject>();
             m_Background = new Background(this, ObjectValues.BackgroundTextureString);
             Components.Add(m_Background);
@@ -56,12 +82,16 @@ namespace A17_Ex01_Avihai_201665940
             spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
             spaceship.Shoot += spaceship_Shot;
             Components.Add(spaceship);
+            m_Player = new SpaceShipPlayer(spaceship);
+            m_Player.PlayerHit += Player_OnHit;
+            m_Player.PlayerDead += Player_OnKilled;
+            
 
             EnemyBatch enemyBatch = new EnemyBatch(this);
             enemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(enemyBatch);
 
-            MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString);
+            MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
             mothershipEnemy.MothershipKilled += Enemy_OnKill;
             Components.Add(mothershipEnemy);
@@ -128,7 +158,10 @@ namespace A17_Ex01_Avihai_201665940
 
         public void onComponentDisposed(object i_Disposed, EventArgs i_EventArgs)
         {
-            Components.Remove(i_Disposed as IGameComponent);
+            if (Components != null)
+            {
+                Components.Remove(i_Disposed as IGameComponent);
+            }
         }
     }
 }

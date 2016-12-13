@@ -49,6 +49,7 @@
     <Compile Include="SpaceInvaderGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpaceShipPlayer.cs" />
     <Compile Include="UserSpaceship.cs" />
   </ItemGroup>
   <ItemGroup>
