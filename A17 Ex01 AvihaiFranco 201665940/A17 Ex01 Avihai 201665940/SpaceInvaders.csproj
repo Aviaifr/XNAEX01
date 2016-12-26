@@ -9,8 +9,8 @@
     <ProjectGuid>{71CF28FA-5027-431B-81DB-87F911B42E9E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Space_Invaders</RootNamespace>
-    <AssemblyName>A17 Ex01 Avihai 201665940</AssemblyName>
+    <RootNamespace>Space_Invaderss</RootNamespace>
+    <AssemblyName>SpaceInvaders</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>

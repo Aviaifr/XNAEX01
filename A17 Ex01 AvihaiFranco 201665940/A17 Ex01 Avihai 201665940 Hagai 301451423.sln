@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A17 Ex01 Avihai 201665940 Haggai", "A17 Ex01 Avihai 201665940\A17 Ex01 Avihai 201665940 Haggai.csproj", "{71CF28FA-5027-431B-81DB-87F911B42E9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvaders", "A17 Ex01 Avihai 201665940\SpaceInvaders.csproj", "{71CF28FA-5027-431B-81DB-87F911B42E9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameInfrastructure", "GameInfrastructure\GameInfrastructure.csproj", "{649EF77C-4852-45AE-96A3-AB50F170F092}"
 EndProject
