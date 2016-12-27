@@ -105,6 +105,10 @@ namespace Space_Invaders
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(m_EnemyBatch);
 
+            Wall w = new Wall(this, @"Barriers\Barrier_44x32");
+            Components.Add(w);
+            w.Position = Vector2.Zero;
+
             MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
             mothershipEnemy.MothershipKilled += Enemy_OnKill;

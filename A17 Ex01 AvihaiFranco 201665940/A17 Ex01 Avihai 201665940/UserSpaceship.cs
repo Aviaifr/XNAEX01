@@ -11,7 +11,7 @@ namespace Space_Invaders
     public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
         private static readonly int sr_SpaceshipSpeed = 135;
-
+        private static readonly int sr_MaxShots = 2;
         public event EventHandler<EventArgs> Shoot;
 
         private int m_Shots;
@@ -62,7 +62,7 @@ namespace Space_Invaders
 
         private void OnShoot()
         {
-            if (m_Shots < 2)
+            if (m_Shots < sr_MaxShots)
             {
                 if (Shoot != null)
                 {
@@ -96,12 +96,16 @@ namespace Space_Invaders
 
         public override bool CanCollideWith(ICollidable i_Source)
         {
-            bool canCollide = false;
-            if (i_Source is SpaceBullet && !(i_Source is MothershipEnemy))
+            bool canCollide = true;
+            if (i_Source is MothershipEnemy)
             {
-                if ((i_Source as SpaceBullet).Velocity.Y > 0)
+                canCollide = false;
+            }
+            else if (i_Source is SpaceBullet)
+            {
+                if ((i_Source as SpaceBullet).Velocity.Y < 0)
                 {
-                    canCollide = true;
+                    canCollide = false;
                 }
             }
             return canCollide;

@@ -12,8 +12,10 @@ namespace Space_Invaders
     {
         public int Value { get; set; }
 
+        private static readonly int sr_MaxShots = 1;
         public event EventHandler<EventArgs> Shoot;
 
+        private int m_Shots;
         protected float m_timeSinceMoved;
         protected float m_TimeBetweenJumps;
         protected static int s_fireChance = 1;
@@ -58,6 +60,7 @@ namespace Space_Invaders
             m_timeSinceMoved = 0;
             m_Speed.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
+            m_Shots = 0;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -75,10 +78,13 @@ namespace Space_Invaders
 
         protected virtual void tryToShoot()
         {
-            int randNumToFire = s_RandomGen.Next(0, 100);
-            if (randNumToFire < s_fireChance)
+            if (m_Shots < sr_MaxShots)
             {
-                OnShoot();
+                int randNumToFire = s_RandomGen.Next(0, 100);
+                if (randNumToFire < s_fireChance)
+                {
+                    OnShoot();
+                }
             }
         }
 
@@ -105,6 +111,7 @@ namespace Space_Invaders
 
         public void OnMyBulletDisappear(object i_SpaceBullet, EventArgs i_EventArgs)
         {
+            m_Shots--;
         }
 
         public override void Collided(ICollidable i_Collidable)

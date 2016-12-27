@@ -21,17 +21,13 @@ namespace Space_Invaders
 
         public override void Update(GameTime i_GameTime)
         {
-            if (!(Game.Services.GetService(typeof(IInputManager)) as IInputManager).KeyHeld(Keys.A))
+            m_Position.Y += m_Speed.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+            if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
             {
-                m_Position.Y += m_Speed.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-                if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
-                {
-                    onDisappeared();
-                }
-
-                OnPositionChanged();
+                onDisappeared();
             }
-            
+
+            OnPositionChanged();
         }
 
         public override void Initialize()
@@ -46,7 +42,20 @@ namespace Space_Invaders
 
         public override void Collided(ICollidable i_Collidable)
         {
-            if ((this.Velocity.Y < 0 && i_Collidable is Enemy) || (this.Velocity.Y > 0 && i_Collidable is UserSpaceship))
+            if (i_Collidable is Wall)
+            {
+                int i = 1;
+            }
+            bool shouldDispose = false;
+            if (i_Collidable is SpaceBullet && this.m_Speed.Y > 0)
+            {
+                shouldDispose = s_RandomGen.Next(0, 2) == 0;
+            }
+            else
+            {
+                shouldDispose = true;
+            }
+            if (shouldDispose)
             {
                 this.Dispose();
             }
@@ -54,10 +63,10 @@ namespace Space_Invaders
 
         public override bool CanCollideWith(ICollidable i_Source)
         {
-            bool canCollide = false;
-            if (!(i_Source is SpaceBullet))
+            bool canCollide = true;
+            if (i_Source is SpaceBullet)
             {
-                canCollide = true;
+                canCollide = this.m_Speed.Y / Math.Abs(this.m_Speed.Y) != (i_Source as SpaceBullet).m_Speed.Y / Math.Abs((i_Source as SpaceBullet).m_Speed.Y);
             }
             return canCollide;
         }
