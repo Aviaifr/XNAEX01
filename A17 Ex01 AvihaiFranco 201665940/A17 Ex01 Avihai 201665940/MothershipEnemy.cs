@@ -61,11 +61,6 @@ namespace Space_Invaders
             }
         }
 
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-
         public override void Collided(ICollidable i_Collidable)
         {
             if (MothershipKilled != null)
