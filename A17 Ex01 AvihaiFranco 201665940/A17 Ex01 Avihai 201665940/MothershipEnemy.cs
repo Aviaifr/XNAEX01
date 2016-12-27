@@ -6,7 +6,7 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
     public class MothershipEnemy : Enemy
     {
@@ -54,7 +54,7 @@ namespace A17_Ex01_Avihai_201665940
 
         private void tryToAppear()
         {
-            int randomToAppear = s_RandomGen.Next(0, 500);
+            int randomToAppear = s_RandomGen.Next(0, 700);
             if (sr_AppearChance >= randomToAppear)
             {
                 this.IsVisible = true;

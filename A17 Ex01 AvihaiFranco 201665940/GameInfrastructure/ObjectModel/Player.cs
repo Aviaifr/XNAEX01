@@ -16,7 +16,9 @@ namespace GameInfrastructure.ObjectModel
         protected int m_Score;
         protected int m_Lives;
         protected DynamicDrawableComponent m_GameComponent;
+
         public event EventHandler<EventArgs> PlayerDead;
+
         public event EventHandler<EventArgs> PlayerHit;
 
         public Player(DynamicDrawableComponent i_GameComponent)
@@ -46,11 +48,11 @@ namespace GameInfrastructure.ObjectModel
                 {
                     unregisterFromComponentEvents();
                 }
+
                 m_GameComponent = value;
                 registerToComponentEvents();
             }
         }
-
 
         protected virtual void onPlayerDead()
         {
@@ -73,6 +75,7 @@ namespace GameInfrastructure.ObjectModel
             m_GameComponent.Hit += component_Hit;
             m_GameComponent.Destroyed += component_Destroyed;
         }
+
         protected virtual void unregisterFromComponentEvents()
         {
             m_GameComponent.Hit -= component_Hit;
@@ -80,7 +83,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected abstract void component_Hit(object i_HitComponent, EventArgs i_EventArgs);
-        protected abstract void component_Destroyed(object i_DestroyedComponent, EventArgs i_EventArgs);
 
+        protected abstract void component_Destroyed(object i_DestroyedComponent, EventArgs i_EventArgs);
     }
 }

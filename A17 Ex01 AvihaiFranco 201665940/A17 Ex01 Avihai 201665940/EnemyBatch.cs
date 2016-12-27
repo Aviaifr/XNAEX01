@@ -10,7 +10,7 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
     public class EnemyBatch : Sprite
     {
@@ -40,6 +40,14 @@ namespace A17_Ex01_Avihai_201665940
         private float m_TimeSinceMoved = 0f;
         private float m_TimeBetweenJumps = 0.5f;
 
+        public int EnemyCount
+        { 
+            get
+            {
+                return this.m_Enemies.Count - m_Enemies.Count<Enemy>(enemy => enemy.WasHit == true);
+            }
+        }
+
         public EnemyBatch(Game i_Game) : base(i_Game)
         {
             m_Enemies = new List<Enemy>();
@@ -58,7 +66,7 @@ namespace A17_Ex01_Avihai_201665940
                     float x = (float)(j * (1.6 * r_EnemySize));
                     float y = (float)(r_VerticalPadding + (i * 1.6 * r_EnemySize));
                     Enemy newEnemy = new Enemy(Game, GetEnemySpriteByRow(i), GetEnemyValueByRow(i));
-                    newEnemy.Tint = ObjectValues.GetEnemyTintByRow(i);
+                    newEnemy.Tint = GetEnemyTintByRow(i);
                     newEnemy.Position = new Vector2(x, y);
                     newEnemy.Shoot += enemy_OnShoot;
                     newEnemy.Disposed += onComponentDisposed;

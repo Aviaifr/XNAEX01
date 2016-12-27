@@ -6,12 +6,11 @@ using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 
-namespace A17_Ex01_Avihai_201665940
+namespace Space_Invaders
 {
     public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
         private static readonly int sr_SpaceshipSpeed = 135;
-        private MouseState? m_PrevMouseState;
 
         public event EventHandler<EventArgs> Shoot;
 
@@ -37,17 +36,7 @@ namespace A17_Ex01_Avihai_201665940
 
         private void updatePositionByMouse(IInputManager i_InputManager)
         {
-            //inputmanager does not initialize the prevState to be nullable in order to move the shi relative to its starting point
-            MouseState currState = Mouse.GetState();
-            Vector2 mouseDelta = Vector2.Zero;
-            if(m_PrevMouseState != null)
-            {
-                mouseDelta.X = currState.X - m_PrevMouseState.Value.X;
-                mouseDelta.Y = currState.Y - m_PrevMouseState.Value.Y;
-            }
-
-            m_Position.X += mouseDelta.X;
-            m_PrevMouseState = currState;
+            m_Position.X += i_InputManager.MousePositionDelta.X;
         }
 
         private void updateSpeedByInput(IInputManager i_InputManager)
@@ -63,9 +52,9 @@ namespace A17_Ex01_Avihai_201665940
             }
         }
 
-        private void checkInputForShot(IInputManager i_InputManager) //TODO: added space for convenience
+        private void checkInputForShot(IInputManager i_InputManager)
         {
-            if (i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.KeyPressed(Keys.Space) || i_InputManager.ButtonPressed(eInputButtons.Left))
+            if (i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.ButtonPressed(eInputButtons.Left))
             {
                 OnShoot();
             }
@@ -101,10 +90,8 @@ namespace A17_Ex01_Avihai_201665940
             {
                 onDestroyed();
             }
+
             base.Collided(i_Collidable);
         }
-
-    }
-
-    
+    }   
 }
