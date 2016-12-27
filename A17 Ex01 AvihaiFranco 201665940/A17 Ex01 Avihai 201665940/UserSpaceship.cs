@@ -93,5 +93,18 @@ namespace Space_Invaders
 
             base.Collided(i_Collidable);
         }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = false;
+            if (i_Source is SpaceBullet && !(i_Source is MothershipEnemy))
+            {
+                if ((i_Source as SpaceBullet).Velocity.Y > 0)
+                {
+                    canCollide = true;
+                }
+            }
+            return canCollide;
+        }
     }   
 }

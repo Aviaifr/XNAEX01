@@ -70,5 +70,18 @@ namespace Space_Invaders
 
             resetMothership();
         }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = false;
+            if (i_Source is SpaceBullet)
+            {
+                if ((i_Source as SpaceBullet).Velocity.Y < 0)
+                {
+                    canCollide = true;
+                }
+            }
+            return canCollide;
+        }
     }
 }

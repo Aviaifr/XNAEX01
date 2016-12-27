@@ -117,5 +117,22 @@ namespace Space_Invaders
                 }
             }
         }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = false;
+            if (i_Source is SpaceBullet)
+            {
+                if ((i_Source as SpaceBullet).Velocity.Y < 0)
+                {
+                    canCollide = true;
+                }
+            }
+            else if (!(i_Source is Enemy))
+            {
+                canCollide = true;
+            }
+            return canCollide;
+        }
     }
 }

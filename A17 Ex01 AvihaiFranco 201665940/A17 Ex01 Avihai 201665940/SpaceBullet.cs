@@ -21,13 +21,17 @@ namespace Space_Invaders
 
         public override void Update(GameTime i_GameTime)
         {
-            m_Position.Y += m_Speed.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
+            if (!(Game.Services.GetService(typeof(IInputManager)) as IInputManager).KeyHeld(Keys.A))
             {
-                onDisappeared();
-            }
+                m_Position.Y += m_Speed.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+                if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
+                {
+                    onDisappeared();
+                }
 
-            OnPositionChanged();
+                OnPositionChanged();
+            }
+            
         }
 
         public override void Initialize()
@@ -46,6 +50,16 @@ namespace Space_Invaders
             {
                 this.Dispose();
             }
+        }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = false;
+            if (!(i_Source is SpaceBullet))
+            {
+                canCollide = true;
+            }
+            return canCollide;
         }
     }
 }
