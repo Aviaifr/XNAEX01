@@ -107,7 +107,7 @@ namespace Space_Invaders
 
             Wall w = new Wall(this, @"Barriers\Barrier_44x32");
             Components.Add(w);
-            w.Position = Vector2.Zero;
+            w.Position = new Vector2(300,300);
 
             MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);

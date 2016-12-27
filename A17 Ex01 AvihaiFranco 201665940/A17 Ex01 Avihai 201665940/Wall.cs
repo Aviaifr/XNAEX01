@@ -68,7 +68,7 @@ namespace Space_Invaders
                         }
                         else
                         {
-                            m_TextureColorData[i].A = 0;
+                            m_indexesToDelete.Add(i);
                         }
 
                         collided = true;
