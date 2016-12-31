@@ -21,8 +21,8 @@ namespace Space_Invaders
 
         public override void Update(GameTime i_GameTime)
         {
-            m_Position.Y += m_Speed.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
+            m_Position.Y += m_Velocity.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+            if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Velocity.Y < 0))
             {
                 onDisappeared();
             }

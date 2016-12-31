@@ -23,9 +23,9 @@ namespace Space_Invaders
         public override void Initialize()
         {
             base.Initialize();
-            m_Speed = sr_MothershipSpeed;
+            m_Velocity = sr_MothershipSpeed;
             this.IsVisible = false;
-            m_Tint = Color.Red;
+            m_TintColor = Color.Red;
             m_Position.X -= this.Width;
         }
 
@@ -33,7 +33,7 @@ namespace Space_Invaders
         {
             if (this.IsVisible)
             {
-                m_Position += m_Speed * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+                m_Position += m_Velocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
                 if (this.Position.X >= Game.GraphicsDevice.Viewport.Width)
                 {
                     resetMothership();

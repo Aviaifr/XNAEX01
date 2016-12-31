@@ -27,7 +27,7 @@ namespace Space_Invaders
         {
             IInputManager inputManager = this.Game.Services.GetService(typeof(IInputManager)) as IInputManager;
             updateSpeedByInput(inputManager);
-            m_Position.X += m_Speed.X * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+            m_Position.X += m_Velocity.X * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
             updatePositionByMouse(inputManager);
             m_Position.X = MathHelper.Clamp(m_Position.X, 0, Game.GraphicsDevice.Viewport.Width - m_Texture.Width);
             checkInputForShot(inputManager);
@@ -41,14 +41,14 @@ namespace Space_Invaders
 
         private void updateSpeedByInput(IInputManager i_InputManager)
         {
-            m_Speed = Vector2.Zero;
+            m_Velocity = Vector2.Zero;
             if (i_InputManager.KeyHeld(Keys.Left))
             {
-                m_Speed.X = -sr_SpaceshipSpeed;
+                m_Velocity.X = -sr_SpaceshipSpeed;
             }
             else if (i_InputManager.KeyHeld(Keys.Right))
             {
-                m_Speed.X = sr_SpaceshipSpeed;
+                m_Velocity.X = sr_SpaceshipSpeed;
             }
         }
 
