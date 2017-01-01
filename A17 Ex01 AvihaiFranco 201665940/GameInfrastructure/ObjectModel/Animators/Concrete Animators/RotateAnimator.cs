@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace GameInfrastructure.ObjectModel.Animators.Concrete_Animators
+namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
     public class RotateAnimator : SpriteAnimator
     {
@@ -14,8 +14,12 @@ namespace GameInfrastructure.ObjectModel.Animators.Concrete_Animators
         public RotateAnimator(String i_Name, TimeSpan i_AnimationLength, float i_RotationsPerSecond) : 
             base(i_Name,i_AnimationLength)
         {
-            m_RotationsPerSecond = i_RotationsPerSecond;
+            m_RotationsPerSecond = i_RotationsPerSecond * MathHelper.TwoPi;
         }
+
+        public RotateAnimator(TimeSpan i_AnimationLength, float i_RotationsPerSecond) : 
+            this("Rotate", i_AnimationLength, i_RotationsPerSecond)
+        { }
 
         protected override void DoFrame(GameTime i_GameTime)
         {

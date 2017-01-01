@@ -55,6 +55,37 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
+        public void Disable(String i_AnimationName)
+        {
+            SpriteAnimator retVal = null;
+            m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
+            if(retVal != null)
+            {
+                retVal.Enabled = false;
+            }
+        }
+
+        public void Enable(String i_AnimationName)
+        {
+            SpriteAnimator retVal = null;
+            m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
+            if (retVal != null)
+            {
+                retVal.Enabled = true;
+            }
+        }
+
+
+        public void Reset(String i_AnimationName)
+        {
+            SpriteAnimator retVal = null;
+            m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
+            if (retVal != null)
+            {
+                retVal.Reset();
+            }
+        }
+
         public SpriteAnimator this[string i_Name]
         {
             get

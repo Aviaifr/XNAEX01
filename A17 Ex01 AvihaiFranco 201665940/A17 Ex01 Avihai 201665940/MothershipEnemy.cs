@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
+using GameInfrastructure.ObjectModel.Animators;
+using GameInfrastructure.ObjectModel.Animators.ConcreteAnimators;
 
 namespace Space_Invaders
 {
@@ -43,6 +45,8 @@ namespace Space_Invaders
             {
                 tryToAppear();
             }
+            m_Animations.Update(i_GameTime);
+            
         }
 
         private void resetMothership()
@@ -50,6 +54,28 @@ namespace Space_Invaders
             this.IsVisible = false;
             this.Position *= new Vector2(0, 1);
             m_Position.X -= this.Width;
+            m_Velocity = sr_MothershipSpeed;
+            isCollidable = true;
+        }
+
+        protected override void setupAnimations()
+        {
+            SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(2.4f), e_SizeType.Srhink);
+            BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(0.2f),TimeSpan.FromSeconds(2.4f));
+            FadeAnimator fadeAnimator = new FadeAnimator(TimeSpan.FromSeconds(2.4f));
+
+            CompositeAnimator compositeAnimator = new CompositeAnimator
+                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4), this, sizeAnimator, blinkAnimator, fadeAnimator);
+
+            compositeAnimator.Enabled = false;
+            compositeAnimator.Finished += DeathAnimator_Finished;
+            m_Animations.Add(compositeAnimator);
+            m_Animations.Enabled = true;
+        }
+
+        private void DeathAnimator_Finished(object sender, EventArgs e)
+        {
+            resetMothership();
         }
 
         private void tryToAppear()
@@ -63,12 +89,14 @@ namespace Space_Invaders
 
         public override void Collided(ICollidable i_Collidable)
         {
+            isCollidable = false;
+
             if (MothershipKilled != null)
             {
                 MothershipKilled.Invoke(this, EventArgs.Empty);
             }
 
-            resetMothership();
+            //resetMothership();
         }
     }
 }

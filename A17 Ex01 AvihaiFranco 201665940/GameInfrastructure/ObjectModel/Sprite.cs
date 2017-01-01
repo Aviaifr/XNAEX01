@@ -21,6 +21,8 @@ namespace GameInfrastructure.ObjectModel
         public static Random s_RandomGen = new Random();
         protected int m_Width;
         protected int m_Height;
+        protected BlendState m_BlendState = BlendState.Additive;
+        protected bool m_isCollidable = true;
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
@@ -40,6 +42,11 @@ namespace GameInfrastructure.ObjectModel
             set { m_TintColor = value; }
         }
 
+        public bool isCollidable
+        {
+            get { return m_isCollidable; }
+            set { m_isCollidable = value; }
+        }
         public virtual bool IsCollidedWith(ICollidable i_Source)
         {
             bool collided = false;
@@ -220,7 +227,7 @@ namespace GameInfrastructure.ObjectModel
         public float Opacity
         {
             get { return (float)m_TintColor.A / (float)byte.MaxValue; }
-            set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
+            set {m_TintColor.A = (byte)(value * (float)byte.MaxValue);}
         }
 
         protected float m_LayerDepth;
@@ -291,6 +298,7 @@ namespace GameInfrastructure.ObjectModel
             m_SourceRectangle = new Rectangle(0, 0, (int)m_WidthBeforeScale, (int)m_HeightBeforeScale);
         }
 
+        protected virtual void setupAnimations() { }
 
         private bool m_UseSharedBatch = true;
 
@@ -306,9 +314,8 @@ namespace GameInfrastructure.ObjectModel
 
         public override void Initialize()
         {
-            base.Initialize();
-
             m_Animations = new CompositeAnimator(this);
+            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -327,6 +334,8 @@ namespace GameInfrastructure.ObjectModel
                 }
             }
 
+            setupAnimations();
+
             base.LoadContent();
         }
 
@@ -342,10 +351,15 @@ namespace GameInfrastructure.ObjectModel
         //    this.Animations.Update(gameTime);
         //}
 
+        public override void Update(GameTime gameTime)
+        {
+            this.Animations.Update(gameTime);
+            base.Update(gameTime);
+        }
         //TODO: had to remove the if's on shared SpriteBatch..
         public override void Draw(GameTime gameTime)
         {
-            m_SpriteBatch.Begin();
+            m_SpriteBatch.Begin(SpriteSortMode.Deferred, m_BlendState);
 
             m_SpriteBatch.Draw(m_Texture, this.PositionForDraw,
                  this.SourceRectangle, this.Tint,

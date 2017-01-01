@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
+using GameInfrastructure.ObjectModel.Animators.ConcreteAnimators;
+using GameInfrastructure.ObjectModel.Animators;
 
 namespace Space_Invaders
 {
@@ -58,11 +60,30 @@ namespace Space_Invaders
             m_timeSinceMoved = 0;
             m_Velocity.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
+            this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
+        }
+
+        protected override void setupAnimations()
+        {
+            SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(1.6f), e_SizeType.Srhink);
+            RotateAnimator rotateAnimator = new RotateAnimator(TimeSpan.FromSeconds(1.6f), 6);
+            CompositeAnimator compositeAnimator = new CompositeAnimator
+                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(1.6f), this, sizeAnimator, rotateAnimator);
+
+            compositeAnimator.Finished += DeathAnimator_Finished;
+            compositeAnimator.Enabled = true;
+            m_Animations.Add(compositeAnimator);
+        }
+
+        private void DeathAnimator_Finished(object sender, EventArgs e)
+        {
+            this.WasHit = true;
         }
 
         public override void Update(GameTime i_GameTime)
         {
             m_Position += m_Velocity * m_NumOfJumps;
+            base.Update(i_GameTime);
             tryToShoot();
             OnPositionChanged();
         }

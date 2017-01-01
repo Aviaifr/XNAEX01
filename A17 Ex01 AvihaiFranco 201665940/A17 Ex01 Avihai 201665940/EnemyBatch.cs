@@ -78,7 +78,8 @@ namespace Space_Invaders
 
         private void enemy_OnShoot(object i_Sender, EventArgs i_EventArgs)
         {
-            SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, r_EnemyBulletTint);
+            SpaceBullet newBullet = new SpaceBullet
+                (this.Game, ObjectValues.BulletTextureString, r_EnemyBulletTint);
             newBullet.Initialize();
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
@@ -89,7 +90,8 @@ namespace Space_Invaders
         {
             if (m_Enemies.Contains(i_Disposed))
             {
-                (i_Disposed as Enemy).WasHit = true;
+                (i_Disposed as Enemy).isCollidable = false;
+                (i_Disposed as Enemy).Animations.Enabled = true;
                 speedUpEnemies();
                 if (EnemyKilled != null)
                 {
@@ -164,8 +166,20 @@ namespace Space_Invaders
 
                 m_TimeSinceMoved -= m_TimeBetweenJumps;
             }
+            else
+            {
+                updateAnimations(i_GameTime);
+            }
 
             m_Enemies.RemoveAll(enemy => enemy.WasHit == true);
+        }
+
+        private void updateAnimations(GameTime i_GameTime)
+        {
+            foreach(Enemy enemy in m_Enemies)
+            {
+                enemy.Animations.Update(i_GameTime);
+            }
         }
 
         private void speedUpEnemies()
