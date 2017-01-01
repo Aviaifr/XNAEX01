@@ -63,6 +63,18 @@ namespace Space_Invaders
             m_Velocity.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
         }
+        
+        protected override void setupAnimations()
+        {
+            SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(1.6f), e_SizeType.Srhink);
+            RotateAnimator rotateAnimator = new RotateAnimator(TimeSpan.FromSeconds(1.6f), 6);
+            CompositeAnimator compositeAnimator = new CompositeAnimator
+                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(1.6f), this, sizeAnimator, rotateAnimator);
+
+            compositeAnimator.Finished += DeathAnimator_Finished;
+            compositeAnimator.Enabled = true;
+            m_Animations.Add(compositeAnimator);
+        }
 
         public override void Update(GameTime i_GameTime)
         {
