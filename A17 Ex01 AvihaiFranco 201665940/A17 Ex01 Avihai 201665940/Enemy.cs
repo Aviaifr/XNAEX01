@@ -62,6 +62,7 @@ namespace Space_Invaders
             m_timeSinceMoved = 0;
             m_Velocity.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
+            this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
         }
         
         protected override void setupAnimations()
@@ -74,6 +75,11 @@ namespace Space_Invaders
             compositeAnimator.Finished += DeathAnimator_Finished;
             compositeAnimator.Enabled = true;
             m_Animations.Add(compositeAnimator);
+        }
+        
+        private void DeathAnimator_Finished(object sender, EventArgs e)
+        {
+            this.WasHit = true;
         }
 
         public override void Update(GameTime i_GameTime)
