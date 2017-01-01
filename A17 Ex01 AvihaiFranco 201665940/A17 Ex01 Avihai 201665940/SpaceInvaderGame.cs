@@ -36,6 +36,13 @@ namespace Space_Invaders
             if (this.Components != null)
             {
                 m_Player.Score += (i_EnemyKilled as Enemy).Value;
+                if(i_EnemyKilled is MothershipEnemy)
+                {
+                    MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
+                    motherShip.Velocity = Vector2.Zero;
+                    motherShip.Animations.Enable(ObjectValues.sr_DeathAnimation);
+                    motherShip.Animations.Reset(ObjectValues.sr_DeathAnimation); 
+                }
                 checkWin();
             }
         }
@@ -50,18 +57,23 @@ namespace Space_Invaders
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            resetPlayerSpaceShipPosition();
+            resetPlayerSpaceShipPosition(i_HitPlayer as SpaceShipPlayer);
         }
 
-        private void resetPlayerSpaceShipPosition()
+        private void resetPlayerSpaceShipPosition(SpaceShipPlayer i_Player)
         {
-            m_Player.GameComponentPosition = new Vector2
-                (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
+            //i_Player.GameComponentPosition = new Vector2
+              //  (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
+            i_Player.GameComponenetAnimations.Reset(ObjectValues.sr_HitAnimation);
+            i_Player.GameComponenetAnimations.Enable(ObjectValues.sr_HitAnimation);
+
         }
 
         public void Player_OnKilled(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            GameOver(eGameOverType.GameOver);
+            //GameOver(eGameOverType.GameOver);
+            (i_HitPlayer as SpaceShipPlayer).GameComponenetAnimations.Enable(ObjectValues.sr_DeathAnimation);
+
         }
 
         public void GameOver(eGameOverType i_GameOverType)
@@ -104,6 +116,10 @@ namespace Space_Invaders
             m_EnemyBatch = new EnemyBatch(this);
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(m_EnemyBatch);
+
+            Wall w = new Wall(this, @"Barriers\Barrier_44x32");
+            Components.Add(w);
+            w.Position = new Vector2(500,400);
 
             MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);

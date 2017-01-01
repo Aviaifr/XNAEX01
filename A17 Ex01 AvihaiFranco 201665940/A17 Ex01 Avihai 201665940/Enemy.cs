@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
+using GameInfrastructure.ObjectModel.Animators.ConcreteAnimators;
+using GameInfrastructure.ObjectModel.Animators;
 
 namespace Space_Invaders
 {
@@ -12,8 +14,10 @@ namespace Space_Invaders
     {
         public int Value { get; set; }
 
+        private static readonly int sr_MaxShots = 1;
         public event EventHandler<EventArgs> Shoot;
 
+        private int m_Shots;
         protected float m_timeSinceMoved;
         protected float m_TimeBetweenJumps;
         protected static int s_fireChance = 1;
@@ -56,29 +60,52 @@ namespace Space_Invaders
         {
             base.Initialize();
             m_timeSinceMoved = 0;
-            m_Speed.X = m_Texture.Width / 2;
+            m_Velocity.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
+            this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
+        }
+        
+        protected override void setupAnimations()
+        {
+            SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(1.6f), e_SizeType.Srhink);
+            RotateAnimator rotateAnimator = new RotateAnimator(TimeSpan.FromSeconds(1.6f), 6);
+            CompositeAnimator compositeAnimator = new CompositeAnimator
+                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(1.6f), this, sizeAnimator, rotateAnimator);
+
+            compositeAnimator.Finished += DeathAnimator_Finished;
+            compositeAnimator.Enabled = true;
+            m_Animations.Add(compositeAnimator);
+        }
+        
+        private void DeathAnimator_Finished(object sender, EventArgs e)
+        {
+            this.WasHit = true;
         }
 
         public override void Update(GameTime i_GameTime)
         {
-            m_Position += m_Speed * m_NumOfJumps;
+            m_Position += m_Velocity * m_NumOfJumps;
+            base.Update(i_GameTime);
             tryToShoot();
             OnPositionChanged();
         }
 
         protected bool hitWall()
         {
-            return (m_Position.X + m_Texture.Width >= Game.GraphicsDevice.Viewport.Width && m_Speed.X > 0)
-                || (m_Position.X <= 0 && m_Speed.X < 0);
+            return (m_Position.X + m_Texture.Width >= Game.GraphicsDevice.Viewport.Width && m_Velocity.X > 0)
+                || (m_Position.X <= 0 && m_Velocity.X < 0);
         }
 
         protected virtual void tryToShoot()
         {
-            int randNumToFire = s_RandomGen.Next(0, 100);
-            if (randNumToFire < s_fireChance)
+            if (m_Shots < sr_MaxShots)
             {
-                OnShoot();
+                int randNumToFire = s_RandomGen.Next(0, 100);
+                if (randNumToFire < s_fireChance && m_Shots < sr_MaxShots)
+                {
+                    m_Shots++;
+                    OnShoot();
+                }
             }
         }
 
@@ -100,11 +127,12 @@ namespace Space_Invaders
 
         public void ChangeDirection()
         {
-            m_Speed.X *= -1;
+            m_Velocity.X *= -1;
         }
 
         public void OnMyBulletDisappear(object i_SpaceBullet, EventArgs i_EventArgs)
         {
+            m_Shots--;
         }
 
         public override void Collided(ICollidable i_Collidable)
@@ -116,6 +144,23 @@ namespace Space_Invaders
                     this.Dispose();
                 }
             }
+        }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = false;
+            if (i_Source is SpaceBullet)
+            {
+                if ((i_Source as SpaceBullet).Velocity.Y < 0)
+                {
+                    canCollide = true;
+                }
+            }
+            else if (!(i_Source is Enemy))
+            {
+                canCollide = true;
+            }
+            return canCollide;
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Space_Invaders
 
         public override void Update(GameTime i_GameTime)
         {
-            m_Position.Y += m_Speed.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Speed.Y < 0))
+            m_Position.Y += m_Velocity.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+            if (m_Position.Y >= Game.GraphicsDevice.Viewport.Height || (m_Position.Y <= 0 && m_Velocity.Y < 0))
             {
                 onDisappeared();
             }
@@ -42,10 +42,29 @@ namespace Space_Invaders
 
         public override void Collided(ICollidable i_Collidable)
         {
-            if ((this.Velocity.Y < 0 && i_Collidable is Enemy) || (this.Velocity.Y > 0 && i_Collidable is UserSpaceship))
+            bool shouldDispose = false;
+            if (i_Collidable is SpaceBullet && this.Velocity.Y > 0)
+            {
+                shouldDispose = s_RandomGen.Next(0, 2) == 0;
+            }
+            else
+            {
+                shouldDispose = true;
+            }
+            if (shouldDispose)
             {
                 this.Dispose();
             }
+        }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = true;
+            if (i_Source is SpaceBullet)
+            {
+                canCollide = this.Velocity.Y / Math.Abs(this.Velocity.Y) != (i_Source as SpaceBullet).Velocity.Y / Math.Abs((i_Source as SpaceBullet).Velocity.Y);
+            }
+            return canCollide;
         }
     }
 }

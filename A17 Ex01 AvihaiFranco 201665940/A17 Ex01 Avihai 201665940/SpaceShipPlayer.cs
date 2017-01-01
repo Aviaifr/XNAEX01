@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
+using GameInfrastructure.ObjectModel.Animators;
 
 namespace Space_Invaders
 {
@@ -65,6 +66,14 @@ namespace Space_Invaders
             }
         }
 
+        public CompositeAnimator GameComponenetAnimations
+        {
+            get
+            {
+                return (m_GameComponent as Sprite).Animations;
+            }
+        }
+
         protected override void registerToComponentEvents()
         {
             base.registerToComponentEvents();
@@ -81,6 +90,7 @@ namespace Space_Invaders
             Lives -= 1;
             if(Lives == 0)
             {
+                (m_GameComponent as Sprite).isCollidable = false;
                 onPlayerDead();
             }
             else
