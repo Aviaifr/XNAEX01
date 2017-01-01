@@ -272,17 +272,10 @@ namespace GameInfrastructure.ObjectModel
             : base(i_AssetName, i_Game, int.MaxValue)
         { }
 
-        /// <summary>
-        /// Default initialization of bounds
-        /// </summary>
-        /// <remarks>
-        /// Derived classes are welcome to override this to implement their specific boudns initialization
-        /// </remarks>
         protected override void InitBounds()
         {
             m_WidthBeforeScale = m_Texture.Width;
             m_HeightBeforeScale = m_Texture.Height;
-            //m_Position = Vector2.Zero;
 
             InitSourceRectangle();
 
@@ -339,18 +332,6 @@ namespace GameInfrastructure.ObjectModel
             base.LoadContent();
         }
 
-        //public override void Update(GameTime gameTime)
-        //{
-        //    float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        //    this.Position += this.Velocity * totalSeconds;
-        //    this.Rotation += this.AngularVelocity * totalSeconds;
-
-        //    base.Update(gameTime);
-
-        //    this.Animations.Update(gameTime);
-        //}
-
         public override void Update(GameTime gameTime)
         {
             this.Animations.Update(gameTime);
@@ -380,7 +361,7 @@ namespace GameInfrastructure.ObjectModel
             {
                 collided = source.Bounds.Intersects(this.Bounds);
             }
-
+            
             return collided;
         }
 
