@@ -135,7 +135,6 @@ namespace Space_Invaders
             m_Shots--;
         }
 
-        public override void Collided(ICollidable i_Collidable)
         {
             if (i_Collidable is SpaceBullet)
             {

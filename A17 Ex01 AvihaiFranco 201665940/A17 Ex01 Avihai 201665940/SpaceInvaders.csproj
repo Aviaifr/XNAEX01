@@ -51,6 +51,7 @@
     <Compile Include="SpaceShipPlayer.cs" />
     <Compile Include="UserSpaceship.cs" />
     <Compile Include="Wall.cs" />
+    <Compile Include="WallBatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

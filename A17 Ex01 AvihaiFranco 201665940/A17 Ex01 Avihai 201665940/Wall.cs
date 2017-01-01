@@ -26,7 +26,7 @@ namespace Space_Invaders
             base.Update(gameTime);
         }
         
-        public override void Collided(ICollidable i_Collidable)
+        public void Collided(ICollidable i_Collidable)
         {
             for (int i = 0; i < m_TextureColorData.Length; i++)
             {
