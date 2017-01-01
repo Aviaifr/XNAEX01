@@ -13,7 +13,7 @@ namespace Space_Invaders
             base(i_Game, i_TextureString, int.MinValue)
         {
             m_Position = Vector2.Zero;
-            m_Tint = Color.Gray;
+            m_TintColor = Color.Gray;
             Initialize();
         }
 
@@ -27,13 +27,13 @@ namespace Space_Invaders
             base.LoadContent();
         }
 
-        public override void Draw(GameTime gameTime)
-        {
-            SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred,BlendState.NonPremultiplied);
-            spriteBatch.Draw(m_Texture, new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height), m_Tint);
-            spriteBatch.End();
-        }
+        //public override void Draw(GameTime gameTime)
+        //{
+        //    SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+        //    spriteBatch.Begin();
+        //    spriteBatch.Draw(m_Texture, new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height), m_Tint);
+        //    spriteBatch.End();
+        //}
 
         public override void Update(GameTime i_GameTime)
         {

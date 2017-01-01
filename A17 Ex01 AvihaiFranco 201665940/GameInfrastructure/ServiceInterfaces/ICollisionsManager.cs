@@ -33,7 +33,7 @@ namespace GameInfrastructure.ServiceInterfaces
 
     public interface ICollidable2D : ICollidable
     {
-        Rectangle Bounds { get; set; }
+        Rectangle Bounds { get; }
 
         Vector2 Velocity { get; set; }
 

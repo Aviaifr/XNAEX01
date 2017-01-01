@@ -43,6 +43,15 @@
   <ItemGroup>
     <Compile Include="Managers\CollisonsManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
+    <Compile Include="ObjectModel\Animators\CompositeAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\Concrete Animators\BlinkAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\Concrete Animators\CellAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\Concrete Animators\FadeAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\Concrete Animators\RotateAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\Concrete Animators\SequencialAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\Concrete Animators\SizeAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\Concrete Animators\WaypointsAnimator.cs" />
+    <Compile Include="ObjectModel\Animators\SpriteAnimator.cs" />
     <Compile Include="ObjectModel\DynamicDrawableComponent.cs" />
     <Compile Include="ObjectModel\GameService.cs" />
     <Compile Include="ObjectModel\Player.cs" />

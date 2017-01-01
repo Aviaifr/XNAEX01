@@ -18,7 +18,7 @@ namespace Space_Invaders
         public Wall(Game i_Game, string i_TextureString)
             : base(i_Game, i_TextureString)
         {
-            m_Tint = Color.White;
+            m_TintColor = Color.White;
         }
 
         public override void Update(GameTime gameTime)

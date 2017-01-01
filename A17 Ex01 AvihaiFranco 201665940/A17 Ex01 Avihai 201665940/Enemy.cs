@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
+using GameInfrastructure.ObjectModel.Animators.ConcreteAnimators;
+using GameInfrastructure.ObjectModel.Animators;
 
 namespace Space_Invaders
 {
@@ -58,22 +60,22 @@ namespace Space_Invaders
         {
             base.Initialize();
             m_timeSinceMoved = 0;
-            m_Speed.X = m_Texture.Width / 2;
+            m_Velocity.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
-            m_Shots = 0;
         }
 
         public override void Update(GameTime i_GameTime)
         {
-            m_Position += m_Speed * m_NumOfJumps;
+            m_Position += m_Velocity * m_NumOfJumps;
+            base.Update(i_GameTime);
             tryToShoot();
             OnPositionChanged();
         }
 
         protected bool hitWall()
         {
-            return (m_Position.X + m_Texture.Width >= Game.GraphicsDevice.Viewport.Width && m_Speed.X > 0)
-                || (m_Position.X <= 0 && m_Speed.X < 0);
+            return (m_Position.X + m_Texture.Width >= Game.GraphicsDevice.Viewport.Width && m_Velocity.X > 0)
+                || (m_Position.X <= 0 && m_Velocity.X < 0);
         }
 
         protected virtual void tryToShoot()
@@ -107,7 +109,7 @@ namespace Space_Invaders
 
         public void ChangeDirection()
         {
-            m_Speed.X *= -1;
+            m_Velocity.X *= -1;
         }
 
         public void OnMyBulletDisappear(object i_SpaceBullet, EventArgs i_EventArgs)
