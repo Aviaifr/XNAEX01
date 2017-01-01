@@ -95,8 +95,6 @@ namespace Space_Invaders
             {
                 MothershipKilled.Invoke(this, EventArgs.Empty);
             }
-
-            //resetMothership();
         }
     }
 }
