@@ -83,6 +83,7 @@ namespace Space_Invaders
             newBullet.Initialize();
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
+            newBullet.Disposed += (i_Sender as Enemy).OnMyBulletDisappear;
             this.Game.Components.Add(newBullet);
         }
 

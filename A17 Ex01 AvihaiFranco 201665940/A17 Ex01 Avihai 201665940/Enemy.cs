@@ -81,8 +81,9 @@ namespace Space_Invaders
             if (m_Shots < sr_MaxShots)
             {
                 int randNumToFire = s_RandomGen.Next(0, 100);
-                if (randNumToFire < s_fireChance)
+                if (randNumToFire < s_fireChance && m_Shots < sr_MaxShots)
                 {
+                    m_Shots++;
                     OnShoot();
                 }
             }
