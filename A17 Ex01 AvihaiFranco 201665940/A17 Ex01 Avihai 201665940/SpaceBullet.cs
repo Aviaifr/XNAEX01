@@ -40,12 +40,31 @@ namespace Space_Invaders
             Dispose();
         }
 
-        public override void Collided(ICollidable i_Collidable)
+        public void Collided(ICollidable i_Collidable)
         {
-            if ((this.Velocity.Y < 0 && i_Collidable is Enemy) || (this.Velocity.Y > 0 && i_Collidable is UserSpaceship))
+            bool shouldDispose = false;
+            if (i_Collidable is SpaceBullet && this.Velocity.Y > 0)
+            {
+                shouldDispose = s_RandomGen.Next(0, 2) == 0;
+            }
+            else
+            {
+                shouldDispose = true;
+            }
+            if (shouldDispose)
             {
                 this.Dispose();
             }
+        }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = true;
+            if (i_Source is SpaceBullet)
+            {
+                canCollide = this.Velocity.Y / Math.Abs(this.Velocity.Y) != (i_Source as SpaceBullet).Velocity.Y / Math.Abs((i_Source as SpaceBullet).Velocity.Y);
+            }
+            return canCollide;
         }
     }
 }

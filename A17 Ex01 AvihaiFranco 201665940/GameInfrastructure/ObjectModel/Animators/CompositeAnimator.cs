@@ -13,9 +13,9 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         // CTORs
 
-        // CTOR: Me as an AnimationsMamager
+        // CTOR: Me as an AnimationsManager
         public CompositeAnimator(Sprite i_BoundSprite)
-            : this("AnimationsMamager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
+            : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
         {
             this.Enabled = false;
         }
@@ -86,6 +86,17 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
+
+        public void Restart(String i_AnimationName)
+        {
+            SpriteAnimator retVal = null;
+            m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
+            if (retVal != null)
+            {
+                retVal.Restart();
+            }
+        }
+
         public SpriteAnimator this[string i_Name]
         {
             get
@@ -140,6 +151,11 @@ namespace GameInfrastructure.ObjectModel.Animators
             {
                 animation.Update(i_GameTime);
             }
+        }
+
+        public virtual bool Contains(String i_AnimationName)
+        {
+            return m_AnimationsDictionary.ContainsKey(i_AnimationName);
         }
     }
 }

@@ -40,12 +40,7 @@ namespace Space_Invaders
                 {
                     MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
                     motherShip.Velocity = Vector2.Zero;
-                    if (motherShip.isCollidable)
-                    {
-                        motherShip.isCollidable = false;
-                        motherShip.Animations.Enable(ObjectValues.sr_DeathAnimation);
-                        motherShip.Animations.Reset(ObjectValues.sr_DeathAnimation);
-                    }
+                    motherShip.ActivateAnimation(ObjectValues.sr_DeathAnimation);
                 }
                 checkWin();
             }
@@ -68,11 +63,8 @@ namespace Space_Invaders
         {
             //i_Player.GameComponentPosition = new Vector2
             //  (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
-            if ((i_Player.GameComponent as Sprite).isCollidable)
-            {
-                i_Player.GameComponenetAnimations.Reset(ObjectValues.sr_HitAnimation);
-                i_Player.GameComponenetAnimations.Enable(ObjectValues.sr_HitAnimation);
-            }
+            Sprite playerComponent = i_Player.GameComponent as Sprite;
+            playerComponent.ActivateAnimation(ObjectValues.sr_HitAnimation);
 
         }
 
@@ -130,6 +122,9 @@ namespace Space_Invaders
             m_EnemyBatch = new EnemyBatch(this);
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(m_EnemyBatch);
+
+            WallBatch w = new WallBatch(this,400);
+            Components.Add(w);
 
             MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);

@@ -74,6 +74,7 @@ namespace Space_Invaders
                     m_Enemies.Add(newEnemy);
                 }
             }
+            this.SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
 
         private void enemy_OnShoot(object i_Sender, EventArgs i_EventArgs)
@@ -83,6 +84,7 @@ namespace Space_Invaders
             newBullet.Initialize();
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
+            newBullet.Disposed += (i_Sender as Enemy).OnMyBulletDisappear;
             this.Game.Components.Add(newBullet);
         }
 
@@ -91,10 +93,8 @@ namespace Space_Invaders
             if (m_Enemies.Contains(i_Disposed))
             {
                 Enemy enemy = i_Disposed as Enemy;
-                if (enemy.isCollidable)
+                if (enemy.ActivateAnimation(ObjectValues.sr_DeathAnimation))
                 {
-                    (i_Disposed as Enemy).isCollidable = false;
-                    (i_Disposed as Enemy).Animations.Enabled = true;
                     speedUpEnemies();
                 }
                 if (EnemyKilled != null)
@@ -221,10 +221,12 @@ namespace Space_Invaders
 
         public override void Draw(GameTime gameTime)
         {
+            m_SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.NonPremultiplied);
             foreach(Enemy enemy in m_Enemies)
             {
                 enemy.Draw(gameTime);
             }
+            m_SpriteBatch.End();
         }
 
         private string GetEnemySpriteByRow(int i_Row)

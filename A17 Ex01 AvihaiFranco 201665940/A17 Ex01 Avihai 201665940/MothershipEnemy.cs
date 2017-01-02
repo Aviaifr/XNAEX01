@@ -45,6 +45,7 @@ namespace Space_Invaders
             {
                 tryToAppear();
             }
+
             m_Animations.Update(i_GameTime);
             
         }
@@ -71,20 +72,22 @@ namespace Space_Invaders
                 (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4), 
                 this, sizeAnimator, blinkAnimator, fadeAnimator);
 
-            compositeAnimator.Enabled = false;
             compositeAnimator.Finished += DeathAnimator_Finished;
             m_Animations.Add(compositeAnimator);
+            compositeAnimator.Enabled = false;
             m_Animations.Enabled = true;
         }
 
         private void DeathAnimator_Finished(object sender, EventArgs e)
         {
+            //this.Animations.Reset(ObjectValues.sr_DeathAnimation);
+            //this.Animations.Disable(ObjectValues.sr_DeathAnimation);
             resetMothership();
         }
 
         private void tryToAppear()
         {
-            int randomToAppear = s_RandomGen.Next(0, 700);
+            int randomToAppear = s_RandomGen.Next(0, 5);
             if (sr_AppearChance >= randomToAppear)
             {
                 this.IsVisible = true;
@@ -97,8 +100,19 @@ namespace Space_Invaders
             {
                 MothershipKilled.Invoke(this, EventArgs.Empty);
             }
+        }
 
-            //resetMothership();
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = false;
+            if (i_Source is SpaceBullet)
+            {
+                if ((i_Source as SpaceBullet).Velocity.Y < 0)
+                {
+                    canCollide = true;
+                }
+            }
+            return canCollide;
         }
     }
 }

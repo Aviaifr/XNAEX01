@@ -9,7 +9,7 @@
     <ProjectGuid>{71CF28FA-5027-431B-81DB-87F911B42E9E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Space_Invaderss</RootNamespace>
+    <RootNamespace>Space_Invaders</RootNamespace>
     <AssemblyName>SpaceInvaders</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
@@ -50,6 +50,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpaceShipPlayer.cs" />
     <Compile Include="UserSpaceship.cs" />
+    <Compile Include="Wall.cs" />
+    <Compile Include="WallBatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

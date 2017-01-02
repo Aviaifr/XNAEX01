@@ -23,6 +23,9 @@ namespace GameInfrastructure.ObjectModel
         protected int m_Height;
         protected BlendState m_BlendState = BlendState.Additive;
         protected bool m_isCollidable = true;
+        protected Color[] m_TextureColorData;
+        protected const String k_DeathAnimation = "DeathAnimation";
+        protected const String k_HitAnimation = "HitAnimation";
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
@@ -47,21 +50,21 @@ namespace GameInfrastructure.ObjectModel
             get { return m_isCollidable; }
             set { m_isCollidable = value; }
         }
+
         public virtual bool IsCollidedWith(ICollidable i_Source)
         {
             bool collided = false;
             ICollidable2D source = i_Source as ICollidable2D;
             if (source != null)
             {
-                collided = source.Bounds.Intersects(this.Bounds) || source.Bounds.Contains(this.Bounds);
+                if (CanCollideWith(i_Source) && (source.Bounds.Intersects(this.Bounds) || source.Bounds.Contains(this.Bounds)))
+                {
+                    collided = IsPixelBasedCollision(i_Source);
+                }
             }
-
             return collided;
         }
 
-        public virtual void Collided(ICollidable i_Collidable)
-        {
-        }
 
         protected CompositeAnimator m_Animations;
         public CompositeAnimator Animations
@@ -110,9 +113,6 @@ namespace GameInfrastructure.ObjectModel
             set { m_HeightBeforeScale = value; }
         }
 
-        /// <summary>
-        /// Represents the location of the sprite's origin point in screen coorinates
-        /// </summary>
         public Vector2 Position
         {
             get { return m_Position; }
@@ -211,18 +211,10 @@ namespace GameInfrastructure.ObjectModel
                 if (m_Scales != value)
                 {
                     m_Scales = value;
-                    // Notify the Collision Detection mechanism:
                     OnPositionChanged();
                 }
             }
         }
-
-        //protected Color m_TintColor = Color.White;
-        //public Color TintColor
-        //{
-        //    get { return m_TintColor; }
-        //    set { m_TintColor = value; }
-        //}
 
         public float Opacity
         {
@@ -251,9 +243,6 @@ namespace GameInfrastructure.ObjectModel
         }
 
         private float m_AngularVelocity = 0;
-        /// <summary>
-        /// Radians per Second on X Axis
-        /// </summary>
         public float AngularVelocity
         {
             get { return m_AngularVelocity; }
@@ -272,20 +261,11 @@ namespace GameInfrastructure.ObjectModel
             : base(i_AssetName, i_Game, int.MaxValue)
         { }
 
-        /// <summary>
-        /// Default initialization of bounds
-        /// </summary>
-        /// <remarks>
-        /// Derived classes are welcome to override this to implement their specific boudns initialization
-        /// </remarks>
         protected override void InitBounds()
         {
             m_WidthBeforeScale = m_Texture.Width;
             m_HeightBeforeScale = m_Texture.Height;
-            //m_Position = Vector2.Zero;
-
             InitSourceRectangle();
-
             InitOrigins();
         }
 
@@ -321,7 +301,8 @@ namespace GameInfrastructure.ObjectModel
         protected override void LoadContent()
         {
             m_Texture = Game.Content.Load<Texture2D>(m_AssetName);
-
+            m_TextureColorData = new Color[m_Texture.Width * m_Texture.Height];
+            m_Texture.GetData(m_TextureColorData);
             if (m_SpriteBatch == null)
             {
                 m_SpriteBatch =
@@ -339,30 +320,17 @@ namespace GameInfrastructure.ObjectModel
             base.LoadContent();
         }
 
-        //public override void Update(GameTime gameTime)
-        //{
-        //    float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        //    this.Position += this.Velocity * totalSeconds;
-        //    this.Rotation += this.AngularVelocity * totalSeconds;
-
-        //    base.Update(gameTime);
-
-        //    this.Animations.Update(gameTime);
-        //}
-
         public override void Update(GameTime gameTime)
         {
             this.Animations.Update(gameTime);
             base.Update(gameTime);
         }
-        //TODO: had to remove the if's on shared SpriteBatch..
+
         public override void Draw(GameTime gameTime)
         {
             m_SpriteBatch.Begin(SpriteSortMode.Deferred, m_BlendState);
-
             m_SpriteBatch.Draw(m_Texture, this.PositionForDraw,
-                 this.SourceRectangle, this.Tint,
+                this.SourceRectangle, this.Tint,
                 this.Rotation, this.RotationOrigin, this.Scales,
                 SpriteEffects.None, this.LayerDepth);
             
@@ -372,21 +340,56 @@ namespace GameInfrastructure.ObjectModel
             base.Draw(gameTime);
         }
 
-        public virtual bool CheckCollision(ICollidable i_Source)
+        public virtual bool ActivateAnimation(String i_AnimationName)
         {
-            bool collided = false;
-            ICollidable2D source = i_Source as ICollidable2D;
-            if (source != null)
+            bool AnimationFound = false;
+
+            if(m_Animations != null 
+                && m_Animations.Contains(i_AnimationName) 
+                && isCollidable)
             {
-                collided = source.Bounds.Intersects(this.Bounds);
+                AnimationFound = true;
+                this.isCollidable = false;
+                m_Animations.Restart(i_AnimationName);
             }
 
-            return collided;
+            return AnimationFound;
         }
 
         public Sprite ShallowClone()
         {
             return this.MemberwiseClone() as Sprite;
+        }
+
+        public virtual bool CanCollideWith(ICollidable i_Source) { return true; }
+        
+        public virtual bool IsPixelBasedCollision(ICollidable i_Source)
+        {
+            bool notFound = true;
+            ICollidable2D source = i_Source as ICollidable2D;
+            for (int i = 0; i < m_TextureColorData.Length && notFound; i++)
+            {
+                if (m_TextureColorData[i].A != 0)
+                {
+                    Point CollidablePointOnScreen = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + i / m_Texture.Width);
+                    notFound = !source.IsPointInScreenIsColidablePixel(CollidablePointOnScreen);
+                }
+            }
+
+            return !notFound;
+        }
+
+        public virtual bool IsPointInScreenIsColidablePixel(Point i_PointOnScreen)
+        {
+            bool result = false;
+            if (this.Bounds.Contains(i_PointOnScreen))
+            {
+                int xDifference = i_PointOnScreen.X - (int)m_Position.X;
+                int yDifference = i_PointOnScreen.Y - (int)m_Position.Y;
+                result = m_TextureColorData[yDifference * m_Texture.Width + xDifference].A != 0;
+            }
+
+            return result;
         }
     }
 }
