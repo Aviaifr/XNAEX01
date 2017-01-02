@@ -14,7 +14,6 @@ namespace Space_Invaders
         public static int EnemyRows = 5;
         public static int EnemyCols = 9;
         private GraphicsDeviceManager m_Graphics;
-        private SpaceShipPlayer m_Player;
         private List<SpaceShipPlayer> m_Players = new List<SpaceShipPlayer>();
         private SpriteBatch m_SpriteBatch;
         private Background m_Background;
@@ -25,12 +24,6 @@ namespace Space_Invaders
         {
             get;
             set; 
-        }
-
-        public enum eGameOverType
-        {
-            GameOver,
-            PlayerWins
         }
 
         public void Enemy_OnKill(object i_EnemyKilled, EventArgs i_eventArgs)
@@ -46,16 +39,14 @@ namespace Space_Invaders
                     motherShip.Velocity = Vector2.Zero;
                     motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
                 }
-
-                checkWin();
             }
         }
 
-        private void checkWin()
+        public void enemy_OnDisposed(object i_Disposed,EventArgs i_EventArgs)
         {
             if (m_EnemyBatch.EnemyCount == 0)
             {
-                GameOver(eGameOverType.PlayerWins);
+                GameOver();
             }
         }
 
@@ -73,7 +64,6 @@ namespace Space_Invaders
 
         public void Player_OnKilled(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            ///GameOver(eGameOverType.GameOver);
             SpaceShipPlayer player = i_HitPlayer as SpaceShipPlayer;
             Sprite playerSprite = player.GameComponent as Sprite;
 
@@ -82,22 +72,55 @@ namespace Space_Invaders
                 playerSprite.isCollidable = false;
                 playerSprite.Animations.Enable(ObjectValues.DeathAnimation);
             }
+            checkGameOver();
         }
 
-        public void GameOver(eGameOverType i_GameOverType)
+        private void checkGameOver()
         {
-            string msgTitle = string.Empty;
-            switch (i_GameOverType)
+            bool isGameOver = true;
+            foreach (Player player in m_Players)
             {
-                case eGameOverType.GameOver:
-                    msgTitle = "Game Over!";
-                    break;
-                case eGameOverType.PlayerWins:
-                    msgTitle = "Player Wins!!";
-                    break;
+                if (player.Lives > 0)
+                {
+                    isGameOver = false;
+                }
+            }
+            if (isGameOver == true)
+            {
+                GameOver();
+            }
+        }
+
+        public void GameOver()
+        {
+            string message;
+            List<string> winnerList = new List<string>();
+            int maxScore = 0;
+            string msg = string.Format("Scores:{0}",Environment.NewLine);
+            foreach (Player player in m_Players)
+            {
+                msg = string.Format("{0}{1} : {2}{3}",msg,player.PlayerId,player.Score.ToString(), Environment.NewLine);
+                if (player.Score > maxScore)
+                {
+                    maxScore = player.Score;
+                    winnerList.Clear();
+                    winnerList.Add(player.PlayerId);
+                }
+                else if (player.Score == maxScore)
+                {
+                    winnerList.Add(player.PlayerId);
+                }
+            }
+            if (winnerList.Count >= 2)
+            {
+                msg = string.Format("{0}Tie!", msg);
+            }
+            else
+            {
+                msg = string.Format("{0}{1} Wins!" ,msg , winnerList[winnerList.Count-1]);
             }
 
-            System.Windows.Forms.MessageBox.Show(string.Format("Final Score: {0}", m_Player.Score.ToString()), msgTitle);
+            System.Windows.Forms.MessageBox.Show(msg, "Game Over");
             this.Exit();
         }
 
@@ -114,31 +137,16 @@ namespace Space_Invaders
             this.Window.Title = "Space Invaders";
             m_Background = new Background(this, ObjectValues.BackgroundTextureString);
             Components.Add(m_Background);
-
-           // UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.UserShipTextureString, ObjectValues.k_PlayerOneId);
-            //UserSpaceship spaceShip2 = new UserSpaceship(this, ObjectValues.UserShip2TextureString, ObjectValues.k_PlayerTwoId);
-            //spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
-            //spaceShip2.Position = new Vector2(ObjectValues.SpaceshipSize, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
-            //spaceship.Shoot += spaceship_Shot;
-            //Components.Add(spaceship);
-            //Components.Add(spaceShip2);
             initPlayers();
-            //m_Player = new SpaceShipPlayer(spaceship);
-            //m_Player.PlayerHit += Player_OnHit;
-            //m_Player.PlayerDead += Player_OnKilled;            
 
             m_EnemyBatch = new EnemyBatch(this);
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             m_EnemyBatch.EnemyReachedBottom += Enemy_OnReachBottom;
+            m_EnemyBatch.NoMoreEnemies += enemy_OnDisposed;
             Components.Add(m_EnemyBatch);
 
             WallBatch wallBatch = new WallBatch(this);
             Components.Add(wallBatch);
-
-            SoulsBatch player1Souls = new SoulsBatch(this, Color.White, new Vector2(GraphicsDevice.Viewport.Width - 80, 20));
-            Components.Add(player1Souls);
-            SoulsBatch player2Souls = new SoulsBatch(this, Color.ForestGreen, new Vector2(GraphicsDevice.Viewport.Width - 80, 45));
-            Components.Add(player2Souls);
 
             MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
@@ -172,6 +180,13 @@ namespace Space_Invaders
                 textureIndex++;
                 startingPosition.X += ObjectValues.SpaceshipSize;
             }
+
+            SoulsBatch player1Souls = new SoulsBatch(this, Color.White, new Vector2(GraphicsDevice.Viewport.Width - 80, 20));
+            Components.Add(player1Souls);
+            SoulsBatch player2Souls = new SoulsBatch(this, Color.ForestGreen, new Vector2(GraphicsDevice.Viewport.Width - 80, 45));
+            Components.Add(player2Souls);
+            m_Players[0].SoulBatch = player1Souls;
+            m_Players[1].SoulBatch = player2Souls;
         }
 
         private void initManagers()

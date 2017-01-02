@@ -51,7 +51,10 @@ namespace Space_Invaders
 
         public void RemoveSoul()
         {
-            this.m_SpritesList.RemoveRange(0, 1);
+            if (m_SpritesList.Count > 0)
+            {
+                this.m_SpritesList.RemoveRange(0, 1);
+            }
         }
     }
 }

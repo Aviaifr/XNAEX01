@@ -25,6 +25,7 @@ namespace GameInfrastructure.ObjectModel
         public Player(DynamicDrawableComponent i_GameComponent, string i_PlayerId)
         {
             m_GameComponent = i_GameComponent;
+            m_PlayerId = i_PlayerId;
             registerToComponentEvents();
         }
 

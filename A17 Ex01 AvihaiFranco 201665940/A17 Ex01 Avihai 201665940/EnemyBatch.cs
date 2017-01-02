@@ -34,6 +34,8 @@ namespace Space_Invaders
 
         public event EventHandler<EventArgs> EnemyKilled;
 
+        public event EventHandler<EventArgs> NoMoreEnemies;
+
         public event EventHandler<EventArgs> EnemyReachedBottom;
 
         private List<Enemy> m_Enemies;
@@ -184,6 +186,12 @@ namespace Space_Invaders
             }
 
             m_Enemies.RemoveAll(enemy => enemy.WasHit == true);
+            
+            if (NoMoreEnemies != null && EnemyCount == 0)
+            {
+                NoMoreEnemies.Invoke(this, EventArgs.Empty);
+            }
+
             if (m_maxY >= Game.GraphicsDevice.Viewport.Height)
             {
                 On_ReachBottom();

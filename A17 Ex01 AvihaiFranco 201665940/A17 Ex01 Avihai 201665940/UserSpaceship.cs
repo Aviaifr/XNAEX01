@@ -139,14 +139,6 @@ namespace Space_Invaders
                     m_Velocity.X = sr_SpaceshipSpeed;
                 }
             }
-            //if (i_InputManager.KeyHeld(Keys.Left))
-            //{
-            //    m_Velocity.X = -sr_SpaceshipSpeed;
-            //}
-            //else if (i_InputManager.KeyHeld(Keys.Right))
-            //{
-            //    m_Velocity.X = sr_SpaceshipSpeed;
-            //}
         }
 
         private void checkInputForShot(IInputManager i_InputManager)
@@ -155,10 +147,6 @@ namespace Space_Invaders
             {
                 OnShoot();
             }
-            //if ((i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.ButtonPressed(eInputButtons.Left)) && m_isCollidable)
-            //{
-            //    OnShoot();
-            //}
         }
 
         private bool isDying()

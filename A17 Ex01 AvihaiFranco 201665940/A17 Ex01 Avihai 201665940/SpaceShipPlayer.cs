@@ -16,10 +16,12 @@ namespace Space_Invaders
     public class SpaceShipPlayer : Player, I2DPlayer
     {
         private readonly int r_MaxLives = 3;
+        public SoulsBatch SoulBatch { get; set; }
 
         public SpaceShipPlayer(DynamicDrawableComponent i_GameComponent, string i_PlayerId) : base(i_GameComponent, i_PlayerId)
         {
             m_Lives = r_MaxLives;
+            
         }
 
         public override int Score
@@ -88,6 +90,7 @@ namespace Space_Invaders
         {
             Score -= 1200;
             Lives -= 1;
+            SoulBatch.RemoveSoul();
             if (Lives == 0)
             {
                 onPlayerDead();
