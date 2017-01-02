@@ -11,15 +11,16 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
     {
         private float m_RotationsPerSecond;
 
-        public RotateAnimator(String i_Name, TimeSpan i_AnimationLength, float i_RotationsPerSecond) : 
-            base(i_Name,i_AnimationLength)
+        public RotateAnimator(string i_Name, TimeSpan i_AnimationLength, float i_RotationsPerSecond) : 
+            base(i_Name, i_AnimationLength)
         {
             m_RotationsPerSecond = i_RotationsPerSecond * MathHelper.TwoPi;
         }
 
         public RotateAnimator(TimeSpan i_AnimationLength, float i_RotationsPerSecond) : 
             this("Rotate", i_AnimationLength, i_RotationsPerSecond)
-        { }
+        {
+        }
 
         protected override void DoFrame(GameTime i_GameTime)
         {

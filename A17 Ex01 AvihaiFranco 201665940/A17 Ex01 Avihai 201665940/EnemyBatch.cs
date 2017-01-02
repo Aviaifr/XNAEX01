@@ -18,9 +18,10 @@ namespace Space_Invaders
         private readonly int r_BatchRows = 5;
         private readonly int r_VerticalPadding = 32 * 3;
         private readonly float r_VerticalJumpLength = 32 * 0.5f;
-        private readonly string r_Enemy1 = "Enemies/Enemy0101_32x32";
-        private readonly string r_Enemy2 = "Enemies/Enemy0201_32x32";
-        private readonly string r_Enemy3 = "Enemies/Enemy0301_32x32";
+        private readonly string r_EnemiesTextureString = @"Enemies/EnemiesTexture";
+        private readonly int r_Enemy1IndexInTexture = 0;
+        private readonly int r_Enemy2IndexInTexture = 1;
+        private readonly int r_Enemy3IndexInTexture = 2;
         private readonly Color r_Enemy1Tint = Color.LightPink;
         private readonly Color r_Enemy2Tint = Color.LightBlue;
         private readonly Color r_Enemy3Tint = Color.LightYellow;
@@ -33,7 +34,10 @@ namespace Space_Invaders
 
         public event EventHandler<EventArgs> EnemyKilled;
 
+        public event EventHandler<EventArgs> EnemyReachedBottom;
+
         private List<Enemy> m_Enemies;
+        private int m_maxY = 0;
         private bool m_EnemyHitWall;
         private float m_XMax, m_XMin;
         private bool m_BatchMovingRight = true;
@@ -65,7 +69,8 @@ namespace Space_Invaders
                 {
                     float x = (float)(j * (1.6 * r_EnemySize));
                     float y = (float)(r_VerticalPadding + (i * 1.6 * r_EnemySize));
-                    Enemy newEnemy = new Enemy(Game, GetEnemySpriteByRow(i), GetEnemyValueByRow(i));
+                    Enemy newEnemy = new Enemy(Game, r_EnemiesTextureString, GetEnemyValueByRow(i));
+                    newEnemy.SourceRectangle = new Rectangle(GetEnemyXLocation(i), (GetEnemyIndexInTextureByRow(i) * (int)r_EnemySize) + 1, (int)r_EnemySize, (int)r_EnemySize);
                     newEnemy.Tint = GetEnemyTintByRow(i);
                     newEnemy.Position = new Vector2(x, y);
                     newEnemy.Shoot += enemy_OnShoot;
@@ -74,6 +79,7 @@ namespace Space_Invaders
                     m_Enemies.Add(newEnemy);
                 }
             }
+
             this.SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
 
@@ -93,10 +99,11 @@ namespace Space_Invaders
             if (m_Enemies.Contains(i_Disposed))
             {
                 Enemy enemy = i_Disposed as Enemy;
-                if (enemy.ActivateAnimation(ObjectValues.sr_DeathAnimation))
+                if (enemy.ActivateAnimation(ObjectValues.DeathAnimation))
                 {
                     speedUpEnemies();
                 }
+
                 if (EnemyKilled != null)
                 {
                     EnemyKilled(i_Disposed, i_EventArgs);
@@ -140,6 +147,7 @@ namespace Space_Invaders
                     m_XMin = Game.GraphicsDevice.Viewport.Width;
                     foreach (Enemy enemy in m_Enemies)
                     {
+                        m_maxY = (int)MathHelper.Max(m_maxY, enemy.Position.Y + enemy.Height);
                         enemy.NumOfJumps = (int)(m_TimeSinceMoved / m_TimeBetweenJumps);
                         enemy.Update(i_GameTime);
 
@@ -176,6 +184,18 @@ namespace Space_Invaders
             }
 
             m_Enemies.RemoveAll(enemy => enemy.WasHit == true);
+            if (m_maxY >= Game.GraphicsDevice.Viewport.Height)
+            {
+                On_ReachBottom();
+            }
+        }
+
+        private void On_ReachBottom()
+        {
+            if (EnemyReachedBottom != null)
+            {
+                EnemyReachedBottom.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private void updateAnimations(GameTime i_GameTime)
@@ -189,6 +209,10 @@ namespace Space_Invaders
         private void speedUpEnemies()
         {
             m_TimeBetweenJumps -= m_TimeBetweenJumps * 0.04f;
+            m_Enemies.ForEach(delegate(Enemy enemy)
+            {
+                enemy.UpdateCellSpeed(TimeSpan.FromSeconds(m_TimeBetweenJumps));
+            });
         }
 
         private float getOffset()
@@ -226,24 +250,43 @@ namespace Space_Invaders
             {
                 enemy.Draw(gameTime);
             }
+
             m_SpriteBatch.End();
         }
 
-        private string GetEnemySpriteByRow(int i_Row)
+        private int GetEnemyIndexInTextureByRow(int i_Row)
         {
-            string spriteLoc = string.Empty;
+            int spriteLoc = 0;
             switch (i_Row)
             {
                 case 0:
-                    spriteLoc = r_Enemy1;
+                    spriteLoc = r_Enemy1IndexInTexture;
                     break;
                 case 1:
                 case 2:
-                    spriteLoc = r_Enemy2;
+                    spriteLoc = r_Enemy2IndexInTexture;
                     break;
                 case 3:
                 case 4:
-                    spriteLoc = r_Enemy3;
+                    spriteLoc = r_Enemy3IndexInTexture;
+                    break;
+            }
+
+            return spriteLoc;
+        }
+
+        private int GetEnemyXLocation(int i_Row)
+        {
+            int spriteLoc = 0;
+            switch (i_Row)
+            {
+                case 0:
+                case 1:
+                case 3:
+                    spriteLoc = 0;
+                    break;
+                default:
+                    spriteLoc = (int)r_EnemySize + 1;
                     break;
             }
 

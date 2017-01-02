@@ -26,7 +26,7 @@ namespace Space_Invaders
         {
             for (int i = 0; i < m_TextureColorData.Length; i++)
             {
-                Point indexToPoint = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + i / m_Texture.Width);
+                Point indexToPoint = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + (i / m_Texture.Width));
                 if (m_RectangleToErase.Contains(indexToPoint))
                 {
                     m_TextureColorData[i].A = 0;
@@ -44,7 +44,7 @@ namespace Space_Invaders
             {
                 if (m_TextureColorData[i].A != 0)
                 {
-                    Point CollidablePointOnScreen = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + i / m_Texture.Width);
+                    Point CollidablePointOnScreen = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + (i / m_Texture.Width));
                     if (source.IsPointInScreenIsColidablePixel(CollidablePointOnScreen))
                     {
                         m_RectangleToErase = source.Bounds;

@@ -1,5 +1,4 @@
-﻿//*** Guy Ronen © 2008-2011 ***//
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
@@ -15,7 +14,6 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
             set { m_BlinkLength = value; }
         }
 
-        // CTORs
         public BlinkAnimator(string i_Name, TimeSpan i_BlinkLength, TimeSpan i_AnimationLength)
             : base(i_Name, i_AnimationLength)
         {
@@ -35,11 +33,9 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
             m_TimeLeftForNextBlink -= i_GameTime.ElapsedGameTime;
             if (m_TimeLeftForNextBlink.TotalSeconds < 0)
             {
-                // we have elapsed, so blink
                 this.BoundSprite.Visible = !this.BoundSprite.Visible;
                 m_TimeLeftForNextBlink = m_BlinkLength;
             }
-
         }
 
         protected override void RevertToOriginal()
