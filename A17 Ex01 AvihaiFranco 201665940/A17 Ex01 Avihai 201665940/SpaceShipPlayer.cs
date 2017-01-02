@@ -88,9 +88,8 @@ namespace Space_Invaders
         {
             Score -= 1200;
             Lives -= 1;
-            if(Lives == 0)
+            if (Lives == 0)
             {
-                (m_GameComponent as Sprite).isCollidable = false;
                 onPlayerDead();
             }
             else

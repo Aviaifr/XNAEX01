@@ -45,6 +45,7 @@ namespace Space_Invaders
             {
                 tryToAppear();
             }
+
             m_Animations.Update(i_GameTime);
             
         }
@@ -60,27 +61,33 @@ namespace Space_Invaders
 
         protected override void setupAnimations()
         {
-            SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(2.4f), e_SizeType.Srhink);
-            BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(0.2f), TimeSpan.FromSeconds(2.4f));
-            FadeAnimator fadeAnimator = new FadeAnimator(TimeSpan.FromSeconds(2.4f));
+            SizeAnimator sizeAnimator = 
+                new SizeAnimator(TimeSpan.FromSeconds(2.4f), e_SizeType.Srhink);
+            BlinkAnimator blinkAnimator = 
+                new BlinkAnimator(TimeSpan.FromSeconds(0.2f),TimeSpan.FromSeconds(2.4f));
+            FadeAnimator fadeAnimator = 
+                new FadeAnimator(TimeSpan.FromSeconds(2.4f));
 
             CompositeAnimator compositeAnimator = new CompositeAnimator
-                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4), this, sizeAnimator, blinkAnimator, fadeAnimator);
+                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4), 
+                this, sizeAnimator, blinkAnimator, fadeAnimator);
 
-            compositeAnimator.Enabled = false;
             compositeAnimator.Finished += DeathAnimator_Finished;
             m_Animations.Add(compositeAnimator);
+            compositeAnimator.Enabled = false;
             m_Animations.Enabled = true;
         }
 
         private void DeathAnimator_Finished(object sender, EventArgs e)
         {
+            //this.Animations.Reset(ObjectValues.sr_DeathAnimation);
+            //this.Animations.Disable(ObjectValues.sr_DeathAnimation);
             resetMothership();
         }
 
         private void tryToAppear()
         {
-            int randomToAppear = s_RandomGen.Next(0, 700);
+            int randomToAppear = s_RandomGen.Next(0, 5);
             if (sr_AppearChance >= randomToAppear)
             {
                 this.IsVisible = true;
@@ -89,8 +96,6 @@ namespace Space_Invaders
 
         public override void Collided(ICollidable i_Collidable)
         {
-            isCollidable = false;
-
             if (MothershipKilled != null)
             {
                 MothershipKilled.Invoke(this, EventArgs.Empty);

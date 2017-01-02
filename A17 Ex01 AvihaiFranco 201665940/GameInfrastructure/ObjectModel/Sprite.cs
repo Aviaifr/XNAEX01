@@ -24,6 +24,8 @@ namespace GameInfrastructure.ObjectModel
         protected BlendState m_BlendState = BlendState.Additive;
         protected bool m_isCollidable = true;
         protected Color[] m_TextureColorData;
+        protected const String k_DeathAnimation = "DeathAnimation";
+        protected const String k_HitAnimation = "HitAnimation";
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
@@ -336,6 +338,22 @@ namespace GameInfrastructure.ObjectModel
             
 
             base.Draw(gameTime);
+        }
+
+        public virtual bool ActivateAnimation(String i_AnimationName)
+        {
+            bool AnimationFound = false;
+
+            if(m_Animations != null 
+                && m_Animations.Contains(i_AnimationName) 
+                && isCollidable)
+            {
+                AnimationFound = true;
+                this.isCollidable = false;
+                m_Animations.Restart(i_AnimationName);
+            }
+
+            return AnimationFound;
         }
 
         public Sprite ShallowClone()

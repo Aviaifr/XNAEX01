@@ -92,9 +92,11 @@ namespace Space_Invaders
         {
             if (m_Enemies.Contains(i_Disposed))
             {
-                (i_Disposed as Enemy).isCollidable = false;
-                (i_Disposed as Enemy).Animations.Enabled = true;
-                speedUpEnemies();
+                Enemy enemy = i_Disposed as Enemy;
+                if (enemy.ActivateAnimation(ObjectValues.sr_DeathAnimation))
+                {
+                    speedUpEnemies();
+                }
                 if (EnemyKilled != null)
                 {
                     EnemyKilled(i_Disposed, i_EventArgs);

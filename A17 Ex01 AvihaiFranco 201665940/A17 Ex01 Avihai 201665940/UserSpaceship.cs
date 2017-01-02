@@ -12,7 +12,7 @@ namespace Space_Invaders
 {
     public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
-        private static readonly int sr_SpaceshipSpeed = 135;
+        private static readonly int sr_SpaceshipSpeed = 160;
         private static readonly int sr_MaxShots = 2;
         public event EventHandler<EventArgs> Shoot;
 
@@ -35,8 +35,10 @@ namespace Space_Invaders
         protected override void setupAnimations()
         {
             BlinkAnimator blinkAnimator = 
-                new BlinkAnimator(ObjectValues.sr_HitAnimation,TimeSpan.FromSeconds(0.14), TimeSpan.FromSeconds(2.4));
-            //blinkAnimator.Finished += BlinkAnimator_Finished;
+                new BlinkAnimator(ObjectValues.sr_HitAnimation,
+                TimeSpan.FromSeconds(0.07), TimeSpan.FromSeconds(2.4));
+
+            blinkAnimator.Finished += HitAnimator_Finished;
             m_Animations.Add(blinkAnimator);
             m_Animations.Disable(ObjectValues.sr_HitAnimation);
 
@@ -45,7 +47,9 @@ namespace Space_Invaders
             RotateAnimator rotateAnimator = 
                 new RotateAnimator(TimeSpan.FromSeconds(2.4f), 4);
             CompositeAnimator compositeAnimator = 
-                new CompositeAnimator(ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4f), this, fadeAnimator, rotateAnimator);
+                new CompositeAnimator(ObjectValues.sr_DeathAnimation,
+                TimeSpan.FromSeconds(2.4f), this, fadeAnimator, rotateAnimator);
+
             compositeAnimator.Finished += DeathCompositeAnimator_Finished;
             compositeAnimator.ResetAfterFinish = false;
             m_Animations.Add(compositeAnimator);
@@ -59,9 +63,9 @@ namespace Space_Invaders
             Game.Components.Remove(this);
         }
 
-        private void BlinkAnimator_Finished(object sender, EventArgs e)
+        private void HitAnimator_Finished(object sender, EventArgs e)
         {
-            m_Animations.Reset(ObjectValues.sr_BlinkingAnimator);
+            isCollidable = true;
         }
 
         public override void Update(GameTime i_GameTime)

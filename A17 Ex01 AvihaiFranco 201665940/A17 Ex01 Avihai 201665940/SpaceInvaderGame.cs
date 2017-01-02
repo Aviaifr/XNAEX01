@@ -40,8 +40,7 @@ namespace Space_Invaders
                 {
                     MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
                     motherShip.Velocity = Vector2.Zero;
-                    motherShip.Animations.Enable(ObjectValues.sr_DeathAnimation);
-                    motherShip.Animations.Reset(ObjectValues.sr_DeathAnimation); 
+                    motherShip.ActivateAnimation(ObjectValues.sr_DeathAnimation);
                 }
                 checkWin();
             }
@@ -57,22 +56,29 @@ namespace Space_Invaders
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            resetPlayerSpaceShipPosition(i_HitPlayer as SpaceShipPlayer);
+            enablePlayerSpaceshipAnimation(i_HitPlayer as SpaceShipPlayer);
         }
 
-        private void resetPlayerSpaceShipPosition(SpaceShipPlayer i_Player)
+        private void enablePlayerSpaceshipAnimation(SpaceShipPlayer i_Player)
         {
             //i_Player.GameComponentPosition = new Vector2
-              //  (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
-            i_Player.GameComponenetAnimations.Reset(ObjectValues.sr_HitAnimation);
-            i_Player.GameComponenetAnimations.Enable(ObjectValues.sr_HitAnimation);
+            //  (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
+            Sprite playerComponent = i_Player.GameComponent as Sprite;
+            playerComponent.ActivateAnimation(ObjectValues.sr_HitAnimation);
 
         }
 
         public void Player_OnKilled(object i_HitPlayer, EventArgs i_EventArgs)
         {
             //GameOver(eGameOverType.GameOver);
-            (i_HitPlayer as SpaceShipPlayer).GameComponenetAnimations.Enable(ObjectValues.sr_DeathAnimation);
+            SpaceShipPlayer player = i_HitPlayer as SpaceShipPlayer;
+            Sprite playerSprite = player.GameComponent as Sprite;
+
+            if (playerSprite != null && playerSprite.isCollidable)
+            {
+                playerSprite.isCollidable = false;
+                playerSprite.Animations.Enable(ObjectValues.sr_DeathAnimation);
+            }
 
         }
 

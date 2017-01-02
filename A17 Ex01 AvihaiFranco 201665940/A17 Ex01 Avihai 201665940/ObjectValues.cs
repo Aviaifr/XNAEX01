@@ -8,6 +8,7 @@ namespace Space_Invaders
     {
         public static readonly string BackgroundTextureString = @"Backgrounds/BG_Space01_1024x768";
         public static readonly string UserShipTextureString = "Spaceship/Ship01_32x32";
+        public static readonly string UserShip2TextureString = "Spaceship/Ship02_32x32";
         public static readonly string MothershipTextureString = "Enemies/MotherShip_32x120";
         public static readonly string BulletTextureString = "Shots/Bullet";
         public static readonly int EnemyWidth = 32;
