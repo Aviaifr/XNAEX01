@@ -61,7 +61,7 @@ namespace Space_Invaders
         protected override void setupAnimations()
         {
             SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(2.4f), e_SizeType.Srhink);
-            BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(0.2f),TimeSpan.FromSeconds(2.4f));
+            BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(0.2f), TimeSpan.FromSeconds(2.4f));
             FadeAnimator fadeAnimator = new FadeAnimator(TimeSpan.FromSeconds(2.4f));
 
             CompositeAnimator compositeAnimator = new CompositeAnimator

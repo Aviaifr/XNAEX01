@@ -59,9 +59,6 @@ namespace GameInfrastructure.ObjectModel
             return collided;
         }
 
-        public virtual void Collided(ICollidable i_Collidable)
-        {
-        }
 
         protected CompositeAnimator m_Animations;
         public CompositeAnimator Animations
