@@ -29,6 +29,11 @@ namespace Space_Invaders
             m_BlendState = BlendState.NonPremultiplied;
         }
 
+        public Vector2 BeginningPosition
+        {
+            get { return m_BeginningPosition; }
+        }
+
         public UserSpaceship(Game i_Game, string i_TextureString, string i_PlayerId, Vector2 i_BeginningPosition)
             : base(i_Game, i_TextureString, i_PlayerId)
         {

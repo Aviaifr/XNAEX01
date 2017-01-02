@@ -69,7 +69,7 @@ namespace Space_Invaders
             //  (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
             Sprite playerComponent = i_Player.GameComponent as Sprite;
             playerComponent.ActivateAnimation(ObjectValues.sr_HitAnimation);
-
+            playerComponent.Position = (playerComponent as UserSpaceship).BeginningPosition;
         }
 
         public void Player_OnKilled(object i_HitPlayer, EventArgs i_EventArgs)
