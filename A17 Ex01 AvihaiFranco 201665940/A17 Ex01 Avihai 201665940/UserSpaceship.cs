@@ -119,7 +119,7 @@ namespace Space_Invaders
             m_Shots--;
         }
 
-        public override void Collided(ICollidable i_Collidable)
+        public void Collided(ICollidable i_Collidable)
         {
             if(i_Collidable is SpaceBullet)
             {
@@ -132,8 +132,6 @@ namespace Space_Invaders
             {
                 onDestroyed();
             }
-
-            base.Collided(i_Collidable);
         }
 
         public override bool CanCollideWith(ICollidable i_Source)

@@ -40,7 +40,7 @@ namespace Space_Invaders
             Dispose();
         }
 
-        public override void Collided(ICollidable i_Collidable)
+        public void Collided(ICollidable i_Collidable)
         {
             bool shouldDispose = false;
             if (i_Collidable is SpaceBullet && this.Velocity.Y > 0)

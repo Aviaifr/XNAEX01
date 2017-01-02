@@ -52,6 +52,7 @@
     <Compile Include="ObjectModel\Animators\Concrete Animators\SizeAnimator.cs" />
     <Compile Include="ObjectModel\Animators\Concrete Animators\WaypointsAnimator.cs" />
     <Compile Include="ObjectModel\Animators\SpriteAnimator.cs" />
+    <Compile Include="ObjectModel\CompositeSprite.cs" />
     <Compile Include="ObjectModel\DynamicDrawableComponent.cs" />
     <Compile Include="ObjectModel\GameService.cs" />
     <Compile Include="ObjectModel\Player.cs" />
