@@ -17,11 +17,17 @@ namespace Space_Invaders
     {
         private readonly int r_MaxLives = 3;
         public SoulsBatch SoulBatch { get; set; }
+        private ScoreBoard m_ScoreBoard;
 
         public SpaceShipPlayer(DynamicDrawableComponent i_GameComponent, string i_PlayerId) : base(i_GameComponent, i_PlayerId)
         {
             m_Lives = r_MaxLives;
-            
+        }
+
+        public ScoreBoard ScoreBoard
+        {
+            get { return m_ScoreBoard; }
+            set { m_ScoreBoard = value; }
         }
 
         public override int Score
@@ -35,6 +41,7 @@ namespace Space_Invaders
             {
                 m_Score = value;
                 m_Score = MathHelper.Clamp(m_Score, 0, int.MaxValue);
+                this.ScoreBoard.ScoreValue = m_Score;
             }
         }
 

@@ -164,8 +164,10 @@ namespace Space_Invaders
             int textureIndex = 0;
             Vector2 startingPosition = 
                 new Vector2(0, this.GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
+            Vector2 scorePosition = new Vector2(5, 20);
             SpaceShipPlayer player;
             UserSpaceship spaceShip;
+            ScoreBoard scoreBoard;
             foreach(string playerId in ObjectValues.sr_PlayerIds)
             {
                 spaceShip = 
@@ -173,12 +175,22 @@ namespace Space_Invaders
                 spaceShip.Position = startingPosition;
                 spaceShip.Shoot += spaceship_Shot;
                 this.Components.Add(spaceShip);
+
                 player = new SpaceShipPlayer(spaceShip, playerId);
                 player.PlayerHit += Player_OnHit;
                 player.PlayerDead += Player_OnKilled;
+
+                string scoreBoardText = "P" + (textureIndex + 1) + " Score: ";
+                scoreBoard = new ScoreBoard(this, scoreBoardText,ObjectValues.ConsolasFont);
+                scoreBoard.Position = scorePosition;
+                scoreBoard.Tint = ObjectValues.ScoreBoardsColors[textureIndex];
+                player.ScoreBoard = scoreBoard;
+                this.Components.Add(scoreBoard);
+
                 m_Players.Add(player); 
                 textureIndex++;
                 startingPosition.X += ObjectValues.SpaceshipSize;
+                scorePosition.Y += 20;
             }
 
             SoulsBatch player1Souls = new SoulsBatch(this, Color.White, new Vector2(GraphicsDevice.Viewport.Width - 80, 20));

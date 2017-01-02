@@ -133,3 +133,9 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/EnemiesTexture.png
 
+#begin Fonts\Consolas.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts\Consolas.spritefont
+

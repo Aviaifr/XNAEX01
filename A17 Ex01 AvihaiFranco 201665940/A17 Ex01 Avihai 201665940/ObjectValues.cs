@@ -10,6 +10,7 @@ namespace Space_Invaders
         public static readonly string BackgroundTextureString = @"Backgrounds/BG_Space01_1024x768";
         public static readonly string UserShipTextureString = "Spaceship/Ship01_32x32";
         public static readonly string UserShip2TextureString = "Spaceship/Ship02_32x32";
+        public static readonly string ConsolasFont = @"Fonts/Consolas";
         public static readonly string[] sr_spaceShipTextures = new string[] { UserShipTextureString, UserShip2TextureString };
         public static readonly string MothershipTextureString = "Enemies/MotherShip_32x120";
         public static readonly string BulletTextureString = "Shots/Bullet";
@@ -29,7 +30,7 @@ namespace Space_Invaders
         public const string k_PlayerOneId = "Player1";
         public const string k_PlayerTwoId = "Player2";
         public static readonly List<string> sr_PlayerIds = new List<string> { k_PlayerOneId, k_PlayerTwoId };
-        public static readonly Vector2[] sr_SpaceShipPositions = new Vector2[] { };
+        public static readonly Color[] ScoreBoardsColors = new Color[] { Color.Blue, Color.Green };
 
     }
 }
