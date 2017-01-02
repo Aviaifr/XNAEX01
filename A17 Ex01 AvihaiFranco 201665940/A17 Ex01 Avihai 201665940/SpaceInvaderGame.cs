@@ -102,6 +102,8 @@ namespace Space_Invaders
         public SpaceInvaderGame()
         {
             m_Graphics = new GraphicsDeviceManager(this);
+            m_Graphics.PreferredBackBufferHeight = 600;
+            m_Graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -123,8 +125,8 @@ namespace Space_Invaders
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             Components.Add(m_EnemyBatch);
 
-            WallBatch w = new WallBatch(this,400);
-            Components.Add(w);
+            WallBatch wallBatch = new WallBatch(this);
+            Components.Add(wallBatch);
 
             MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);

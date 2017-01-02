@@ -175,7 +175,7 @@ namespace GameInfrastructure.ObjectModel
             }
         }
 
-        protected Rectangle m_SourceRectangle;
+        protected Rectangle m_SourceRectangle = Rectangle.Empty;
         public Rectangle SourceRectangle
         {
             get { return m_SourceRectangle; }
@@ -263,10 +263,15 @@ namespace GameInfrastructure.ObjectModel
 
         protected override void InitBounds()
         {
-            m_WidthBeforeScale = m_Texture.Width;
-            m_HeightBeforeScale = m_Texture.Height;
+            if (m_SourceRectangle == Rectangle.Empty)
+            {
+                m_WidthBeforeScale = m_Texture.Width;
+                m_HeightBeforeScale = m_Texture.Height;
+            }
             InitSourceRectangle();
             InitOrigins();
+            m_WidthBeforeScale = SourceRectangle.Width;
+            m_HeightBeforeScale = SourceRectangle.Height;
         }
 
         protected virtual void InitOrigins()
@@ -275,7 +280,10 @@ namespace GameInfrastructure.ObjectModel
 
         protected virtual void InitSourceRectangle()
         {
-            m_SourceRectangle = new Rectangle(0, 0, (int)m_WidthBeforeScale, (int)m_HeightBeforeScale);
+            if (m_SourceRectangle == Rectangle.Empty)
+            {
+                m_SourceRectangle = new Rectangle(0, 0, (int)m_WidthBeforeScale, (int)m_HeightBeforeScale);
+            }
         }
 
         protected virtual void setupAnimations() { }

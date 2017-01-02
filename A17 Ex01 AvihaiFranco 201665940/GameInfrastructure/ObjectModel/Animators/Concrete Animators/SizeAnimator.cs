@@ -41,5 +41,5 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
 public enum e_SizeType
 {
-    Srhink,Enlarge
+    Shrink,Enlarge
 }
