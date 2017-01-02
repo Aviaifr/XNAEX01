@@ -17,7 +17,7 @@ namespace Space_Invaders
     {
         private readonly int r_MaxLives = 3;
 
-        public SpaceShipPlayer(DynamicDrawableComponent i_GameComponent) : base(i_GameComponent)
+        public SpaceShipPlayer(DynamicDrawableComponent i_GameComponent, string i_PlayerId) : base(i_GameComponent, i_PlayerId)
         {
             m_Lives = r_MaxLives;
         }

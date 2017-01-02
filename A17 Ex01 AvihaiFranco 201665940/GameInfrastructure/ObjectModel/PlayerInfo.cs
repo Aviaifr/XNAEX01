@@ -28,9 +28,21 @@ namespace GameInfrastructure.ObjectModel
 
         private bool m_isMouseControlled;
 
+        public Dictionary<eActions, Keys> KeyBoardDictionary
+        {
+            get { return m_KeyBoardDictionary; }
+            set { m_KeyBoardDictionary = value; }
+        }
+        public Dictionary<eActions, eInputButtons> MouseGamepadDictionary
+        {
+            get { return m_MouseGamePadDictionary; }
+            set { m_MouseGamePadDictionary = value; }
+        }
+
         public bool IsMouseControlled
         {
             get { return m_isMouseControlled; }
+            set { m_isMouseControlled = value; }
         }
 
         public ActionKeys GetKeys(eActions i_Action)
@@ -61,7 +73,7 @@ namespace GameInfrastructure.ObjectModel
 
         private bool thereIsMouseKeypadMapping(eActions i_Action)
         {
-            return m_KeyBoardDictionary.ContainsKey(i_Action);
+            return (m_MouseGamePadDictionary.ContainsKey(i_Action));
         }
     }
 }

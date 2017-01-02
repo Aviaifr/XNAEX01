@@ -15,16 +15,23 @@ namespace GameInfrastructure.ObjectModel
     {
         protected int m_Score;
         protected int m_Lives;
+        protected string m_PlayerId;
         protected DynamicDrawableComponent m_GameComponent;
 
         public event EventHandler<EventArgs> PlayerDead;
 
         public event EventHandler<EventArgs> PlayerHit;
 
-        public Player(DynamicDrawableComponent i_GameComponent)
+        public Player(DynamicDrawableComponent i_GameComponent, string i_PlayerId)
         {
             m_GameComponent = i_GameComponent;
             registerToComponentEvents();
+        }
+
+        public virtual string PlayerId
+        {
+            get { return m_PlayerId; }
+            set { m_PlayerId = value; }
         }
 
         public virtual int Score

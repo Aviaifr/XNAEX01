@@ -19,6 +19,8 @@ namespace Space_Invaders
             this.Velocity = sr_BulletSpeed;
         }
 
+        public Sprite Owner { get; set; }
+
         public override void Update(GameTime i_GameTime)
         {
             m_Position.Y += m_Velocity.Y * (float)i_GameTime.ElapsedGameTime.TotalSeconds;

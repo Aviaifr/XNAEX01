@@ -34,6 +34,11 @@ namespace Space_Invaders
             WasHit = false;
         }
 
+        public Sprite KilledBy
+        {
+            get; set;
+        } 
+
         public float Direction
         {
             get { return m_Direction; }
@@ -158,6 +163,7 @@ namespace Space_Invaders
             {
                 if ((i_Collidable as SpaceBullet).Velocity.Y < 0)
                 {
+                    this.KilledBy = (i_Collidable as SpaceBullet).Owner;
                     this.Dispose();
                 }
             }

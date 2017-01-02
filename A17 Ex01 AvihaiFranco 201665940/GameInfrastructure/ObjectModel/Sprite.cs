@@ -26,11 +26,18 @@ namespace GameInfrastructure.ObjectModel
         protected BlendState m_BlendState = BlendState.NonPremultiplied;
         protected bool m_isCollidable = true;
         protected Color[] m_TextureColorData;
+        protected readonly String r_PlayerId = String.Empty;
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
         }
 
+        public Sprite (Game i_Game, string i_TextureString, string i_PlayerId) 
+            : base(i_TextureString, i_Game)
+        {
+            r_PlayerId = i_PlayerId;
+            m_Game = i_Game;
+        }
         public Sprite(Game i_Game) : base(i_Game)
         {
         }
@@ -279,8 +286,8 @@ namespace GameInfrastructure.ObjectModel
         {
             if (m_SourceRectangle == Rectangle.Empty)
             {
-                m_WidthBeforeScale = m_Texture.Width;
-                m_HeightBeforeScale = m_Texture.Height;
+            m_WidthBeforeScale = m_Texture.Width;
+            m_HeightBeforeScale = m_Texture.Height;
             }
 
             InitSourceRectangle();
@@ -297,8 +304,8 @@ namespace GameInfrastructure.ObjectModel
         {
             if (m_SourceRectangle == Rectangle.Empty)
             {
-                m_SourceRectangle = new Rectangle(0, 0, (int)m_WidthBeforeScale, (int)m_HeightBeforeScale);
-            }
+            m_SourceRectangle = new Rectangle(0, 0, (int)m_WidthBeforeScale, (int)m_HeightBeforeScale);
+        }
         }
 
         protected virtual void setupAnimations()

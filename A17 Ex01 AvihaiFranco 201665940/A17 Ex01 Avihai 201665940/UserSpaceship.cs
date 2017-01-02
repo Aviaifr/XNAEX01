@@ -16,6 +16,9 @@ namespace Space_Invaders
         private static readonly int sr_MaxShots = 2;
 
         public event EventHandler<EventArgs> Shoot;
+        private readonly Vector2 m_BeginningPosition;
+        private bool m_IsFirstUpdate = true;
+        private IPlayersManager m_PlayersManager;
 
         private int m_Shots;
 
@@ -25,6 +28,20 @@ namespace Space_Invaders
             m_Shots = 0;
             this.Tint = Color.White;
             m_BlendState = BlendState.NonPremultiplied;
+        }
+
+        public Vector2 BeginningPosition
+        {
+            get { return m_BeginningPosition; }
+        }
+
+        public UserSpaceship(Game i_Game, string i_TextureString, string i_PlayerId, Vector2 i_BeginningPosition)
+            : base(i_Game, i_TextureString, i_PlayerId)
+        {
+            m_Shots = 0;
+            this.Tint = Color.White;
+            m_BlendState = BlendState.NonPremultiplied;
+            m_BeginningPosition = i_BeginningPosition;
         }
 
         public override void Initialize()
@@ -73,6 +90,11 @@ namespace Space_Invaders
             isCollidable = true;
         }
 
+        protected override void LoadContent()
+        {
+            m_PlayersManager = m_Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager;
+            base.LoadContent();
+        }
         public override void Update(GameTime i_GameTime)
         {
             base.Update(i_GameTime);
@@ -87,28 +109,62 @@ namespace Space_Invaders
 
         private void updatePositionByMouse(IInputManager i_InputManager)
         {
-            m_Position.X += i_InputManager.MousePositionDelta.X;
+            if (m_IsFirstUpdate)
+            {
+                m_IsFirstUpdate = false;
+            }
+            else
+            {
+                if(r_PlayerId != String.Empty)
+                {
+                    if (m_PlayersManager.PlyersInfo[r_PlayerId].IsMouseControlled)
+                    {
+                        m_Position.X += i_InputManager.MousePositionDelta.X;
+                    }
+                }
+            }
         }
 
         private void updateSpeedByInput(IInputManager i_InputManager)
         {
             m_Velocity = Vector2.Zero;
-            if (i_InputManager.KeyHeld(Keys.Left))
+            if(r_PlayerId != String.Empty)
             {
-                m_Velocity.X = -sr_SpaceshipSpeed;
+                if(m_PlayersManager.DidPress(r_PlayerId,eActions.Left))
+                {
+                    m_Velocity.X = -sr_SpaceshipSpeed;
+                }
+                else if (m_PlayersManager.DidPress(r_PlayerId, eActions.Right))
+                {
+                    m_Velocity.X = sr_SpaceshipSpeed;
+                }
             }
-            else if (i_InputManager.KeyHeld(Keys.Right))
-            {
-                m_Velocity.X = sr_SpaceshipSpeed;
-            }
+            //if (i_InputManager.KeyHeld(Keys.Left))
+            //{
+            //    m_Velocity.X = -sr_SpaceshipSpeed;
+            //}
+            //else if (i_InputManager.KeyHeld(Keys.Right))
+            //{
+            //    m_Velocity.X = sr_SpaceshipSpeed;
+            //}
         }
 
         private void checkInputForShot(IInputManager i_InputManager)
         {
-            if ((i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.ButtonPressed(eInputButtons.Left)) && m_isCollidable)
+            if(m_PlayersManager.DidPress(r_PlayerId,eActions.Shoot) && !isDying())
             {
                 OnShoot();
             }
+            //if ((i_InputManager.KeyPressed(Keys.Enter) || i_InputManager.ButtonPressed(eInputButtons.Left)) && m_isCollidable)
+            //{
+            //    OnShoot();
+            //}
+        }
+
+        private bool isDying()
+        {
+            return (m_Animations[ObjectValues.DeathAnimation].Enabled
+                && !m_Animations[ObjectValues.DeathAnimation].IsFinished);
         }
 
         private void OnShoot()
