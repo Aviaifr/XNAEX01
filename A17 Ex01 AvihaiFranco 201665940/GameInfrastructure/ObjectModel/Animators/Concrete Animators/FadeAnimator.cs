@@ -19,7 +19,8 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
         public FadeAnimator(TimeSpan i_AnimationLength) :
             this("Fade", i_AnimationLength)
-        { }
+        {
+        }
 
         protected override void DoFrame(GameTime i_GameTime)
         {

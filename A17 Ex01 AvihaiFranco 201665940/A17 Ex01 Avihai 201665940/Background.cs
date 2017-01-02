@@ -27,13 +27,13 @@ namespace Space_Invaders
             base.LoadContent();
         }
 
-        //public override void Draw(GameTime gameTime)
-        //{
-        //    SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-        //    spriteBatch.Begin();
-        //    spriteBatch.Draw(m_Texture, new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height), m_Tint);
-        //    spriteBatch.End();
-        //}
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+            spriteBatch.Begin();
+            spriteBatch.Draw(m_Texture, new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height), m_TintColor);
+            spriteBatch.End();
+        }
 
         public override void Update(GameTime i_GameTime)
         {

@@ -9,7 +9,6 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
     public class SizeAnimator : SpriteAnimator
     {
-
         private Vector2 m_ScaleChange;
 
         public SizeAnimator(string i_Name, TimeSpan i_AnimationLength, e_SizeType i_SizeType) :
@@ -23,8 +22,8 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
         public SizeAnimator(TimeSpan i_AnimationLength, e_SizeType i_SizeType) :
             this("Size", i_AnimationLength, i_SizeType)
-        { }
-
+        {
+        }
 
         protected override void DoFrame(GameTime i_GameTime)
         {
@@ -41,5 +40,5 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
 public enum e_SizeType
 {
-    Srhink,Enlarge
+    Shrink, Enlarge
 }

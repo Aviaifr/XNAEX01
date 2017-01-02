@@ -55,7 +55,7 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
-        public void Disable(String i_AnimationName)
+        public void Disable(string i_AnimationName)
         {
             SpriteAnimator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
@@ -65,7 +65,7 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
-        public void Enable(String i_AnimationName)
+        public void Enable(string i_AnimationName)
         {
             SpriteAnimator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
@@ -75,8 +75,7 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
-
-        public void Reset(String i_AnimationName)
+        public void Reset(string i_AnimationName)
         {
             SpriteAnimator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
@@ -86,8 +85,7 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
-
-        public void Restart(String i_AnimationName)
+        public void Restart(string i_AnimationName)
         {
             SpriteAnimator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
@@ -153,7 +151,7 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
-        public virtual bool Contains(String i_AnimationName)
+        public virtual bool Contains(string i_AnimationName)
         {
             return m_AnimationsDictionary.ContainsKey(i_AnimationName);
         }

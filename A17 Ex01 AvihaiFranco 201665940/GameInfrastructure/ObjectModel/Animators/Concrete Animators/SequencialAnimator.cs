@@ -1,5 +1,4 @@
-﻿//*** Guy Ronen © 2008-2011 ***//
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
@@ -12,7 +11,8 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
             Sprite i_BoundSprite,
             params SpriteAnimator[] i_Animations)
             : base(i_Name, i_AnimationLength, i_BoundSprite, i_Animations)
-        { }
+        {
+        }
 
         protected override void DoFrame(GameTime i_GameTime)
         {
@@ -23,7 +23,7 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
                 {
                     animation.Update(i_GameTime);
                     allFinished = false;
-                    break; // we are not going to call all our animations until this one is done
+                    break;
                 }
             }
 

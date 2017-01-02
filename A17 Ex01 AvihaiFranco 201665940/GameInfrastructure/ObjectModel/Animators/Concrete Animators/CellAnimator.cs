@@ -1,26 +1,34 @@
-﻿//*** Guy Ronen © 2008-2011 ***//
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
     public class CellAnimator : SpriteAnimator
     {
+        private readonly int r_NumOfCells = 1;
         private TimeSpan m_CellTime;
         private TimeSpan m_TimeLeftForCell;
         private bool m_Loop = true;
         private int m_CurrCellIdx = 0;
-        private readonly int r_NumOfCells = 1;
 
-        // CTORs
-        public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
+        public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength, int i_StartinIndex)
             : base("Cell", i_AnimationLength)
         {
             this.m_CellTime = i_CellTime;
             this.m_TimeLeftForCell = i_CellTime;
             this.r_NumOfCells = i_NumOfCells;
-
+            this.m_CurrCellIdx = i_StartinIndex;
             m_Loop = i_AnimationLength == TimeSpan.Zero;
+        }
+
+        public TimeSpan CellTime
+        {
+            get
+            {
+                return m_CellTime;
+            }
+
+            set { m_CellTime = value; }
         }
 
         private void goToNextFrame()
@@ -52,9 +60,8 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
                 m_TimeLeftForCell -= i_GameTime.ElapsedGameTime;
                 if (m_TimeLeftForCell.TotalSeconds <= 0)
                 {
-                    /// we have elapsed, so blink
                     goToNextFrame();
-                    m_TimeLeftForCell = m_CellTime;
+                    m_TimeLeftForCell += m_CellTime;
                 }
             }
 

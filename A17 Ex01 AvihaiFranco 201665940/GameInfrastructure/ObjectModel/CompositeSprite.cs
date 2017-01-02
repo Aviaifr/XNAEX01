@@ -43,7 +43,8 @@ namespace GameInfrastructure.ObjectModel
 
         public override void Update(GameTime gameTime)
         {
-            foreach(Sprite sprite in m_SpritesList){
+            foreach(Sprite sprite in m_SpritesList)
+            {
                 sprite.Update(gameTime);
             }
         }
@@ -57,6 +58,7 @@ namespace GameInfrastructure.ObjectModel
         {
             return false;
         }
+
         public override bool IsPointInScreenIsColidablePixel(Microsoft.Xna.Framework.Point i_PointOnScreen)
         {
             return false;

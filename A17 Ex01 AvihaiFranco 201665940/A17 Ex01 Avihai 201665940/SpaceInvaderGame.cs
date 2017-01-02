@@ -44,8 +44,9 @@ namespace Space_Invaders
                 {
                     MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
                     motherShip.Velocity = Vector2.Zero;
-                    motherShip.ActivateAnimation(ObjectValues.sr_DeathAnimation);
+                    motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
                 }
+
                 checkWin();
             }
         }
@@ -65,25 +66,22 @@ namespace Space_Invaders
 
         private void enablePlayerSpaceshipAnimation(SpaceShipPlayer i_Player)
         {
-            //i_Player.GameComponentPosition = new Vector2
-            //  (0, GraphicsDevice.Viewport.Height - m_Player.GameComponentBounds.Height);
             Sprite playerComponent = i_Player.GameComponent as Sprite;
-            playerComponent.ActivateAnimation(ObjectValues.sr_HitAnimation);
+            playerComponent.ActivateAnimation(ObjectValues.HitAnimation);
             playerComponent.Position = (playerComponent as UserSpaceship).BeginningPosition;
         }
 
         public void Player_OnKilled(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            //GameOver(eGameOverType.GameOver);
+            ///GameOver(eGameOverType.GameOver);
             SpaceShipPlayer player = i_HitPlayer as SpaceShipPlayer;
             Sprite playerSprite = player.GameComponent as Sprite;
 
             if (playerSprite != null && playerSprite.isCollidable)
             {
                 playerSprite.isCollidable = false;
-                playerSprite.Animations.Enable(ObjectValues.sr_DeathAnimation);
+                playerSprite.Animations.Enable(ObjectValues.DeathAnimation);
             }
-
         }
 
         public void GameOver(eGameOverType i_GameOverType)
@@ -106,6 +104,8 @@ namespace Space_Invaders
         public SpaceInvaderGame()
         {
             m_Graphics = new GraphicsDeviceManager(this);
+            m_Graphics.PreferredBackBufferHeight = 600;
+            m_Graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -129,10 +129,16 @@ namespace Space_Invaders
 
             m_EnemyBatch = new EnemyBatch(this);
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
+            m_EnemyBatch.EnemyReachedBottom += Enemy_OnReachBottom;
             Components.Add(m_EnemyBatch);
 
-            WallBatch w = new WallBatch(this,400);
-            Components.Add(w);
+            WallBatch wallBatch = new WallBatch(this);
+            Components.Add(wallBatch);
+
+            SoulsBatch player1Souls = new SoulsBatch(this, Color.White, new Vector2(GraphicsDevice.Viewport.Width - 80, 20));
+            Components.Add(player1Souls);
+            SoulsBatch player2Souls = new SoulsBatch(this, Color.ForestGreen, new Vector2(GraphicsDevice.Viewport.Width - 80, 45));
+            Components.Add(player2Souls);
 
             MothershipEnemy mothershipEnemy = new MothershipEnemy(this, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
             mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
@@ -264,6 +270,13 @@ namespace Space_Invaders
             {
                 Components.Remove(i_Disposed as IGameComponent);
             }
+        }
+
+        public void Enemy_OnReachBottom(object i_ReacedBottomObj, EventArgs i_EventArgs)
+        {
+            //SPACESHIPSSSS.isCollidable = false;
+            //SPACESHIPSSSS.Animations.Enable(ObjectValues.DeathAnimation);
+            //Game Over
         }
     }
 }

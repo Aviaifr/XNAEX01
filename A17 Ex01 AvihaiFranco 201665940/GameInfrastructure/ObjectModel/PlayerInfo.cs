@@ -13,7 +13,9 @@ namespace GameInfrastructure.ObjectModel
 {
     public enum eActions
     {
-        Left,Right,Shoot
+        Left,
+        Right,
+        Shoot
     }
 
     public class PlayerInfo
@@ -42,6 +44,7 @@ namespace GameInfrastructure.ObjectModel
             get { return m_isMouseControlled; }
             set { m_isMouseControlled = value; }
         }
+
         public ActionKeys GetKeys(eActions i_Action)
         {
             ActionKeys ActionKeys = new ActionKeys();
@@ -49,6 +52,7 @@ namespace GameInfrastructure.ObjectModel
             {
                 ActionKeys.KeyboardKey = m_KeyBoardDictionary[i_Action];
             }
+
             if(thereIsMouseKeypadMapping(i_Action))
             {
                 ActionKeys.MouseGamepadKeys = m_MouseGamePadDictionary[i_Action];
@@ -59,13 +63,12 @@ namespace GameInfrastructure.ObjectModel
 
         private bool thereIsMapping(eActions i_Action)
         {
-            return (m_KeyBoardDictionary.ContainsKey(i_Action) 
-                || m_MouseGamePadDictionary.ContainsKey(i_Action));
+            return m_KeyBoardDictionary.ContainsKey(i_Action) || m_MouseGamePadDictionary.ContainsKey(i_Action);
         }
 
         private bool thereIsKeyboardMapping(eActions i_Action)
         {
-            return (m_KeyBoardDictionary.ContainsKey(i_Action));
+            return m_KeyBoardDictionary.ContainsKey(i_Action);
         }
 
         private bool thereIsMouseKeypadMapping(eActions i_Action)

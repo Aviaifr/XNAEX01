@@ -12,13 +12,15 @@ namespace GameInfrastructure.ServiceInterfaces
     {
         private eInputButtons? m_MouseGamepadKeys;
         private Keys? m_KeyboardKey;
+
         public eInputButtons? MouseGamepadKeys
         {
             get { return m_MouseGamepadKeys; }
             set { m_MouseGamepadKeys = value; }
         }
 
-        public Keys? KeyboardKey {
+        public Keys? KeyboardKey
+        {
             get { return m_KeyboardKey; }
             set { m_KeyboardKey = value; }
         }

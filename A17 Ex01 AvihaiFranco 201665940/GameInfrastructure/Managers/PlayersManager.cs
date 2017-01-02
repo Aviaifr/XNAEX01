@@ -23,14 +23,14 @@ namespace GameInfrastructure.Managers
         }
 
         public override void Initialize()
-        {
+            {
             m_InputManager = m_Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-        }
+            }
 
         protected override void RegisterAsService()
-        {
+            {
             this.Game.Services.AddService(typeof(IPlayersManager), this);
-        }
+            }
 
         //public IInputManager InputManager
         //{
@@ -75,7 +75,7 @@ namespace GameInfrastructure.Managers
                 }
             }
             if(actionKeys.MouseGamepadKeys != null)
-            {
+        {
                 mouseGamepadPress = m_InputManager.ButtonPressed(actionKeys.MouseGamepadKeys.Value);
             }
 
