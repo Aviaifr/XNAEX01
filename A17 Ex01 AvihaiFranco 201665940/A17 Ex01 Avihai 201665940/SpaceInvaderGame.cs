@@ -120,6 +120,7 @@ namespace Space_Invaders
 
             m_EnemyBatch = new EnemyBatch(this);
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
+            m_EnemyBatch.EnemyReachedBottom += Enemy_OnReachBottom;
             Components.Add(m_EnemyBatch);
 
             WallBatch wallBatch = new WallBatch(this);
@@ -187,6 +188,13 @@ namespace Space_Invaders
             {
                 Components.Remove(i_Disposed as IGameComponent);
             }
+        }
+
+        public void Enemy_OnReachBottom(object i_ReacedBottomObj, EventArgs i_EventArgs)
+        {
+            //SPACESHIPSSSS.isCollidable = false;
+            //SPACESHIPSSSS.Animations.Enable(ObjectValues.DeathAnimation);
+            //Game Over
         }
     }
 }

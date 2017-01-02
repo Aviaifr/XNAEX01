@@ -48,5 +48,10 @@ namespace Space_Invaders
                 m_SpritesList[i].Position = new Vector2(m_Position.X + (i * (m_SpritesList[i].Height + (m_SpritesList[i].Height / 2))), m_Position.Y);
             }
         }
+
+        public void RemoveSoul()
+        {
+            this.m_SpritesList.RemoveRange(0, 1);
+        }
     }
 }

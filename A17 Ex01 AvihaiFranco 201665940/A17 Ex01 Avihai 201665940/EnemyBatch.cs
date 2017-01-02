@@ -34,7 +34,10 @@ namespace Space_Invaders
 
         public event EventHandler<EventArgs> EnemyKilled;
 
+        public event EventHandler<EventArgs> EnemyReachedBottom;
+
         private List<Enemy> m_Enemies;
+        private int m_maxY = 0;
         private bool m_EnemyHitWall;
         private float m_XMax, m_XMin;
         private bool m_BatchMovingRight = true;
@@ -144,6 +147,7 @@ namespace Space_Invaders
                     m_XMin = Game.GraphicsDevice.Viewport.Width;
                     foreach (Enemy enemy in m_Enemies)
                     {
+                        m_maxY = (int)MathHelper.Max(m_maxY, enemy.Position.Y + enemy.Height);
                         enemy.NumOfJumps = (int)(m_TimeSinceMoved / m_TimeBetweenJumps);
                         enemy.Update(i_GameTime);
 
@@ -180,6 +184,18 @@ namespace Space_Invaders
             }
 
             m_Enemies.RemoveAll(enemy => enemy.WasHit == true);
+            if (m_maxY >= Game.GraphicsDevice.Viewport.Height)
+            {
+                On_ReachBottom();
+            }
+        }
+
+        private void On_ReachBottom()
+        {
+            if (EnemyReachedBottom != null)
+            {
+                EnemyReachedBottom.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private void updateAnimations(GameTime i_GameTime)

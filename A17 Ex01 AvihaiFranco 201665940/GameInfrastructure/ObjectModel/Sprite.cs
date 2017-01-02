@@ -23,7 +23,7 @@ namespace GameInfrastructure.ObjectModel
         public static Random s_RandomGen = new Random();
         protected int m_Width;
         protected int m_Height;
-        protected BlendState m_BlendState = BlendState.Additive;
+        protected BlendState m_BlendState = BlendState.NonPremultiplied;
         protected bool m_isCollidable = true;
         protected Color[] m_TextureColorData;
 
