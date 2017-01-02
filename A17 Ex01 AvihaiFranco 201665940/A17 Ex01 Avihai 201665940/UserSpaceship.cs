@@ -12,7 +12,7 @@ namespace Space_Invaders
 {
     public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
-        private static readonly int sr_SpaceshipSpeed = 135;
+        private static readonly int sr_SpaceshipSpeed = 160;
         private static readonly int sr_MaxShots = 2;
         public event EventHandler<EventArgs> Shoot;
 
@@ -35,7 +35,7 @@ namespace Space_Invaders
         protected override void setupAnimations()
         {
             BlinkAnimator blinkAnimator = 
-                new BlinkAnimator(ObjectValues.sr_HitAnimation,TimeSpan.FromSeconds(0.14), TimeSpan.FromSeconds(2.4));
+                new BlinkAnimator(ObjectValues.sr_HitAnimation,TimeSpan.FromSeconds(0.07), TimeSpan.FromSeconds(2.4));
             //blinkAnimator.Finished += BlinkAnimator_Finished;
             m_Animations.Add(blinkAnimator);
             m_Animations.Disable(ObjectValues.sr_HitAnimation);
