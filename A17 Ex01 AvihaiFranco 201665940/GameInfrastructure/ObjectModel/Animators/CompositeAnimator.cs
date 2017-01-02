@@ -13,9 +13,9 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         // CTORs
 
-        // CTOR: Me as an AnimationsMamager
+        // CTOR: Me as an AnimationsManager
         public CompositeAnimator(Sprite i_BoundSprite)
-            : this("AnimationsMamager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
+            : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
         {
             this.Enabled = false;
         }

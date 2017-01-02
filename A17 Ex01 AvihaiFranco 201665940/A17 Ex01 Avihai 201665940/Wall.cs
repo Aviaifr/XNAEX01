@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
+using GameInfrastructure.ObjectModel.Animators;
 
 namespace Space_Invaders
 {
@@ -20,11 +21,6 @@ namespace Space_Invaders
         {
             m_TintColor = Color.White;
         }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
         
         public void Collided(ICollidable i_Collidable)
         {
@@ -36,7 +32,6 @@ namespace Space_Invaders
                     m_TextureColorData[i].A = 0;
                 }
             }
-            this.m_Texture.SetData(m_TextureColorData);
         }
 
         public override bool IsPixelBasedCollision(ICollidable i_Source)
@@ -66,11 +61,22 @@ namespace Space_Invaders
             return collided;
         }
 
+        public override void Draw(GameTime gameTime)
+        {
+            this.m_Texture.SetData(m_TextureColorData);
+            base.Draw(gameTime);
+        }
+
         public override bool CanCollideWith(ICollidable i_Source)
         {
             bool canCollide = true;
 
             return canCollide;
+        }
+
+        protected override void setupAnimations()
+        {
+            this.Animations.Enabled = true;
         }
     }
 }

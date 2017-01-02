@@ -43,11 +43,11 @@ namespace Space_Invaders
             for (int i = 0; i < m_SpritesList.Count; i++)
             {
                 m_SpritesList[i].Position = new Vector2(startingPosition + (i * 2 * wallWidth), m_Position.Y);
-                //Vector2 movingPosition1 = new Vector2(m_SpritesList[i].Position.X - (wallWidth/2), m_SpritesList[i].Position.Y);
-                //Vector2 movingPosition2 = new Vector2(m_SpritesList[i].Position.X + (wallWidth/2), m_SpritesList[i].Position.Y);
-                //SpriteAnimator wpa = new Waypointsanimator(60, TimeSpan.Zero, v_LoopAnimation, movingPosition1, movingPosition2);
-                //wpa.ResetAfterFinish = false;
-                //m_SpritesList[i].Animations.Add(wpa);
+                Vector2 movingPosition1 = new Vector2(m_SpritesList[i].Position.X - (wallWidth/2), m_SpritesList[i].Position.Y);
+                Vector2 movingPosition2 = new Vector2(m_SpritesList[i].Position.X + (wallWidth/2), m_SpritesList[i].Position.Y);
+                SpriteAnimator wpa = new Waypointsanimator(60, TimeSpan.Zero, v_LoopAnimation, movingPosition1, movingPosition2);
+                wpa.Enabled = true;
+                m_SpritesList[i].Animations.Add(wpa);
             }
         }
     }

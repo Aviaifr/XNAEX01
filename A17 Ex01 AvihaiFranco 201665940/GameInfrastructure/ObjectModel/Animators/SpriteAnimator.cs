@@ -158,7 +158,6 @@ namespace GameInfrastructure.ObjectModel.Animators
             {
                 Initialize();
             }
-
             if (this.Enabled && !this.IsFinished)
             {
                 if (this.IsFinite)
