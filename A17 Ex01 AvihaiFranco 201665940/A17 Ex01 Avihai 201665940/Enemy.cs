@@ -65,10 +65,13 @@ namespace Space_Invaders
 
         protected override void setupAnimations()
         {
-            SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(1.6f), e_SizeType.Srhink);
-            RotateAnimator rotateAnimator = new RotateAnimator(TimeSpan.FromSeconds(1.6f), 6);
+            SizeAnimator sizeAnimator = 
+                new SizeAnimator(TimeSpan.FromSeconds(1.6f), e_SizeType.Srhink);
+            RotateAnimator rotateAnimator = 
+                new RotateAnimator(TimeSpan.FromSeconds(1.6f), 6);
             CompositeAnimator compositeAnimator = new CompositeAnimator
-                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(1.6f), this, sizeAnimator, rotateAnimator);
+                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(1.6f),
+                this, sizeAnimator, rotateAnimator);
 
             compositeAnimator.Finished += DeathAnimator_Finished;
             compositeAnimator.Enabled = true;

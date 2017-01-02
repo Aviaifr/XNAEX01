@@ -60,12 +60,16 @@ namespace Space_Invaders
 
         protected override void setupAnimations()
         {
-            SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(2.4f), e_SizeType.Srhink);
-            BlinkAnimator blinkAnimator = new BlinkAnimator(TimeSpan.FromSeconds(0.2f),TimeSpan.FromSeconds(2.4f));
-            FadeAnimator fadeAnimator = new FadeAnimator(TimeSpan.FromSeconds(2.4f));
+            SizeAnimator sizeAnimator = 
+                new SizeAnimator(TimeSpan.FromSeconds(2.4f), e_SizeType.Srhink);
+            BlinkAnimator blinkAnimator = 
+                new BlinkAnimator(TimeSpan.FromSeconds(0.2f),TimeSpan.FromSeconds(2.4f));
+            FadeAnimator fadeAnimator = 
+                new FadeAnimator(TimeSpan.FromSeconds(2.4f));
 
             CompositeAnimator compositeAnimator = new CompositeAnimator
-                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4), this, sizeAnimator, blinkAnimator, fadeAnimator);
+                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4), 
+                this, sizeAnimator, blinkAnimator, fadeAnimator);
 
             compositeAnimator.Enabled = false;
             compositeAnimator.Finished += DeathAnimator_Finished;
@@ -89,8 +93,6 @@ namespace Space_Invaders
 
         public override void Collided(ICollidable i_Collidable)
         {
-            isCollidable = false;
-
             if (MothershipKilled != null)
             {
                 MothershipKilled.Invoke(this, EventArgs.Empty);
