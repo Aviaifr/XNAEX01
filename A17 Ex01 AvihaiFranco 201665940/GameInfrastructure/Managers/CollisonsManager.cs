@@ -70,7 +70,11 @@ namespace GameInfrastructure.Managers
                     {
                         if (target.IsCollidedWith(i_Source))
                         {
-                            collidedComponents.Add(target);
+                            if (i_Source.IsCollidedWith(target))
+                            {
+                                collidedComponents.Add(target);
+                            }
+                            
                         }
                     }
                 }

@@ -36,6 +36,12 @@ namespace GameInfrastructure.ServiceInterfaces
         Rectangle Bounds { get; }
 
         Vector2 Velocity { get; set; }
+
+        bool IsPixelBasedCollision(ICollidable i_Source);
+
+        bool IsPointInScreenIsColidablePixel(Point i_PointOnScreen);
+
+        bool CanCollideWith(ICollidable i_Source);
     }
 
     public interface ICollidable3D : ICollidable

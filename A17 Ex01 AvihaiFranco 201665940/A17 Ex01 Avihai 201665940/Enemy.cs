@@ -14,8 +14,10 @@ namespace Space_Invaders
     {
         public int Value { get; set; }
 
+        private static readonly int sr_MaxShots = 1;
         public event EventHandler<EventArgs> Shoot;
 
+        private int m_Shots;
         protected float m_timeSinceMoved;
         protected float m_TimeBetweenJumps;
         protected static int s_fireChance = 1;
@@ -62,7 +64,7 @@ namespace Space_Invaders
             m_TimeBetweenJumps = 0.5f;
             this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
         }
-
+        
         protected override void setupAnimations()
         {
             SizeAnimator sizeAnimator = new SizeAnimator(TimeSpan.FromSeconds(1.6f), e_SizeType.Srhink);
@@ -74,7 +76,7 @@ namespace Space_Invaders
             compositeAnimator.Enabled = true;
             m_Animations.Add(compositeAnimator);
         }
-
+        
         private void DeathAnimator_Finished(object sender, EventArgs e)
         {
             this.WasHit = true;
@@ -96,10 +98,14 @@ namespace Space_Invaders
 
         protected virtual void tryToShoot()
         {
-            int randNumToFire = s_RandomGen.Next(0, 100);
-            if (randNumToFire < s_fireChance)
+            if (m_Shots < sr_MaxShots)
             {
-                OnShoot();
+                int randNumToFire = s_RandomGen.Next(0, 100);
+                if (randNumToFire < s_fireChance && m_Shots < sr_MaxShots)
+                {
+                    m_Shots++;
+                    OnShoot();
+                }
             }
         }
 
@@ -126,6 +132,7 @@ namespace Space_Invaders
 
         public void OnMyBulletDisappear(object i_SpaceBullet, EventArgs i_EventArgs)
         {
+            m_Shots--;
         }
 
         public override void Collided(ICollidable i_Collidable)
@@ -137,6 +144,23 @@ namespace Space_Invaders
                     this.Dispose();
                 }
             }
+        }
+
+        public override bool CanCollideWith(ICollidable i_Source)
+        {
+            bool canCollide = false;
+            if (i_Source is SpaceBullet)
+            {
+                if ((i_Source as SpaceBullet).Velocity.Y < 0)
+                {
+                    canCollide = true;
+                }
+            }
+            else if (!(i_Source is Enemy))
+            {
+                canCollide = true;
+            }
+            return canCollide;
         }
     }
 }
