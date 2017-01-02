@@ -12,7 +12,7 @@ namespace Space_Invaders
 {
     public class UserSpaceship : Sprite, IShootingObject, ICollidable2D
     {
-        private static readonly int sr_SpaceshipSpeed = 135;
+        private static readonly int sr_SpaceshipSpeed = 160;
         private static readonly int sr_MaxShots = 2;
         public event EventHandler<EventArgs> Shoot;
 
