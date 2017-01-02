@@ -13,6 +13,8 @@ namespace GameInfrastructure.ObjectModel
 {
     public abstract class Sprite : DynamicDrawableComponent
     {
+        protected const string k_DeathAnimation = "DeathAnimation";
+        protected const string k_HitAnimation = "HitAnimation";
         protected Vector2 m_Position;
         protected Texture2D m_Texture;
         protected Color m_TintColor;
@@ -24,8 +26,6 @@ namespace GameInfrastructure.ObjectModel
         protected BlendState m_BlendState = BlendState.Additive;
         protected bool m_isCollidable = true;
         protected Color[] m_TextureColorData;
-        protected const String k_DeathAnimation = "DeathAnimation";
-        protected const String k_HitAnimation = "HitAnimation";
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
@@ -62,11 +62,12 @@ namespace GameInfrastructure.ObjectModel
                     collided = IsPixelBasedCollision(i_Source);
                 }
             }
+
             return collided;
         }
 
-
         protected CompositeAnimator m_Animations;
+
         public CompositeAnimator Animations
         {
             get { return m_Animations; }
@@ -100,6 +101,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected float m_WidthBeforeScale;
+        
         public float WidthBeforeScale
         {
             get { return m_WidthBeforeScale; }
@@ -107,6 +109,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected float m_HeightBeforeScale;
+
         public float HeightBeforeScale
         {
             get { return m_HeightBeforeScale; }
@@ -127,6 +130,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         public Vector2 m_PositionOrigin;
+
         public Vector2 PositionOrigin
         {
             get { return m_PositionOrigin; }
@@ -134,9 +138,10 @@ namespace GameInfrastructure.ObjectModel
         }
 
         public Vector2 m_RotationOrigin = Vector2.Zero;
+
         public Vector2 RotationOrigin
         {
-            get { return m_RotationOrigin; }// r_SpriteParameters.RotationOrigin; }
+            get { return m_RotationOrigin; }
             set { m_RotationOrigin = value; }
         }
 
@@ -176,6 +181,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected Rectangle m_SourceRectangle = Rectangle.Empty;
+
         public Rectangle SourceRectangle
         {
             get { return m_SourceRectangle; }
@@ -196,6 +202,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected float m_Rotation = 0;
+
         public float Rotation
         {
             get { return m_Rotation; }
@@ -203,6 +210,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected Vector2 m_Scales = Vector2.One;
+
         public Vector2 Scales
         {
             get { return m_Scales; }
@@ -219,10 +227,11 @@ namespace GameInfrastructure.ObjectModel
         public float Opacity
         {
             get { return (float)m_TintColor.A / (float)byte.MaxValue; }
-            set {m_TintColor.A = (byte)(value * (float)byte.MaxValue);}
+            set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
         }
 
         protected float m_LayerDepth;
+
         public float LayerDepth
         {
             get { return m_LayerDepth; }
@@ -230,6 +239,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected SpriteEffects m_SpriteEffects = SpriteEffects.None;
+
         public SpriteEffects SpriteEffects
         {
             get { return m_SpriteEffects; }
@@ -243,6 +253,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         private float m_AngularVelocity = 0;
+
         public float AngularVelocity
         {
             get { return m_AngularVelocity; }
@@ -251,15 +262,18 @@ namespace GameInfrastructure.ObjectModel
 
         public Sprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
             : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
-        { }
+        {
+        }
 
         public Sprite(string i_AssetName, Game i_Game, int i_CallsOrder)
             : base(i_AssetName, i_Game, i_CallsOrder)
-        { }
+        {
+        }
 
         public Sprite(string i_AssetName, Game i_Game)
             : base(i_AssetName, i_Game, int.MaxValue)
-        { }
+        {
+        }
 
         protected override void InitBounds()
         {
@@ -268,6 +282,7 @@ namespace GameInfrastructure.ObjectModel
                 m_WidthBeforeScale = m_Texture.Width;
                 m_HeightBeforeScale = m_Texture.Height;
             }
+
             InitSourceRectangle();
             InitOrigins();
             m_WidthBeforeScale = SourceRectangle.Width;
@@ -286,11 +301,14 @@ namespace GameInfrastructure.ObjectModel
             }
         }
 
-        protected virtual void setupAnimations() { }
+        protected virtual void setupAnimations()
+        {
+        }
 
         private bool m_UseSharedBatch = true;
 
         protected SpriteBatch m_SpriteBatch;
+
         public SpriteBatch SpriteBatch
         {
             set
@@ -337,18 +355,23 @@ namespace GameInfrastructure.ObjectModel
         public override void Draw(GameTime gameTime)
         {
             m_SpriteBatch.Begin(SpriteSortMode.Deferred, m_BlendState);
-            m_SpriteBatch.Draw(m_Texture, this.PositionForDraw,
-                this.SourceRectangle, this.Tint,
-                this.Rotation, this.RotationOrigin, this.Scales,
-                SpriteEffects.None, this.LayerDepth);
+            m_SpriteBatch.Draw(
+                m_Texture,
+                this.PositionForDraw,
+                this.SourceRectangle,
+                this.Tint,
+                this.Rotation,
+                this.RotationOrigin,
+                this.Scales,
+                SpriteEffects.None,
+                this.LayerDepth);
             
             m_SpriteBatch.End();
             
-
             base.Draw(gameTime);
         }
 
-        public virtual bool ActivateAnimation(String i_AnimationName)
+        public virtual bool ActivateAnimation(string i_AnimationName)
         {
             bool AnimationFound = false;
 
@@ -369,7 +392,10 @@ namespace GameInfrastructure.ObjectModel
             return this.MemberwiseClone() as Sprite;
         }
 
-        public virtual bool CanCollideWith(ICollidable i_Source) { return true; }
+        public virtual bool CanCollideWith(ICollidable i_Source)
+        {
+            return true;
+        }
         
         public virtual bool IsPixelBasedCollision(ICollidable i_Source)
         {
@@ -379,7 +405,7 @@ namespace GameInfrastructure.ObjectModel
             {
                 if (m_TextureColorData[i].A != 0)
                 {
-                    Point CollidablePointOnScreen = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + i / m_Texture.Width);
+                    Point CollidablePointOnScreen = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + (i / m_Texture.Width));
                     notFound = !source.IsPointInScreenIsColidablePixel(CollidablePointOnScreen);
                 }
             }
@@ -394,7 +420,7 @@ namespace GameInfrastructure.ObjectModel
             {
                 int xDifference = i_PointOnScreen.X - (int)m_Position.X;
                 int yDifference = i_PointOnScreen.Y - (int)m_Position.Y;
-                result = m_TextureColorData[yDifference * m_Texture.Width + xDifference].A != 0;
+                result = m_TextureColorData[(yDifference * m_Texture.Width) + xDifference].A != 0;
             }
 
             return result;

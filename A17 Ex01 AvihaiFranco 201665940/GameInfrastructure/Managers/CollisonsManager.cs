@@ -74,7 +74,6 @@ namespace GameInfrastructure.Managers
                             {
                                 collidedComponents.Add(target);
                             }
-                            
                         }
                     }
                 }

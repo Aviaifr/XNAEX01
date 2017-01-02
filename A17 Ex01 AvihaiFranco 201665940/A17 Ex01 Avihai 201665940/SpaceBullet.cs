@@ -51,6 +51,7 @@ namespace Space_Invaders
             {
                 shouldDispose = true;
             }
+
             if (shouldDispose)
             {
                 this.Dispose();
@@ -64,6 +65,7 @@ namespace Space_Invaders
             {
                 canCollide = this.Velocity.Y / Math.Abs(this.Velocity.Y) != (i_Source as SpaceBullet).Velocity.Y / Math.Abs((i_Source as SpaceBullet).Velocity.Y);
             }
+
             return canCollide;
         }
     }

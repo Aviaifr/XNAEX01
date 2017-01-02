@@ -10,7 +10,6 @@ namespace GameInfrastructure.Managers
 {
     public class PlayersManager : IPlayersManager
     {
-
         public IInputManager InputManager
         {
             get

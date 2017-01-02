@@ -15,8 +15,9 @@ namespace Space_Invaders
         public int Value { get; set; }
 
         private static readonly int sr_MaxShots = 1;
-        public event EventHandler<EventArgs> Shoot;
 
+        public event EventHandler<EventArgs> Shoot;
+        
         private int m_Shots;
         protected float m_timeSinceMoved;
         protected float m_TimeBetweenJumps;
@@ -73,14 +74,18 @@ namespace Space_Invaders
             {
                 cellStartingIndex++;
             }
+
             SizeAnimator sizeAnimator = 
                 new SizeAnimator(TimeSpan.FromSeconds(1.6f), e_SizeType.Shrink);
             RotateAnimator rotateAnimator = 
                 new RotateAnimator(TimeSpan.FromSeconds(1.6f), 6);
             CellAnimator cellAnimator = new CellAnimator(TimeSpan.FromSeconds(m_TimeBetweenJumps), 2, TimeSpan.Zero, cellStartingIndex);
-            CompositeAnimator compositeAnimator = new CompositeAnimator
-                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(1.6f),
-                this, sizeAnimator, rotateAnimator);
+            CompositeAnimator compositeAnimator = new CompositeAnimator(
+                ObjectValues.DeathAnimation,
+                TimeSpan.FromSeconds(1.6f),
+                this,
+                sizeAnimator,
+                rotateAnimator);
             compositeAnimator.Finished += DeathAnimator_Finished;
             m_Animations.Add(compositeAnimator);
             m_Animations.Add(cellAnimator);
@@ -172,6 +177,7 @@ namespace Space_Invaders
             {
                 canCollide = true;
             }
+
             return canCollide;
         }
 

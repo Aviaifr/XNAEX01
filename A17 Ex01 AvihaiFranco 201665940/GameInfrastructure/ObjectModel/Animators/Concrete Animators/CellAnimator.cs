@@ -1,19 +1,17 @@
-﻿//*** Guy Ronen © 2008-2011 ***//
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
     public class CellAnimator : SpriteAnimator
     {
+        private readonly int r_NumOfCells = 1;
         private TimeSpan m_CellTime;
         private TimeSpan m_TimeLeftForCell;
         private bool m_Loop = true;
         private int m_CurrCellIdx = 0;
-        private readonly int r_NumOfCells = 1;
 
-        // CTORs
-        public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength,int i_StartinIndex)
+        public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength, int i_StartinIndex)
             : base("Cell", i_AnimationLength)
         {
             this.m_CellTime = i_CellTime;
@@ -22,12 +20,14 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
             this.m_CurrCellIdx = i_StartinIndex;
             m_Loop = i_AnimationLength == TimeSpan.Zero;
         }
+
         public TimeSpan CellTime
         {
             get
             {
                 return m_CellTime;
             }
+
             set { m_CellTime = value; }
         }
 

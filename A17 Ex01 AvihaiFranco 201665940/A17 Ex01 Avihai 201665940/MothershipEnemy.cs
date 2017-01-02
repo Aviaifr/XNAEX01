@@ -47,7 +47,6 @@ namespace Space_Invaders
             }
 
             m_Animations.Update(i_GameTime);
-            
         }
 
         private void resetMothership()
@@ -64,13 +63,17 @@ namespace Space_Invaders
             SizeAnimator sizeAnimator = 
                 new SizeAnimator(TimeSpan.FromSeconds(2.4f), e_SizeType.Shrink);
             BlinkAnimator blinkAnimator = 
-                new BlinkAnimator(TimeSpan.FromSeconds(0.2f),TimeSpan.FromSeconds(2.4f));
+                new BlinkAnimator(TimeSpan.FromSeconds(0.2f), TimeSpan.FromSeconds(2.4f));
             FadeAnimator fadeAnimator = 
                 new FadeAnimator(TimeSpan.FromSeconds(2.4f));
 
-            CompositeAnimator compositeAnimator = new CompositeAnimator
-                (ObjectValues.sr_DeathAnimation, TimeSpan.FromSeconds(2.4), 
-                this, sizeAnimator, blinkAnimator, fadeAnimator);
+            CompositeAnimator compositeAnimator = new CompositeAnimator(
+                ObjectValues.DeathAnimation,
+                TimeSpan.FromSeconds(2.4), 
+                this,
+                sizeAnimator,
+                blinkAnimator,
+                fadeAnimator);
 
             compositeAnimator.Finished += DeathAnimator_Finished;
             m_Animations.Add(compositeAnimator);
@@ -80,8 +83,6 @@ namespace Space_Invaders
 
         private void DeathAnimator_Finished(object sender, EventArgs e)
         {
-            //this.Animations.Reset(ObjectValues.sr_DeathAnimation);
-            //this.Animations.Disable(ObjectValues.sr_DeathAnimation);
             resetMothership();
         }
 
@@ -112,6 +113,7 @@ namespace Space_Invaders
                     canCollide = true;
                 }
             }
+
             return canCollide;
         }
     }

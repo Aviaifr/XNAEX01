@@ -14,6 +14,7 @@ namespace Space_Invaders
     {
         private static readonly int sr_SpaceshipSpeed = 160;
         private static readonly int sr_MaxShots = 2;
+
         public event EventHandler<EventArgs> Shoot;
 
         private int m_Shots;
@@ -35,25 +36,29 @@ namespace Space_Invaders
         protected override void setupAnimations()
         {
             BlinkAnimator blinkAnimator = 
-                new BlinkAnimator(ObjectValues.sr_HitAnimation,
-                TimeSpan.FromSeconds(0.07), TimeSpan.FromSeconds(2.4));
+                new BlinkAnimator(
+                    ObjectValues.HitAnimation,
+                    TimeSpan.FromSeconds(0.07),
+                    TimeSpan.FromSeconds(2.4));
 
             blinkAnimator.Finished += HitAnimator_Finished;
             m_Animations.Add(blinkAnimator);
-            m_Animations.Disable(ObjectValues.sr_HitAnimation);
+            m_Animations.Disable(ObjectValues.HitAnimation);
 
             FadeAnimator fadeAnimator = 
                 new FadeAnimator(TimeSpan.FromSeconds(2.4f));
             RotateAnimator rotateAnimator = 
                 new RotateAnimator(TimeSpan.FromSeconds(2.4f), 4);
-            CompositeAnimator compositeAnimator = 
-                new CompositeAnimator(ObjectValues.sr_DeathAnimation,
-                TimeSpan.FromSeconds(2.4f), this, fadeAnimator, rotateAnimator);
-
+            CompositeAnimator compositeAnimator = new CompositeAnimator(
+                ObjectValues.DeathAnimation,
+                TimeSpan.FromSeconds(2.4f),
+                this,
+                fadeAnimator,
+                rotateAnimator);
             compositeAnimator.Finished += DeathCompositeAnimator_Finished;
             compositeAnimator.ResetAfterFinish = false;
             m_Animations.Add(compositeAnimator);
-            m_Animations.Disable(ObjectValues.sr_DeathAnimation);
+            m_Animations.Disable(ObjectValues.DeathAnimation);
             
             m_Animations.Enabled = true;
         }
@@ -152,6 +157,7 @@ namespace Space_Invaders
                     canCollide = false;
                 }
             }
+
             return canCollide;
         }
     }   

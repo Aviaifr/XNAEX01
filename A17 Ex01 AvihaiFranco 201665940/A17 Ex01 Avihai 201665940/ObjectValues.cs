@@ -18,12 +18,11 @@ namespace Space_Invaders
         public static readonly Color EnemyBulletTint = Color.Blue;
         public static readonly int MothershipValue = 650;
         public static readonly int SpaceshipValue = 1200;
-        public static readonly string sr_BlinkingAnimator = "Blink";
-        public static readonly string sr_FadingAnimator = "Fade";
-        public static readonly string sr_SizeAnimator = "Size";
-        public static readonly string sr_RotateAnimator = "Rotate";
-        public static readonly string sr_HitAnimation = "HitAnimation";
-        public static readonly string sr_DeathAnimation = "DeathAnimation";
-
+        public static readonly string BlinkingAnimator = "Blink";
+        public static readonly string FadingAnimator = "Fade";
+        public static readonly string SizeAnimator = "Size";
+        public static readonly string RotateAnimator = "Rotate";
+        public static readonly string HitAnimation = "HitAnimation";
+        public static readonly string DeathAnimation = "DeathAnimation";
     }
 }

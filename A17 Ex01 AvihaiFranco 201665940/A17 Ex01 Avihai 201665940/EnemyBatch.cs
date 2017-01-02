@@ -67,7 +67,7 @@ namespace Space_Invaders
                     float x = (float)(j * (1.6 * r_EnemySize));
                     float y = (float)(r_VerticalPadding + (i * 1.6 * r_EnemySize));
                     Enemy newEnemy = new Enemy(Game, r_EnemiesTextureString, GetEnemyValueByRow(i));
-                    newEnemy.SourceRectangle = new Rectangle(GetEnemyXLocation(i), GetEnemyIndexInTextureByRow(i) * (int)r_EnemySize + 1, (int)r_EnemySize, (int)r_EnemySize);
+                    newEnemy.SourceRectangle = new Rectangle(GetEnemyXLocation(i), (GetEnemyIndexInTextureByRow(i) * (int)r_EnemySize) + 1, (int)r_EnemySize, (int)r_EnemySize);
                     newEnemy.Tint = GetEnemyTintByRow(i);
                     newEnemy.Position = new Vector2(x, y);
                     newEnemy.Shoot += enemy_OnShoot;
@@ -76,6 +76,7 @@ namespace Space_Invaders
                     m_Enemies.Add(newEnemy);
                 }
             }
+
             this.SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
 
@@ -95,10 +96,11 @@ namespace Space_Invaders
             if (m_Enemies.Contains(i_Disposed))
             {
                 Enemy enemy = i_Disposed as Enemy;
-                if (enemy.ActivateAnimation(ObjectValues.sr_DeathAnimation))
+                if (enemy.ActivateAnimation(ObjectValues.DeathAnimation))
                 {
                     speedUpEnemies();
                 }
+
                 if (EnemyKilled != null)
                 {
                     EnemyKilled(i_Disposed, i_EventArgs);
@@ -232,6 +234,7 @@ namespace Space_Invaders
             {
                 enemy.Draw(gameTime);
             }
+
             m_SpriteBatch.End();
         }
 
