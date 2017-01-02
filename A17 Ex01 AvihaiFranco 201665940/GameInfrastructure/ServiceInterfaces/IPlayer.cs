@@ -20,6 +20,9 @@ namespace GameInfrastructure.ServiceInterfaces
         int Score { get; set; }
 
         int Lives { get; set; }
+
+        string PlayerId { get; set; }
+
     }
 
     public interface I2DPlayer : IPlayer

@@ -26,8 +26,8 @@ namespace GameInfrastructure.ServiceInterfaces
 
     public interface IPlayersManager
     {
-        IInputManager InputManager { get; set; }
+        //IInputManager InputManager { get; set; }
         Dictionary<String,PlayerInfo> PlyersInfo { get; set; }
-        bool DidPress(eActions i_Action);
+        bool DidPress(String i_PlayerId, eActions i_Action);
     }
 }

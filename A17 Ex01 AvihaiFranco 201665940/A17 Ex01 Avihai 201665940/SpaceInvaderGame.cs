@@ -15,9 +15,11 @@ namespace Space_Invaders
         public static int EnemyCols = 9;
         private GraphicsDeviceManager m_Graphics;
         private SpaceShipPlayer m_Player;
+        private List<SpaceShipPlayer> m_Players = new List<SpaceShipPlayer>();
         private SpriteBatch m_SpriteBatch;
         private Background m_Background;
         private EnemyBatch m_EnemyBatch;
+        private PlayersManager m_PlayersManager;
 
         private int PointsCollected
         {
@@ -35,7 +37,9 @@ namespace Space_Invaders
         {
             if (this.Components != null)
             {
-                m_Player.Score += (i_EnemyKilled as Enemy).Value;
+                SpaceShipPlayer player = m_Players.Find(spaceShipPlayer =>
+                (spaceShipPlayer.GameComponent as UserSpaceship) == (i_EnemyKilled as Enemy).KilledBy);
+                player.Score += (i_EnemyKilled as Enemy).Value;
                 if(i_EnemyKilled is MothershipEnemy)
                 {
                     MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
@@ -111,13 +115,17 @@ namespace Space_Invaders
             m_Background = new Background(this, ObjectValues.BackgroundTextureString);
             Components.Add(m_Background);
 
-            UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.UserShipTextureString);
-            spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
-            spaceship.Shoot += spaceship_Shot;
-            Components.Add(spaceship);
-            m_Player = new SpaceShipPlayer(spaceship);
-            m_Player.PlayerHit += Player_OnHit;
-            m_Player.PlayerDead += Player_OnKilled;            
+           // UserSpaceship spaceship = new UserSpaceship(this, ObjectValues.UserShipTextureString, ObjectValues.k_PlayerOneId);
+            //UserSpaceship spaceShip2 = new UserSpaceship(this, ObjectValues.UserShip2TextureString, ObjectValues.k_PlayerTwoId);
+            //spaceship.Position = new Vector2(0, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
+            //spaceShip2.Position = new Vector2(ObjectValues.SpaceshipSize, GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
+            //spaceship.Shoot += spaceship_Shot;
+            //Components.Add(spaceship);
+            //Components.Add(spaceShip2);
+            initPlayers();
+            //m_Player = new SpaceShipPlayer(spaceship);
+            //m_Player.PlayerHit += Player_OnHit;
+            //m_Player.PlayerDead += Player_OnKilled;            
 
             m_EnemyBatch = new EnemyBatch(this);
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
@@ -133,9 +141,81 @@ namespace Space_Invaders
 
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
+            initManagers();
+            base.Initialize();
+        }
+
+        private void initPlayers()
+        {
+            int textureIndex = 0;
+            Vector2 startingPosition = 
+                new Vector2(0, this.GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
+            SpaceShipPlayer player;
+            UserSpaceship spaceShip;
+            foreach(string playerId in ObjectValues.sr_PlayerIds)
+            {
+                spaceShip = 
+                    new UserSpaceship(this, ObjectValues.sr_spaceShipTextures[textureIndex], playerId, startingPosition);
+                spaceShip.Position = startingPosition;
+                spaceShip.Shoot += spaceship_Shot;
+                this.Components.Add(spaceShip);
+                player = new SpaceShipPlayer(spaceShip, playerId);
+                player.PlayerHit += Player_OnHit;
+                player.PlayerDead += Player_OnKilled;
+                m_Players.Add(player); 
+                textureIndex++;
+                startingPosition.X += ObjectValues.SpaceshipSize;
+            }
+        }
+
+        private void initManagers()
+        {
             new InputManager(this);
             new CollisionsManager(this);
-            base.Initialize();
+            m_PlayersManager = initPlayersManager();
+        }
+
+        private PlayersManager initPlayersManager()
+        {
+            PlayersManager playersManager = new PlayersManager(this);
+            PlayerInfo player = new PlayerInfo();
+            foreach(string playerId in ObjectValues.sr_PlayerIds)
+            { 
+              player = mapPlayer(playerId);
+              playersManager.PlyersInfo.Add(playerId, player);
+            }
+
+            return playersManager;
+        }
+
+        private PlayerInfo mapPlayer(string i_PlayerId)
+        {
+            PlayerInfo playerInfo = new PlayerInfo();
+
+            Dictionary<eActions, eInputButtons> mouseGamePadDic =
+                playerInfo.MouseGamepadDictionary;
+            Dictionary<eActions, Keys> KeyboardDic =
+                playerInfo.KeyBoardDictionary;
+
+            switch(i_PlayerId)
+            {
+                case ObjectValues.k_PlayerOneId:
+                    playerInfo.IsMouseControlled = true;
+                    KeyboardDic.Add(eActions.Left, Keys.Left);
+                    KeyboardDic.Add(eActions.Right, Keys.Right);
+                    KeyboardDic.Add(eActions.Shoot, Keys.Up);
+                    mouseGamePadDic.Add(eActions.Shoot, eInputButtons.Left);
+                    break;
+                case ObjectValues.k_PlayerTwoId:
+                    playerInfo.IsMouseControlled = false;
+                    KeyboardDic.Add(eActions.Left, Keys.D);
+                    KeyboardDic.Add(eActions.Right, Keys.G);
+                    KeyboardDic.Add(eActions.Shoot, Keys.R);
+                    break;               
+            }
+
+            return playerInfo;
+            
         }
 
         private Vector2 getEnemyPosition(int i_row, int i_col)
@@ -161,6 +241,7 @@ namespace Space_Invaders
         {
             SpaceBullet newBullet = new SpaceBullet(this, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint);
             newBullet.Initialize();
+            newBullet.Owner = i_Sender as UserSpaceship;
             setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);
             newBullet.Disposed += (i_Sender as UserSpaceship).OnMyBulletDisappear;
             newBullet.Disposed += onComponentDisposed;

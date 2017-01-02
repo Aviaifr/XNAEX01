@@ -20,6 +20,7 @@ namespace Space_Invaders
         public MothershipEnemy(Game i_Game, string i_TextureLocation, int i_Value)
             : base(i_Game, i_TextureLocation, i_Value)
         {
+            m_BlendState = BlendState.NonPremultiplied;
         }
 
         public override void Initialize()
@@ -96,6 +97,10 @@ namespace Space_Invaders
 
         public override void Collided(ICollidable i_Collidable)
         {
+            if(i_Collidable is SpaceBullet)
+            {
+                this.KilledBy = (i_Collidable as SpaceBullet).Owner;
+            }
             if (MothershipKilled != null)
             {
                 MothershipKilled.Invoke(this, EventArgs.Empty);

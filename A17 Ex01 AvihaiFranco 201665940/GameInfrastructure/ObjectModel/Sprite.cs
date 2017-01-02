@@ -26,11 +26,18 @@ namespace GameInfrastructure.ObjectModel
         protected Color[] m_TextureColorData;
         protected const String k_DeathAnimation = "DeathAnimation";
         protected const String k_HitAnimation = "HitAnimation";
+        protected readonly String r_PlayerId = String.Empty;
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
         }
 
+        public Sprite (Game i_Game, string i_TextureString, string i_PlayerId) 
+            : base(i_TextureString, i_Game)
+        {
+            r_PlayerId = i_PlayerId;
+            m_Game = i_Game;
+        }
         public Sprite(Game i_Game) : base(i_Game)
         {
         }
