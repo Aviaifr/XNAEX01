@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
+using Space_Invaders.Screens;
 
 namespace Space_Invaders
 {
@@ -36,8 +37,9 @@ namespace Space_Invaders
         }
         
         private void initScreens(){
-            m_ScreenManager.SetCurrentScreen(new PlayScreen(this));
-
+            
+            m_ScreenManager.Push(new PlayScreen(this));
+            m_ScreenManager.SetCurrentScreen(new MainMenu(this));
         }
 
         private void initManagers()

@@ -46,6 +46,10 @@
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\PlayersManager.cs" />
     <Compile Include="Managers\ScreensManager.cs" />
+    <Compile Include="Menu\ChooseableMenuItem.cs" />
+    <Compile Include="Menu\SettingMenuItem.cs" />
+    <Compile Include="ObjectModel\Screens\MenuScreen.cs" />
+    <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="ObjectModel\Animators\CompositeAnimator.cs" />
     <Compile Include="ObjectModel\Animators\Concrete Animators\BlinkAnimator.cs" />
     <Compile Include="ObjectModel\Animators\Concrete Animators\CellAnimator.cs" />

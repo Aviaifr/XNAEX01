@@ -8,7 +8,7 @@ using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 using GameInfrastructure.ObjectModel.Screens;
 
-namespace Space_Invaders
+namespace Space_Invaders.Screens
 {
     public class PlayScreen : GameScreen
     {
