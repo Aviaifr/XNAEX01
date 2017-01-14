@@ -21,7 +21,9 @@ namespace Space_Invaders.Screens
         public override void Initialize()
         {
             ChooseableMenuItem SoundOptions = new ChooseableMenuItem(Game, "Sound Options", @"Fonts/Consolas", Color.Blue, Color.Red);
-            ChooseableMenuItem ScreenOptions = new ChooseableMenuItem(Game, "Screen Options", @"Fonts/Consolas", Color.Blue, Color.Red);
+            ChooseableMenuItem ScreenOptions = 
+                new ChooseableMenuItem(Game, "Screen Options", @"Fonts/Consolas", Color.Blue, Color.Red);
+            ScreenOptions.Choose += onScreensOptions;
             SettingMenuItem PlayersToggle = new SettingMenuItem(Game, "Players", @"Fonts/Consolas", Color.Blue, Color.Red);
             PlayersToggle.ExtraText = "One";
             ChooseableMenuItem PlayOption = new ChooseableMenuItem(Game, "Play", @"Fonts/Consolas", Color.Blue, Color.Red);
@@ -39,6 +41,11 @@ namespace Space_Invaders.Screens
         private void onPlay(object i_Sender, EventArgs i_EventArgs)
         {
             this.OnClosed();
+        }
+
+        private void onScreensOptions(object i_Sender, EventArgs i_EventArgs)
+        {
+            m_ScreensManager.SetCurrentScreen(new ScreenOptionsScreen(Game));
         }
     }
 }

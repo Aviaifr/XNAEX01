@@ -22,6 +22,7 @@ namespace Space_Invaders
             m_Graphics = new GraphicsDeviceManager(this);
             m_Graphics.PreferredBackBufferHeight = 600;
             m_Graphics.ApplyChanges();
+            //Services.AddService(typeof(IGraphicsDeviceManager), m_Graphics);
             Content.RootDirectory = "Content";
         }
 
@@ -90,6 +91,12 @@ namespace Space_Invaders
             }
 
             return playerInfo;
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+            base.Draw(gameTime);
         }
     }
 }

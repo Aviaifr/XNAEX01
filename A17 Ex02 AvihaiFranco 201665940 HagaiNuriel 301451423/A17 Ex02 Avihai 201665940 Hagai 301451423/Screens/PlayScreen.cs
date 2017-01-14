@@ -21,6 +21,7 @@ namespace Space_Invaders.Screens
         public PlayScreen(Game i_Game):base(i_Game)
         {
         }
+
         private int PointsCollected
         {
             get;
@@ -29,10 +30,11 @@ namespace Space_Invaders.Screens
 
         public void Enemy_OnKill(object i_EnemyKilled, EventArgs i_eventArgs)
         {
-            if (this.Count > 0)
-            {
-                SpaceShipPlayer player = m_Players.Find(spaceShipPlayer =>
+            SpaceShipPlayer player = m_Players.Find(spaceShipPlayer =>
                 (spaceShipPlayer.GameComponent as UserSpaceship) == (i_EnemyKilled as Enemy).KilledBy);
+            if (player != null)
+            {
+                
                 player.Score += (i_EnemyKilled as Enemy).Value;
                 if(i_EnemyKilled is MothershipEnemy)
                 {
@@ -207,7 +209,7 @@ namespace Space_Invaders.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            
             base.Draw(gameTime);
         }
 

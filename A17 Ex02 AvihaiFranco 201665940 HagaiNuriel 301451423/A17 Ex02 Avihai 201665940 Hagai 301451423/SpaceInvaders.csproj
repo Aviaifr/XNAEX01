@@ -45,6 +45,7 @@
     <Compile Include="ScoreBoard.cs" />
     <Compile Include="Screens\MainMenu.cs" />
     <Compile Include="Screens\PlayScreen.cs" />
+    <Compile Include="Screens\ScreenOptionsScreen.cs" />
     <Compile Include="Soul.cs" />
     <Compile Include="SoulsBatch.cs" />
     <Compile Include="MothershipEnemy.cs" />
