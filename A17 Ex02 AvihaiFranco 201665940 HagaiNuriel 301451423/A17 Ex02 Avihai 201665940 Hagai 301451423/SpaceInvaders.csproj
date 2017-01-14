@@ -43,8 +43,10 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="IShootingObject.cs" />
     <Compile Include="ScoreBoard.cs" />
+    <Compile Include="Screens\LevelTransitionScreen.cs" />
     <Compile Include="Screens\MainMenu.cs" />
     <Compile Include="Screens\PlayScreen.cs" />
+    <Compile Include="Screens\SoundOptionsScreen.cs" />
     <Compile Include="Soul.cs" />
     <Compile Include="SoulsBatch.cs" />
     <Compile Include="MothershipEnemy.cs" />

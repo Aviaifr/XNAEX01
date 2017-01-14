@@ -39,6 +39,7 @@ namespace Space_Invaders
         private void initScreens(){
             
             m_ScreenManager.Push(new PlayScreen(this));
+            m_ScreenManager.Push(new LevelTransitionScreen(this, 1));
             m_ScreenManager.SetCurrentScreen(new MainMenu(this));
         }
 

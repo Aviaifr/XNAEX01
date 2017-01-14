@@ -17,9 +17,11 @@ namespace Space_Invaders.Screens
         private List<SpaceShipPlayer> m_Players = new List<SpaceShipPlayer>();
         private Background m_Background;
         private EnemyBatch m_EnemyBatch;
+        private int m_Level;
 
         public PlayScreen(Game i_Game):base(i_Game)
         {
+            m_Level = 1;
         }
         private int PointsCollected
         {
@@ -29,10 +31,10 @@ namespace Space_Invaders.Screens
 
         public void Enemy_OnKill(object i_EnemyKilled, EventArgs i_eventArgs)
         {
-            if (this.Count > 0)
-            {
-                SpaceShipPlayer player = m_Players.Find(spaceShipPlayer =>
+            SpaceShipPlayer player = m_Players.Find(spaceShipPlayer =>
                 (spaceShipPlayer.GameComponent as UserSpaceship) == (i_EnemyKilled as Enemy).KilledBy);
+            if (player != null)
+            {
                 player.Score += (i_EnemyKilled as Enemy).Value;
                 if(i_EnemyKilled is MothershipEnemy)
                 {
@@ -210,7 +212,7 @@ namespace Space_Invaders.Screens
             GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
         }
-
+        
         private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
             SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint, -1);

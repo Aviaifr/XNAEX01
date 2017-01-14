@@ -136,7 +136,7 @@
 #begin Fonts\Consolas.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts\Consolas.spritefont
 
 #begin Screens/blank.png
