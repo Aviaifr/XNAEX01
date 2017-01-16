@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
@@ -14,6 +15,8 @@ namespace Space_Invaders.Screens
     public class MainMenu : MenuScreen
     {
         private Background m_Background;
+        private ISettingsManager m_SettingsManager;
+
         public MainMenu(Game i_Game)
             : base(i_Game)
         {
@@ -22,12 +25,14 @@ namespace Space_Invaders.Screens
         public override void Initialize()
         {
             m_Background = new Background(this.Game, ObjectValues.BackgroundTextureString);
+            m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
+            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
             this.Add(m_Background);
             ChooseableMenuItem SoundOptions = new ChooseableMenuItem(Game, "Sound Options", @"Fonts/Consolas", Color.Blue, Color.Red);
             SoundOptions.Choose += onSoundOptionsScreen;
             ChooseableMenuItem ScreenOptions = new ChooseableMenuItem(Game, "Screen Options", @"Fonts/Consolas", Color.Blue, Color.Red);
             SettingMenuItem PlayersOption = new SettingMenuItem(Game, "Players", @"Fonts/Consolas", Color.Blue, Color.Red);
-            PlayersOption.ExtraText = "One";
+            PlayersOption.ExtraText = m_SettingsManager.NumOfPlayers == 1 ? "One" : "Two";
             PlayersOption.ToggleDown += onChangePlayerCount;
             PlayersOption.ToggleUp += onChangePlayerCount;
             ChooseableMenuItem PlayOption = new ChooseableMenuItem(Game, "Play", @"Fonts/Consolas", Color.Blue, Color.Red);
@@ -45,6 +50,8 @@ namespace Space_Invaders.Screens
 
         private void onPlay(object i_Sender, EventArgs i_EventArgs)
         {
+            this.ScreensManager = Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger;
+            ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
             this.OnClosed();
         }
 
@@ -56,17 +63,15 @@ namespace Space_Invaders.Screens
         private void onChangePlayerCount(object i_Sender, EventArgs i_EventArgs)
         {
             SettingMenuItem togglePlayer = i_Sender as SettingMenuItem;
-            if (togglePlayer != null)
+            if (togglePlayer.ExtraText.Contains("One"))
             {
-                if (togglePlayer.ExtraText.Contains("One"))
-                {
-                    togglePlayer.ExtraText = "Two";
-                }
-                else
-                {
-                    togglePlayer.ExtraText = "One";
-                }
+                m_SettingsManager.NumOfPlayers = 2;
             }
+            else
+            {
+                m_SettingsManager.NumOfPlayers = 1;
+            }
+            togglePlayer.ExtraText = m_SettingsManager.NumOfPlayers == 1 ? "One" : "Two";
         }
 
         private void onSoundOptionsScreen(object i_Sender, EventArgs i_EventArgs)

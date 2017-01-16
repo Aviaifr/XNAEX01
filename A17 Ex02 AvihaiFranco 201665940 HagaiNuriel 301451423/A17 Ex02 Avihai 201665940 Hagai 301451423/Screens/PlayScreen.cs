@@ -154,44 +154,39 @@ namespace Space_Invaders.Screens
 
         private void initPlayers()
         {
-            int textureIndex = 0;
+            int numOfPlayers = (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).NumOfPlayers;
             Vector2 startingPosition = 
                 new Vector2(0, this.GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
             Vector2 scorePosition = new Vector2(5, 20);
             SpaceShipPlayer player;
             UserSpaceship spaceShip;
             ScoreBoard scoreBoard;
-            foreach(string playerId in ObjectValues.PlayerIds)
+            for(int i=0;i< numOfPlayers;i++)
             {
-                spaceShip = 
-                    new UserSpaceship(this.Game, ObjectValues.SpaceShipTextures[textureIndex], playerId, startingPosition);
+                spaceShip =
+                    new UserSpaceship(this.Game, ObjectValues.SpaceShipTextures[i], ObjectValues.PlayerIds[i], startingPosition);
                 spaceShip.Position = startingPosition;
                 spaceShip.Shoot += spaceship_Shot;
                 this.Add(spaceShip);
 
-                player = new SpaceShipPlayer(spaceShip, playerId);
+                player = new SpaceShipPlayer(spaceShip, ObjectValues.PlayerIds[i]);
                 player.PlayerHit += Player_OnHit;
                 player.PlayerDead += Player_OnKilled;
 
-                string scoreBoardText = "P" + (textureIndex + 1) + " Score: ";
+                string scoreBoardText = "P" + (i+ 1) + " Score: ";
                 scoreBoard = new ScoreBoard(this.Game, scoreBoardText, ObjectValues.ConsolasFont);
                 scoreBoard.Position = scorePosition;
-                scoreBoard.Tint = ObjectValues.ScoreBoardsColors[textureIndex];
+                scoreBoard.Tint = ObjectValues.ScoreBoardsColors[i];
                 player.ScoreBoard = scoreBoard;
                 this.Add(scoreBoard);
 
                 m_Players.Add(player); 
-                textureIndex++;
                 startingPosition.X += ObjectValues.SpaceshipSize;
                 scorePosition.Y += 20;
+                SoulsBatch playerSouls = new SoulsBatch(this.Game, ObjectValues.SoulsColors[i], new Vector2(GraphicsDevice.Viewport.Width - 80, 20 * (i + 1)));
+                this.Add(playerSouls);
+                m_Players[i].SoulBatch = playerSouls;
             }
-
-            SoulsBatch player1Souls = new SoulsBatch(this.Game, Color.White, new Vector2(GraphicsDevice.Viewport.Width - 80, 20));
-            this.Add(player1Souls);
-            SoulsBatch player2Souls = new SoulsBatch(this.Game, Color.ForestGreen, new Vector2(GraphicsDevice.Viewport.Width - 80, 45));
-            this.Add(player2Souls);
-            m_Players[0].SoulBatch = player1Souls;
-            m_Players[1].SoulBatch = player2Souls;
         }
 
         private Vector2 getEnemyPosition(int i_row, int i_col)

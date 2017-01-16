@@ -31,5 +31,6 @@ namespace Space_Invaders
         public static readonly string DeathAnimation = "DeathAnimation";
         public static readonly List<string> PlayerIds = new List<string> { k_PlayerOneId, k_PlayerTwoId };
         public static readonly Color[] ScoreBoardsColors = new Color[] { Color.Blue, Color.Green };
+        public static readonly Color[] SoulsColors = new Color[] { Color.White, Color.Green };
     }
 }

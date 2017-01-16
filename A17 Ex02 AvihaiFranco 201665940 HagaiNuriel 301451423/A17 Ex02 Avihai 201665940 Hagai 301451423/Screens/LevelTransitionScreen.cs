@@ -47,6 +47,11 @@ namespace Space_Invaders.Screens
             m_StartingIn.ExtraText = ((int)Math.Round(m_TimeToStart)).ToString();
             if (m_TimeToStart <= 0)
             {
+                if (m_Level == 1)
+                {
+                    this.ScreensManager = Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger;
+                    ScreensManager.SetCurrentScreen(new PlayScreen(Game));
+                }
                 this.OnClosed();
             }
             base.Update(gameTime);

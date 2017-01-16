@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
@@ -16,7 +17,10 @@ namespace Space_Invaders
         private SpriteBatch m_SpriteBatch;
         private PlayersManager m_PlayersManager;
         private ScreensMananger m_ScreenManager;
-
+        private SettingsManager m_settingsManager;
+        private InputManager m_inputManager;
+        private Song m_BGMusicSong;
+        
         public SpaceInvaderGame()
         {
             m_Graphics = new GraphicsDeviceManager(this);
@@ -31,22 +35,20 @@ namespace Space_Invaders
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
             initManagers();
+            new SoundEffectsPlayer(this,m_settingsManager);
             initScreens();
             base.Initialize();
-
         }
         
         private void initScreens(){
-            
-            m_ScreenManager.Push(new PlayScreen(this));
-            m_ScreenManager.Push(new LevelTransitionScreen(this, 1));
             m_ScreenManager.SetCurrentScreen(new MainMenu(this));
         }
 
         private void initManagers()
         {
-            new InputManager(this);
+            m_inputManager = new InputManager(this);
             new CollisionsManager(this);
+            m_settingsManager = new SettingsManager(this);
             m_ScreenManager = new ScreensMananger(this);
             m_PlayersManager = initPlayersManager();
         }
@@ -62,6 +64,14 @@ namespace Space_Invaders
             }
 
             return playersManager;
+        }
+
+        protected override void LoadContent()
+        {
+            m_BGMusicSong = Content.Load<Song>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/BGMusic"));
+            MediaPlayer.Play(m_BGMusicSong);
+            MediaPlayer.IsRepeating = true;
+            base.LoadContent();
         }
 
         private PlayerInfo mapPlayer(string i_PlayerId)
@@ -91,6 +101,14 @@ namespace Space_Invaders
             }
 
             return playerInfo;
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            if(m_inputManager.KeyPressed(Keys.OemMinus)){
+                m_settingsManager.ToggleSound();
+            }
+            base.Update(gameTime);
         }
     }
 }
