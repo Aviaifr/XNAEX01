@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.Menu;
 using GameInfrastructure.ServiceInterfaces;
@@ -17,6 +18,8 @@ namespace GameInfrastructure.ObjectModel.Screens
         private List<MenuItem> m_MenuItems;
         private Vector2 m_MenuStartDrawPosition;
         private int m_CurrentIndex;
+        protected SoundEffect SelectionChangeSoundEffect { get; set; }
+
         public MenuScreen(Game i_Game):base(i_Game)
         {
             m_CurrentIndex = 0;
@@ -39,16 +42,31 @@ namespace GameInfrastructure.ObjectModel.Screens
                 m_MenuItems[m_CurrentIndex].isActive = false;
                 m_CurrentIndex--;
                 m_CurrentIndex = m_CurrentIndex < 0 ? m_MenuItems.Count - 1 : m_CurrentIndex;
+                itemChanged();
             }
             
             if (inputManager.KeyPressed(Keys.Down))
             {
                 m_MenuItems[m_CurrentIndex].isActive = false;
                 m_CurrentIndex = (m_CurrentIndex + 1) % m_MenuItems.Count;
+                itemChanged();
             }
 
             m_MenuItems[m_CurrentIndex].isActive = true;
             base.Update(gameTime);
+        }
+
+        protected virtual void itemChanged()
+        {
+            if (SelectionChangeSoundEffect != null)
+            {
+                ISoundEffectsPlayer soundEffectsPlayer = Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer;
+                if(soundEffectsPlayer != null)
+                {
+                    soundEffectsPlayer.PlaySoundEffect(SelectionChangeSoundEffect);
+                }
+            }
+            
         }
     }
 }

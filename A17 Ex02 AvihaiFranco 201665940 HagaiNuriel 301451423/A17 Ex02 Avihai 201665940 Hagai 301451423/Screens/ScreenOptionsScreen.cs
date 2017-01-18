@@ -36,7 +36,8 @@ namespace Space_Invaders.Screens
 
             SettingMenuItem FullScreenMode =
                  new SettingMenuItem(Game, "Full Screen Mode", @"Fonts/Consolas", Color.Blue, Color.Red);
-            FullScreenMode.ExtraText = "On";
+
+            FullScreenMode.ExtraText = "Off";
             FullScreenMode.ToggleDown += onFullScreenModeToggled;
             FullScreenMode.ToggleUp += onFullScreenModeToggled;
 
