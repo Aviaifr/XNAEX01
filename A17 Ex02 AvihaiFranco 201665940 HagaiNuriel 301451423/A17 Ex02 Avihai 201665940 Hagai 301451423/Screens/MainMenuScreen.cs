@@ -12,12 +12,12 @@ using GameInfrastructure.Menu;
 
 namespace Space_Invaders.Screens
 {
-    public class MainMenu : MenuScreen
+    public class MainMenuScreen : MenuScreen
     {
         private Background m_Background;
         private ISettingsManager m_SettingsManager;
 
-        public MainMenu(Game i_Game)
+        public MainMenuScreen(Game i_Game)
             : base(i_Game)
         {
         }
@@ -26,7 +26,7 @@ namespace Space_Invaders.Screens
         {
             m_Background = new Background(this.Game, ObjectValues.BackgroundTextureString);
             m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
-            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
+            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>(System.IO.Path.GetFullPath(@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
             this.Add(m_Background);
             ChooseableMenuItem SoundOptions = new ChooseableMenuItem(Game, "Sound Options", @"Fonts/Consolas", Color.Blue, Color.Red);
             SoundOptions.Choose += onSoundOptionsScreen;
