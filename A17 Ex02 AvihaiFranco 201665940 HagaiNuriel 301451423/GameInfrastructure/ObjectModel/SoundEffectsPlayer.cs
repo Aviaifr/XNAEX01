@@ -11,7 +11,8 @@ namespace GameInfrastructure.ObjectModel
 {
     public class SoundEffectsPlayer : GameService, ISoundEffectsPlayer
     {
-        ISettingsManager m_SettingsManager;
+        private ISettingsManager m_SettingsManager;
+
         public SoundEffectsPlayer(Game i_Game, ISettingsManager i_SettingsManager)
             : base(i_Game)
         {
@@ -20,12 +21,13 @@ namespace GameInfrastructure.ObjectModel
         
         public void PlaySoundEffect(SoundEffect i_EffectToPlay)
         {
+            SoundEffectInstance instance = i_EffectToPlay.CreateInstance();
             if (!m_SettingsManager.SoundsMuted)
             {
-                SoundEffectInstance instance = i_EffectToPlay.CreateInstance();
                 instance.Volume = m_SettingsManager.SoundFXVolume;
-                instance.Play();
             }
+
+            instance.Play();
         }
 
         protected override void RegisterAsService()

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.ServiceInterfaces;
 using GameInfrastructure.ObjectModel.Animators;
 
@@ -27,6 +28,7 @@ namespace GameInfrastructure.ObjectModel
         protected BlendState m_BlendState = BlendState.NonPremultiplied;
         protected bool m_isCollidable = true;
         protected Color[] m_TextureColorData;
+        protected Dictionary<string, SoundEffect> m_Sounds = new Dictionary<string,SoundEffect>();
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {
@@ -45,6 +47,17 @@ namespace GameInfrastructure.ObjectModel
 
         public Sprite(Game i_Game, string i_TesxtureString, int i_CallsOrder) : base(i_TesxtureString, i_Game, i_CallsOrder)
         {
+        }
+
+        public SoundEffect GetSound(string i_SoundName)
+        {
+            SoundEffect returnedSound = null;
+            if (m_Sounds.ContainsKey(i_SoundName))
+            {
+                returnedSound = m_Sounds[i_SoundName];
+            }
+
+            return returnedSound;
         }
 
         public Color Tint

@@ -13,42 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Spaceship/Ship01_32x32.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=False
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Spaceship/Ship01_32x32.png
-
-#begin Shots/Bullet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=False
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Shots/Bullet.png
-
-#begin Spaceship/Ship02_32x32.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=False
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Spaceship/Ship02_32x32.png
-
 #begin Backgrounds/BG_Space01_1024x768.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -60,30 +24,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Backgrounds/BG_Space01_1024x768.jpg
-
-#begin Barriers/Barrier_44x32.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=False
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Barriers/Barrier_44x32.png
-
-#begin Enemies/EnemiesTexture.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=False
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Enemies/EnemiesTexture.png
 
 #begin Enemies/Enemy0101_32x32.png
 /importer:TextureImporter
@@ -133,6 +73,66 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/MotherShip_32x120.png
 
+#begin Spaceship/Ship01_32x32.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Spaceship/Ship01_32x32.png
+
+#begin Shots/Bullet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Shots/Bullet.png
+
+#begin Barriers/Barrier_44x32.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Barriers/Barrier_44x32.png
+
+#begin Spaceship/Ship02_32x32.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Spaceship/Ship02_32x32.png
+
+#begin Enemies/EnemiesTexture.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/EnemiesTexture.png
+
 #begin Fonts\Consolas.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -163,61 +163,61 @@
 /processorParam:TextureFormat=Color
 /build:Screens/gradient.png
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/BarrierHit.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/BarrierHit.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/BarrierHit.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/BGMusic.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/BGMusic.wav
 /importer:WavImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/BGMusic.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/EnemyGunShot.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/EnemyGunShot.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/EnemyGunShot.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/EnemyKill.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/EnemyKill.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/EnemyKill.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/GameOver.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/GameOver.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/GameOver.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/LevelWin.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/LevelWin.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/LevelWin.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/LifeDie.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/LifeDie.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/LifeDie.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/MenuMove.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/MotherShipKill.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/MotherShipKill.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:C:/Temp/XNA_Assets/Ex03/Sounds/MotherShipKill.wav
 
-#begin C:/Temp/XNA_Assets/Ex03/Sounds/SSGunShot.wav
+#begin Temp/XNA_Assets/Ex03/Sounds/SSGunShot.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best

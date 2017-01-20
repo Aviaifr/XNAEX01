@@ -1,4 +1,3 @@
-//*** Guy Ronen © 2008-2011 ***//
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -18,9 +18,10 @@ namespace GameInfrastructure.ObjectModel.Screens
         private List<MenuItem> m_MenuItems;
         private Vector2 m_MenuStartDrawPosition;
         private int m_CurrentIndex;
+
         protected SoundEffect SelectionChangeSoundEffect { get; set; }
 
-        public MenuScreen(Game i_Game):base(i_Game)
+        public MenuScreen(Game i_Game) : base(i_Game)
         {
             m_CurrentIndex = 0;
             m_MenuItems = new List<MenuItem>();
@@ -30,13 +31,13 @@ namespace GameInfrastructure.ObjectModel.Screens
         public void AddOption(MenuItem i_MenuItem)
         {
             m_MenuItems.Add(i_MenuItem);
-            i_MenuItem.Position = new Vector2(m_MenuStartDrawPosition.X,m_MenuStartDrawPosition.Y  + m_MenuItems.Count * 30);
+            i_MenuItem.Position = new Vector2(m_MenuStartDrawPosition.X, m_MenuStartDrawPosition.Y  + (m_MenuItems.Count * 30));
             Add(i_MenuItem);
         }
         
         public override void Update(GameTime gameTime)
         {
-            IInputManager inputManager = (Game.Services.GetService(typeof(IInputManager)) as IInputManager);
+            IInputManager inputManager = Game.Services.GetService(typeof(IInputManager)) as IInputManager;
             if (inputManager.KeyPressed(Keys.Up))
             {
                 m_MenuItems[m_CurrentIndex].isActive = false;
@@ -65,8 +66,7 @@ namespace GameInfrastructure.ObjectModel.Screens
                 {
                     soundEffectsPlayer.PlaySoundEffect(SelectionChangeSoundEffect);
                 }
-            }
-            
+            }   
         }
     }
 }

@@ -35,13 +35,14 @@ namespace Space_Invaders
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
             initManagers();
-            new SoundEffectsPlayer(this,m_settingsManager);
+            new SoundEffectsPlayer(this, m_settingsManager);
             initScreens();
             base.Initialize();
         }
         
-        private void initScreens(){
-            m_ScreenManager.SetCurrentScreen(new MainMenuScreen(this));
+        private void initScreens()
+        {
+            m_ScreenManager.SetCurrentScreen(new WellcomeScreen(this));
         }
 
         private void initManagers()
@@ -105,9 +106,11 @@ namespace Space_Invaders
 
         protected override void Update(GameTime gameTime)
         {
-            if(m_inputManager.KeyPressed(Keys.OemMinus)){
-                m_settingsManager.ToggleSound();
+            if(m_inputManager.KeyPressed(Keys.OemMinus))
+            {
+                m_settingsManager.ToggleSounds();
             }
+
             base.Update(gameTime);
         }
     }

@@ -19,10 +19,11 @@ namespace Space_Invaders.Screens
         private EnemyBatch m_EnemyBatch;
         private int m_Level;
 
-        public PlayScreen(Game i_Game):base(i_Game)
+        public PlayScreen(Game i_Game) : base(i_Game)
         {
             m_Level = 1;
         }
+
         private int PointsCollected
         {
             get;
@@ -126,7 +127,7 @@ namespace Space_Invaders.Screens
             }
 
             System.Windows.Forms.MessageBox.Show(msg, "Game Over");
-            //this.Exit(); TODO: when game is overS
+            ///this.Exit(); TODO: when game is overS
         }
 
         public override void Initialize()
@@ -161,7 +162,7 @@ namespace Space_Invaders.Screens
             SpaceShipPlayer player;
             UserSpaceship spaceShip;
             ScoreBoard scoreBoard;
-            for(int i=0;i< numOfPlayers;i++)
+            for(int i = 0; i < numOfPlayers; i++)
             {
                 spaceShip =
                     new UserSpaceship(this.Game, ObjectValues.SpaceShipTextures[i], ObjectValues.PlayerIds[i], startingPosition);
@@ -173,7 +174,7 @@ namespace Space_Invaders.Screens
                 player.PlayerHit += Player_OnHit;
                 player.PlayerDead += Player_OnKilled;
 
-                string scoreBoardText = "P" + (i+ 1) + " Score: ";
+                string scoreBoardText = "P" + (i + 1) + " Score: ";
                 scoreBoard = new ScoreBoard(this.Game, scoreBoardText, ObjectValues.ConsolasFont);
                 scoreBoard.Position = scorePosition;
                 scoreBoard.Tint = ObjectValues.ScoreBoardsColors[i];

@@ -12,8 +12,9 @@ namespace Space_Invaders
         private Vector2 m_Position;
         private Color m_TintColor;
         private Texture2D m_Texture;
+
         public Background(Game i_Game, string i_TextureString) :
-            base(i_TextureString,i_Game, int.MinValue)
+            base(i_TextureString, i_Game, int.MinValue)
         {
             m_Position = Vector2.Zero;
             m_TintColor = Color.Gray;

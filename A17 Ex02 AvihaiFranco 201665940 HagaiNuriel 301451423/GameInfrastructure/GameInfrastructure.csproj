@@ -49,6 +49,8 @@
     <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Menu\ChooseableMenuItem.cs" />
     <Compile Include="Menu\SettingMenuItem.cs" />
+    <Compile Include="ObjectModel\DrawableComparer.cs" />
+    <Compile Include="ObjectModel\GameComponentEventArgs.cs" />
     <Compile Include="ObjectModel\Screens\MenuScreen.cs" />
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="ObjectModel\Animators\CompositeAnimator.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="ObjectModel\SoundEffectsPlayer.cs" />
     <Compile Include="ObjectModel\Sprite.cs" />
     <Compile Include="ObjectModel\TextComponent.cs" />
+    <Compile Include="ObjectModel\UpdateableComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceInterfaces\ICollisionsManager.cs" />
     <Compile Include="ServiceInterfaces\IInputManager.cs" />

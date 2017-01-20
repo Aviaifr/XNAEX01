@@ -44,9 +44,11 @@
     <Compile Include="IShootingObject.cs" />
     <Compile Include="ScoreBoard.cs" />
     <Compile Include="Screens\LevelTransitionScreen.cs" />
-    <Compile Include="Screens\MainMenu.cs" />
+    <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\PlayScreen.cs" />
+    <Compile Include="Screens\ScreenOptionsScreen.cs" />
     <Compile Include="Screens\SoundOptionsScreen.cs" />
+    <Compile Include="Screens\WellcomeScreen.cs" />
     <Compile Include="Soul.cs" />
     <Compile Include="SoulsBatch.cs" />
     <Compile Include="MothershipEnemy.cs" />

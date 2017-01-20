@@ -18,7 +18,7 @@ namespace Space_Invaders.Screens
         private ISettingsManager m_SettingsManager;
         private SettingMenuItem m_ToggleSound;
 
-        public SoundOptionsScreen(Game i_Game):base(i_Game)
+        public SoundOptionsScreen(Game i_Game) : base(i_Game)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Space_Invaders.Screens
         {
             SettingMenuItem SoundFXOption;
             SettingMenuItem MusicOption;
-            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
+            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>((@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
             m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
             m_Background = new Background(this.Game, ObjectValues.BackgroundTextureString);
             this.Add(m_Background);
@@ -35,11 +35,11 @@ namespace Space_Invaders.Screens
             SoundFXOption.ToggleUp += onSFXVolumeUp;
             SoundFXOption.ToggleDown += onSFXVolumeDown;
             MusicOption = new SettingMenuItem(Game, "Background Music Volume", @"Fonts/Consolas", Color.Blue, Color.Red);
-            MusicOption.ExtraText = Math.Round(m_SettingsManager.BGMusicVolume * 100).ToString(); ;
+            MusicOption.ExtraText = Math.Round(m_SettingsManager.BGMusicVolume * 100).ToString();
             MusicOption.ToggleUp += onBGMusicVolumeUp;
             MusicOption.ToggleDown += onBGMusicVolumeDown;
             m_ToggleSound = new SettingMenuItem(Game, "Toggle Sound", @"Fonts/Consolas", Color.Blue, Color.Red);
-            m_ToggleSound.ExtraText = m_SettingsManager.SoundsMuted ? "On" : "Off";
+            UpdateSoundStatus(null, null);
             m_ToggleSound.ToggleUp += onToggleSounds;
             m_ToggleSound.ToggleDown += onToggleSounds;
             m_SettingsManager.MutedChange += UpdateSoundStatus;
@@ -59,13 +59,13 @@ namespace Space_Invaders.Screens
 
         private void onChooseDone(object i_Sender, EventArgs i_EventArgs)
         {
-            this.OnClosed();
+            this.ExitScreen();
         }
 
         private void onToggleSounds(object i_Sender, EventArgs i_EventArgs)
         {
             SettingMenuItem toggledOption = i_Sender as SettingMenuItem;
-            m_SettingsManager.ToggleSound();
+            m_SettingsManager.ToggleSounds();
             UpdateSoundStatus(null, null);
         }
 
