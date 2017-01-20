@@ -23,21 +23,20 @@ namespace Space_Invaders.Screens
         {
             TextComponent wellcomTextComponent = new TextComponent(Game, "Wellcome To Space Invaders", @"Fonts/Consolas");
             wellcomTextComponent.Scale = new Vector2(3, 5);
-            TextComponent startGameTextComponent = new TextComponent(Game, "Press 'Enter' To Start The Game", @"Fonts/Consolas");
-            TextComponent mainMenuTextComponent = new TextComponent(Game, "Press 'm' For Main Menu", @"Fonts/Consolas");
-            TextComponent closeGameTextComponent = new TextComponent(Game, "Press 'Esc' To Quit", @"Fonts/Consolas");
-            wellcomTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 200);
-            mainMenuTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 300);
-            startGameTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 340);
-            closeGameTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 380);
+            TextComponent startGameTextComponent = new TextComponent(Game,
+@"Press 'Enter' To Start The Game
+Press 'M' For Main Menu
+Press 'Esc' To Quit",
+                    @"Fonts/Consolas");
+            wellcomTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
             wellcomTextComponent.AlignToCenter();
-            mainMenuTextComponent.AlignToCenter();
+            startGameTextComponent.Tint = Color.Gold;
+            startGameTextComponent.Scale = Vector2.One * 2;
             startGameTextComponent.AlignToCenter();
-            closeGameTextComponent.AlignToCenter();
+            startGameTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 400); ;
+            Add(new Background(this.Game, ObjectValues.BackgroundTextureString));
             Add(wellcomTextComponent);
-            Add(mainMenuTextComponent);
             Add(startGameTextComponent);
-            Add(closeGameTextComponent);
             base.Initialize();
         }
 
@@ -50,13 +49,12 @@ namespace Space_Invaders.Screens
         {
             if (this.InputManager.KeyPressed(Keys.M))
             {
-                this.ScreensManager.Remove(this);
-                this.ScreensManager.Add(new LevelTransitionScreen(Game));
+                ExitScreen();
                 this.ScreensManager.SetCurrentScreen(new MainMenuScreen(Game));
             }
             else if(this.InputManager.KeyPressed(Keys.Enter))
             {
-                this.ScreensManager.Remove(this);
+                ExitScreen();
                 this.ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
             }
             else if (this.InputManager.KeyPressed(Keys.Escape))

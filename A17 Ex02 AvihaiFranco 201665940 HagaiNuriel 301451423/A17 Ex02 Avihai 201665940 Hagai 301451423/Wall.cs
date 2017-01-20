@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
 using GameInfrastructure.ObjectModel.Animators;
@@ -24,6 +25,7 @@ namespace Space_Invaders
         
         public void Collided(ICollidable i_Collidable)
         {
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(GetSound("hit"));
             for (int i = 0; i < m_TextureColorData.Length; i++)
             {
                 Point indexToPoint = new Point((int)m_Position.X + (i % m_Texture.Width), (int)m_Position.Y + (i / m_Texture.Width));
@@ -32,6 +34,12 @@ namespace Space_Invaders
                     m_TextureColorData[i].A = 0;
                 }
             }
+        }
+
+        public override void Initialize()
+        {
+            m_Sounds.Add("hit", Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/BarrierHit"));
+            base.Initialize();
         }
 
         public override bool IsPixelBasedCollision(ICollidable i_Source)

@@ -58,12 +58,7 @@ namespace GameInfrastructure.ObjectModel
             m_SpriteFontLocation = i_SpriteFontLocation;
             Scale = Vector2.One;
             m_SpriteFont = this.Game.Content.Load<SpriteFont>(m_SpriteFontLocation);
-        }
-
-        protected override void LoadContent()
-        {
             Tint = Color.White;
-            base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)

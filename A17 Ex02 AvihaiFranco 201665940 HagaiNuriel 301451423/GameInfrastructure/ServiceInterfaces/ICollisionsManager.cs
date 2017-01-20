@@ -12,6 +12,8 @@ namespace GameInfrastructure.ServiceInterfaces
     public interface ICollisionsManager
     {
         void AddObjectToMonitor(ICollidable i_Collidable);
+
+        void ClearCollidable();
     }
 
     public interface ICollidable

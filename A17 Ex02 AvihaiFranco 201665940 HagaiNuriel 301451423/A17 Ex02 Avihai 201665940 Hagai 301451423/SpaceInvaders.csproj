@@ -43,6 +43,7 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="IShootingObject.cs" />
     <Compile Include="ScoreBoard.cs" />
+    <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\LevelTransitionScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\PlayScreen.cs" />

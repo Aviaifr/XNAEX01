@@ -28,7 +28,7 @@ namespace GameInfrastructure.ObjectModel
         protected BlendState m_BlendState = BlendState.NonPremultiplied;
         protected bool m_isCollidable = true;
         protected Color[] m_TextureColorData;
-        protected Dictionary<string, SoundEffect> m_Sounds = new Dictionary<string,SoundEffect>();
+        protected Dictionary<string, SoundEffect> m_Sounds = new Dictionary<string, SoundEffect>();
 
         public Sprite(Game i_Game, string i_TextureString) : base(i_TextureString, i_Game)
         {

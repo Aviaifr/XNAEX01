@@ -18,6 +18,8 @@ namespace Space_Invaders
 
         public event EventHandler<EventArgs> Shoot;
 
+        public event EventHandler DeathAnimationFinished;
+
         private readonly Vector2 m_BeginningPosition;
 
         private bool m_IsFirstUpdate = true;
@@ -92,7 +94,11 @@ namespace Space_Invaders
 
         private void DeathCompositeAnimator_Finished(object sender, EventArgs e)
         {
-            Game.Components.Remove(this);
+            if (DeathAnimationFinished != null)
+            {
+                DeathAnimationFinished(this, EventArgs.Empty);
+            }
+            (Game.Services.GetService(typeof(IScreensMananger)) as ScreensMananger).ActiveScreen.Remove(this);
         }
 
         private void HitAnimator_Finished(object sender, EventArgs e)

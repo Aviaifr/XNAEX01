@@ -25,9 +25,8 @@ namespace GameInfrastructure.ObjectModel
             if (!m_SettingsManager.SoundsMuted)
             {
                 instance.Volume = m_SettingsManager.SoundFXVolume;
+                instance.Play();
             }
-
-            instance.Play();
         }
 
         protected override void RegisterAsService()

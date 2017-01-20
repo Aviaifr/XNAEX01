@@ -15,13 +15,14 @@ namespace GameInfrastructure.Managers
         private IInputManager m_InputManager;
         private Dictionary<string, PlayerInfo> m_PlayersInfo = 
             new Dictionary<string, PlayerInfo>();
+        private List<IPlayer> m_Players = new List<IPlayer>();
 
         public PlayersManager(Game i_Game) :
             base(i_Game, int.MaxValue)
         {
             m_Game = i_Game;
         }
-
+        
         public override void Initialize()
         {
             m_InputManager = m_Game.Services.GetService(typeof(IInputManager)) as IInputManager;
@@ -43,6 +44,27 @@ namespace GameInfrastructure.Managers
             {
                 m_PlayersInfo = value;
             }
+        }
+
+        public IPlayer GetPlayerByIndex(int i_Index)
+        {
+            IPlayer result = null;
+            if (i_Index < m_Players.Count)
+            {
+                result = m_Players[i_Index];
+            }
+
+            return result;;
+        }
+
+        public void ClearPlayers()
+        {
+            m_Players = new List<IPlayer>();
+        }
+
+        public void AddPlayer(IPlayer i_PlayerToAdd)
+        {
+            m_Players.Add(i_PlayerToAdd);
         }
 
         public bool DidPress(string i_PlayerId, eActions i_Action)

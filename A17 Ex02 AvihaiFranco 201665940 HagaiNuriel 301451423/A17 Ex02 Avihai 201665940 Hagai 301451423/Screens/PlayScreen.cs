@@ -17,11 +17,9 @@ namespace Space_Invaders.Screens
         private List<SpaceShipPlayer> m_Players = new List<SpaceShipPlayer>();
         private Background m_Background;
         private EnemyBatch m_EnemyBatch;
-        private int m_Level;
 
         public PlayScreen(Game i_Game) : base(i_Game)
         {
-            m_Level = 1;
         }
 
         private int PointsCollected
@@ -34,6 +32,7 @@ namespace Space_Invaders.Screens
         {
             SpaceShipPlayer player = m_Players.Find(spaceShipPlayer =>
                 (spaceShipPlayer.GameComponent as UserSpaceship) == (i_EnemyKilled as Enemy).KilledBy);
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect((i_EnemyKilled as Enemy).GetSound("hit"));
             if (player != null)
             {
                 player.Score += (i_EnemyKilled as Enemy).Value;
@@ -56,7 +55,9 @@ namespace Space_Invaders.Screens
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
         {
-            enablePlayerSpaceshipAnimation(i_HitPlayer as SpaceShipPlayer);
+            SpaceShipPlayer player = i_HitPlayer as SpaceShipPlayer;
+            enablePlayerSpaceshipAnimation(player);
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect((player.GameComponent as UserSpaceship).GetSound("hit"));
         }
 
         private void enablePlayerSpaceshipAnimation(SpaceShipPlayer i_Player)
@@ -76,8 +77,6 @@ namespace Space_Invaders.Screens
                 playerSprite.isCollidable = false;
                 playerSprite.Animations.Enable(ObjectValues.DeathAnimation);
             }
-
-            checkGameOver();
         }
 
         private void checkGameOver()
@@ -99,43 +98,15 @@ namespace Space_Invaders.Screens
 
         public void GameOver()
         {
-            List<string> winnerList = new List<string>();
-            int maxScore = 0;
-            string msg = string.Format("Scores:{0}", Environment.NewLine);
-            foreach (Player player in m_Players)
-            {
-                msg = string.Format("{0}{1} : {2}{3}", msg, player.PlayerId, player.Score.ToString(), Environment.NewLine);
-                if (player.Score > maxScore)
-                {
-                    maxScore = player.Score;
-                    winnerList.Clear();
-                    winnerList.Add(player.PlayerId);
-                }
-                else if (player.Score == maxScore)
-                {
-                    winnerList.Add(player.PlayerId);
-                }
-            }
-
-            if (winnerList.Count >= 2)
-            {
-                msg = string.Format("{0}Tie!", msg);
-            }
-            else
-            {
-                msg = string.Format("{0}{1} Wins!", msg, winnerList[winnerList.Count - 1]);
-            }
-
-            System.Windows.Forms.MessageBox.Show(msg, "Game Over");
-            ///this.Exit(); TODO: when game is overS
+            ExitScreen();
         }
 
         public override void Initialize()
         {
             m_Background = new Background(this.Game, ObjectValues.BackgroundTextureString);
             this.Add(m_Background);
+            (Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager).ClearCollidable();
             initPlayers();
-
             m_EnemyBatch = new EnemyBatch(this.Game);
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             m_EnemyBatch.EnemyReachedBottom += Enemy_OnReachBottom;
@@ -166,6 +137,7 @@ namespace Space_Invaders.Screens
             {
                 spaceShip =
                     new UserSpaceship(this.Game, ObjectValues.SpaceShipTextures[i], ObjectValues.PlayerIds[i], startingPosition);
+                spaceShip.DeathAnimationFinished += OnSpaceshipDeathAnimationOver;
                 spaceShip.Position = startingPosition;
                 spaceShip.Shoot += spaceship_Shot;
                 this.Add(spaceShip);
@@ -173,6 +145,8 @@ namespace Space_Invaders.Screens
                 player = new SpaceShipPlayer(spaceShip, ObjectValues.PlayerIds[i]);
                 player.PlayerHit += Player_OnHit;
                 player.PlayerDead += Player_OnKilled;
+                (Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager).ClearPlayers();
+                (Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager).AddPlayer(player);
 
                 string scoreBoardText = "P" + (i + 1) + " Score: ";
                 scoreBoard = new ScoreBoard(this.Game, scoreBoardText, ObjectValues.ConsolasFont);
@@ -188,6 +162,11 @@ namespace Space_Invaders.Screens
                 this.Add(playerSouls);
                 m_Players[i].SoulBatch = playerSouls;
             }
+        }
+
+        public void OnSpaceshipDeathAnimationOver(object i_Sender, EventArgs i_EventArgs)
+        {
+            checkGameOver();
         }
 
         private Vector2 getEnemyPosition(int i_row, int i_col)
@@ -212,6 +191,7 @@ namespace Space_Invaders.Screens
         private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
             SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint, -1);
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect((i_Sender as UserSpaceship).GetSound("shoot"));
             newBullet.Initialize();
             newBullet.Owner = i_Sender as UserSpaceship;
             setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);

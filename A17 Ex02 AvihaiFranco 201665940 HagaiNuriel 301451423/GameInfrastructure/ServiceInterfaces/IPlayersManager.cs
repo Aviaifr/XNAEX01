@@ -30,6 +30,12 @@ namespace GameInfrastructure.ServiceInterfaces
     {
         Dictionary<string, PlayerInfo> PlyersInfo { get; set; }
 
+        IPlayer GetPlayerByIndex(int i_index);
+
+        void AddPlayer(IPlayer i_Player);
+
+        void ClearPlayers();
+
         bool DidPress(string i_PlayerId, eActions i_Action);
     }
 }
