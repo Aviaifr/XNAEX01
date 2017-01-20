@@ -89,12 +89,13 @@ namespace Space_Invaders
         {
             SpaceBullet newBullet = new SpaceBullet
                 (this.Game, ObjectValues.BulletTextureString, r_EnemyBulletTint);
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect((i_Sender as Enemy).GetSound("shoot"));
             newBullet.Initialize();
             newBullet.Owner = i_Sender as Sprite;
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
             newBullet.Disposed += (i_Sender as Enemy).OnMyBulletDisappear;
-            this.Game.Components.Add(newBullet);
+            (Game.Services.GetService(typeof(IScreensMananger)) as ScreensMananger).ActiveScreen.Add(newBullet);
         }
 
         public void onComponentDisposed(object i_Disposed, EventArgs i_EventArgs)
@@ -112,10 +113,7 @@ namespace Space_Invaders
                     EnemyKilled(i_Disposed, i_EventArgs);
                 }
             }
-            else if (this.Game.Components != null)
-            {
-                this.Game.Components.Remove(i_Disposed as IGameComponent);
-            }
+            (Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger).ActiveScreen.Remove(i_Disposed as IGameComponent);
         }
 
         private void setNewEnemyBulletPosition(Enemy i_EnemyShot, SpaceBullet i_newBullet)

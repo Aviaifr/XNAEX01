@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
@@ -66,6 +67,7 @@ namespace Space_Invaders
         {
             m_TimeBetweenJumps = 0.5f;
             base.Initialize();
+            initSounds();
             m_timeSinceMoved = 0;
             m_Velocity.X = m_Texture.Width / 2;
             m_TimeBetweenJumps = 0.5f;
@@ -190,6 +192,12 @@ namespace Space_Invaders
         internal void UpdateCellSpeed(TimeSpan i_NewCellTime)
         {
             (m_Animations["Cell"] as CellAnimator).CellTime = i_NewCellTime;
+        }
+
+        protected virtual void initSounds()
+        {
+            m_Sounds.Add("shoot", Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/EnemyGunShot"));
+            m_Sounds.Add("hit", Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/EnemyKill"));
         }
     }
 }

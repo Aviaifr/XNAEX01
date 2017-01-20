@@ -10,22 +10,24 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Space_Invaders
 {
-    public class ScoreBoard : DrawableGameComponent
+    public class ScoreBoard : DynamicDrawableComponent
     {
         private string m_Text;
         private string m_SpriteFontLocation;
         private SpriteFont m_SpriteFont;
-        private Game m_Game;
         private Vector2 m_Position;
         private int m_ScoreValue;
         private Color m_Tint;
 
         public ScoreBoard(Game i_Game, string i_Text, string i_SpriteFontLocation)
-            : base(i_Game)
+            : base(i_SpriteFontLocation, i_Game, int.MaxValue)
         {
-            m_Game = i_Game;
             m_Text = i_Text;
             m_SpriteFontLocation = i_SpriteFontLocation;
+        }
+
+        protected override void InitBounds()
+        {
         }
 
         public Vector2 Position
@@ -48,14 +50,14 @@ namespace Space_Invaders
 
         protected override void LoadContent()
         {
-            m_SpriteFont = m_Game.Content.Load<SpriteFont>(m_SpriteFontLocation);
+            m_SpriteFont = this.Game.Content.Load<SpriteFont>(m_SpriteFontLocation);
             base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = 
-                m_Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+                this.Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             spriteBatch.Begin();
             spriteBatch.DrawString(m_SpriteFont, m_Text + m_ScoreValue.ToString(), m_Position, m_Tint);
             spriteBatch.End();

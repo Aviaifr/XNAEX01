@@ -15,6 +15,11 @@ namespace GameInfrastructure.Managers
         { 
         }
 
+        public void ClearCollidable()
+        {
+            m_Collidables.Clear();
+        }
+
         protected override void RegisterAsService()
         {
             this.Game.Services.AddService(typeof(ICollisionsManager), this);
