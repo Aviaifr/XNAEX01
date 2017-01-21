@@ -17,11 +17,13 @@ namespace Space_Invaders
         private static readonly int sr_MaxShots = 1;
 
         public event EventHandler<EventArgs> Shoot;
-        
+        public event EventHandler<EventArgs> Killed;
+
+
         private int m_Shots;
         protected float m_timeSinceMoved;
         protected float m_TimeBetweenJumps;
-        protected static int s_fireChance = 1;
+        protected float m_fireChance = 1;
         protected float m_Direction = 1;
         protected int m_NumOfJumps;
 
@@ -32,6 +34,12 @@ namespace Space_Invaders
         {
             Value = i_Value;
             WasHit = false;
+        }
+
+        public float FireChance
+        {
+            get { return m_fireChance; }
+            set { m_fireChance = value; }
         }
 
         public Sprite KilledBy
@@ -123,7 +131,7 @@ namespace Space_Invaders
             if (m_Shots < sr_MaxShots)
             {
                 int randNumToFire = s_RandomGen.Next(0, 100);
-                if (randNumToFire < s_fireChance && m_Shots < sr_MaxShots)
+                if (randNumToFire < m_fireChance && m_Shots < sr_MaxShots)
                 {
                     m_Shots++;
                     OnShoot();
@@ -136,6 +144,14 @@ namespace Space_Invaders
             if (this.Shoot != null)
             {
                 Shoot.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void OnKilled()
+        {
+            if (this.Killed != null)
+            {
+                Killed.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -164,7 +180,11 @@ namespace Space_Invaders
                 if ((i_Collidable as SpaceBullet).Velocity.Y < 0)
                 {
                     this.KilledBy = (i_Collidable as SpaceBullet).Owner;
+                    //this.Dispose();
+                    this.OnKilled();
                     this.Dispose();
+
+
                 }
             }
         }

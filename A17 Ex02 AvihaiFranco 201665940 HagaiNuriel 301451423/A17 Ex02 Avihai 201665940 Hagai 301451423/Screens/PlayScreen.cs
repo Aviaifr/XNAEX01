@@ -17,11 +17,34 @@ namespace Space_Invaders.Screens
         private List<SpaceShipPlayer> m_Players = new List<SpaceShipPlayer>();
         private Background m_Background;
         private EnemyBatch m_EnemyBatch;
+        private WallBatch m_WallBatch;
+        private MothershipEnemy m_motherShip;
         private int m_Level;
+        private InvadersDifficultyManager m_DifficultyManager;
+        
 
         public PlayScreen(Game i_Game):base(i_Game)
         {
             m_Level = 1;
+            m_DifficultyManager = new InvadersDifficultyManager(this);
+        }
+
+        public WallBatch WallBatch
+        {
+            get { return m_WallBatch; }
+            set { m_WallBatch = value; }
+        }
+
+        public MothershipEnemy MotherShip
+        {
+            get { return m_motherShip; }
+            set { m_motherShip = value; }
+        }
+
+        public EnemyBatch EnemyBatch
+        {
+            get { return m_EnemyBatch; }
+            set { m_EnemyBatch = value; }
         }
 
         private int PointsCollected
@@ -34,16 +57,19 @@ namespace Space_Invaders.Screens
         {
             SpaceShipPlayer player = m_Players.Find(spaceShipPlayer =>
                 (spaceShipPlayer.GameComponent as UserSpaceship) == (i_EnemyKilled as Enemy).KilledBy);
+            if (player != null)
+            {
                 player.Score += (i_EnemyKilled as Enemy).Value;
-                if(i_EnemyKilled is MothershipEnemy)
-                {
-                    MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
-                    motherShip.Velocity = Vector2.Zero;
-                    motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
-                }
+            }
+            if(i_EnemyKilled is MothershipEnemy)
+            {
+                MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
+                motherShip.Velocity = Vector2.Zero;
+                motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
             }
         }
-
+        
+   
         public void enemy_OnDisposed(object i_Disposed, EventArgs i_EventArgs)
         {
             if (m_EnemyBatch.EnemyCount == 0)
@@ -143,10 +169,10 @@ namespace Space_Invaders.Screens
             WallBatch wallBatch = new WallBatch(this.Game);
             this.Add(wallBatch);
 
-            MothershipEnemy mothershipEnemy = new MothershipEnemy(this.Game, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
-            mothershipEnemy.Position = new Vector2(0, ObjectValues.EnemyWidth);
-            mothershipEnemy.MothershipKilled += Enemy_OnKill;
-            this.Add(mothershipEnemy);
+            //m_motherShip = new MothershipEnemy(this.Game, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
+            //m_motherShip.Position = new Vector2(0, ObjectValues.EnemyWidth);
+            //m_motherShip.MothershipKilled += Enemy_OnKill;
+            //this.Add(m_motherShip);
 
             base.Initialize();
         }
@@ -185,6 +211,30 @@ namespace Space_Invaders.Screens
                 SoulsBatch playerSouls = new SoulsBatch(this.Game, ObjectValues.SoulsColors[i], new Vector2(GraphicsDevice.Viewport.Width - 80, 20 * (i + 1)));
                 this.Add(playerSouls);
                 m_Players[i].SoulBatch = playerSouls;
+            }
+        }
+
+        private void advanceLevel()
+        {
+            m_Level++;
+            //TODO: increase level value in SettingsManager
+            m_DifficultyManager.IncreaseDifficulty();
+            resetGameComponents();
+        }
+
+        private void resetGameComponents()
+        {
+            resetPlayers();
+            m_WallBatch.Reset();
+            m_EnemyBatch.Reset();
+        }
+
+        private void resetPlayers()
+        {
+            foreach(Player player in m_Players)
+            {
+                UserSpaceship spaceShip = player.GameComponent as UserSpaceship;
+                spaceShip.Position = spaceShip.BeginningPosition;
             }
         }
 

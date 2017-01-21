@@ -14,8 +14,8 @@ namespace Space_Invaders
 {
     public class EnemyBatch : Sprite
     {
-        private readonly int r_BatchColumns = 9;
-        private readonly int r_BatchRows = 5;
+        private readonly int[] r_InitialEnemyValues = new int[] { 240, 170, 140 };
+        private readonly int r_MotherShipInitValue = 650;
         private readonly int r_VerticalPadding = 32 * 3;
         private readonly float r_VerticalJumpLength = 32 * 0.5f;
         private readonly string r_EnemiesTextureString = @"Enemies/EnemiesTexture";
@@ -26,11 +26,50 @@ namespace Space_Invaders
         private readonly Color r_Enemy2Tint = Color.LightBlue;
         private readonly Color r_Enemy3Tint = Color.LightYellow;
         private readonly Color r_EnemyBulletTint = Color.Blue;
-        private readonly int r_Enemy1Value = 240;
-        private readonly int r_Enemy2Value = 170;
-        private readonly int r_Enemy3Value = 140;
+
+        private int m_BatchColumns;
+        private  int m_BatchRows;
+        private float m_EnemyFireChance;   
+        private int m_Enemy1Value;
+        private int m_Enemy2Value;
+        private int m_Enemy3Value;
+        private int m_MotherShipValue;
         private readonly float r_EnemySize = 32;
         private readonly Color r_EnemyButtletTint = Color.Blue;
+
+        public void IncreaseEnemyScores(int i_Value)
+        {
+            m_Enemy1Value += i_Value;
+            m_Enemy2Value += i_Value;
+            m_Enemy3Value += i_Value;
+            m_MotherShipValue += i_Value;
+        }
+
+        public void ResetEnemyValues()
+        {
+            m_Enemy1Value = r_InitialEnemyValues[0];
+            m_Enemy2Value = r_InitialEnemyValues[1];
+            m_Enemy3Value = r_InitialEnemyValues[2];
+            m_MotherShipValue = r_MotherShipInitValue; 
+        }
+
+        public int EnemyCols
+        {
+            get { return m_BatchColumns; }
+            set { m_BatchColumns = value; }
+        }
+
+        public float EnemyFireChance
+        {
+            get { return m_EnemyFireChance; }
+            set { m_EnemyFireChance = value; }
+        }
+
+        public int EnemyRows
+        {
+            get { return m_BatchRows; }
+            set { m_BatchRows = value; }
+        }
 
         public event EventHandler<EventArgs> EnemyKilled;
 
@@ -39,6 +78,7 @@ namespace Space_Invaders
         public event EventHandler<EventArgs> EnemyReachedBottom;
 
         private List<Enemy> m_Enemies;
+        private MothershipEnemy m_MotherShip;
         private int m_maxY = 0;
         private bool m_EnemyHitWall;
         private float m_XMax, m_XMin;
@@ -57,7 +97,14 @@ namespace Space_Invaders
         public EnemyBatch(Game i_Game) : base(i_Game)
         {
             m_Enemies = new List<Enemy>();
-        }
+            m_BatchColumns = 9;
+            m_BatchRows = 5;
+            m_EnemyFireChance = 1;
+            m_Enemy1Value = 240;
+            m_Enemy2Value = 170;
+            m_Enemy3Value = 140;
+            m_MotherShipValue = 650;
+       }
 
         protected override void LoadContent()
         {
@@ -65,9 +112,13 @@ namespace Space_Invaders
 
         public override void Initialize()
         {
-            for(int i = 0; i < r_BatchRows; i++)
+            m_MotherShip = new MothershipEnemy(this.Game, ObjectValues.MothershipTextureString, m_MotherShipValue);
+            m_MotherShip.Position = new Vector2(0, ObjectValues.EnemyWidth);
+            m_MotherShip.MothershipKilled += onComponentDisposed;
+            m_MotherShip.Initialize();
+            for (int i = 0; i < m_BatchRows; i++)
             {
-                for(int j = 0; j < r_BatchColumns; j++)
+                for(int j = 0; j < m_BatchColumns; j++)
                 {
                     float x = (float)(j * (1.6 * r_EnemySize));
                     float y = (float)(r_VerticalPadding + (i * 1.6 * r_EnemySize));
@@ -75,8 +126,9 @@ namespace Space_Invaders
                     newEnemy.SourceRectangle = new Rectangle(GetEnemyXLocation(i), (GetEnemyIndexInTextureByRow(i) * (int)r_EnemySize) + 1, (int)r_EnemySize, (int)r_EnemySize);
                     newEnemy.Tint = GetEnemyTintByRow(i);
                     newEnemy.Position = new Vector2(x, y);
+                    newEnemy.FireChance = this.EnemyFireChance;
                     newEnemy.Shoot += enemy_OnShoot;
-                    newEnemy.Disposed += onComponentDisposed;
+                    newEnemy.Killed += onComponentDisposed;
                     newEnemy.Initialize();
                     m_Enemies.Add(newEnemy);
                 }
@@ -99,12 +151,15 @@ namespace Space_Invaders
 
         public void onComponentDisposed(object i_Disposed, EventArgs i_EventArgs)
         {
-            if (m_Enemies.Contains(i_Disposed))
+            if (m_Enemies.Contains(i_Disposed) || i_Disposed is MothershipEnemy)
             {
-                Enemy enemy = i_Disposed as Enemy;
-                if (enemy.ActivateAnimation(ObjectValues.DeathAnimation))
+                if (m_Enemies.Contains(i_Disposed))
                 {
-                    speedUpEnemies();
+                    Enemy enemy = i_Disposed as Enemy;
+                    if (enemy.ActivateAnimation(ObjectValues.DeathAnimation))
+                    {
+                        speedUpEnemies();
+                    }
                 }
 
                 if (EnemyKilled != null)
@@ -125,6 +180,29 @@ namespace Space_Invaders
             newBulletPos.X -= i_newBullet.Width / 2;
             newBulletPos.Y += i_EnemyShot.Height;
             i_newBullet.Position = newBulletPos;
+        }
+
+        protected override void OnDisposed(object sender, EventArgs args)
+        {
+            foreach(Enemy enemy in m_Enemies)
+            {
+                enemy.Dispose();
+            }
+
+            base.OnDisposed(sender, args);
+        }
+
+        public void Reset()
+        {
+            foreach (Enemy enemy in m_Enemies)
+            {
+                enemy.Dispose();
+            }
+
+            m_MotherShip.Dispose();
+            m_Enemies.Clear();
+            m_MotherShip = null;
+            Initialize();
         }
 
         public override void Update(GameTime i_GameTime)
@@ -186,8 +264,8 @@ namespace Space_Invaders
                 updateAnimations(i_GameTime);
             }
 
-            m_Enemies.RemoveAll(enemy => enemy.WasHit == true);
-            
+            m_MotherShip.Update(i_GameTime);
+            m_Enemies.RemoveAll(enemy => enemy.WasHit == true);   
             if (NoMoreEnemies != null && EnemyCount == 0)
             {
                 NoMoreEnemies.Invoke(this, EventArgs.Empty);
@@ -260,6 +338,8 @@ namespace Space_Invaders
                 enemy.Draw(gameTime);
             }
 
+            m_MotherShip.Draw(gameTime);
+
             m_SpriteBatch.End();
         }
 
@@ -329,15 +409,15 @@ namespace Space_Invaders
             switch (i_Row)
             {
                 case 0:
-                    enemyVal = r_Enemy1Value;
+                    enemyVal = m_Enemy1Value;
                     break;
                 case 1:
                 case 2:
-                    enemyVal = r_Enemy2Value;
+                    enemyVal = m_Enemy2Value;
                     break;
                 case 3:
                 case 4:
-                    enemyVal = r_Enemy3Value;
+                    enemyVal = m_Enemy3Value;
                     break;
             }
 

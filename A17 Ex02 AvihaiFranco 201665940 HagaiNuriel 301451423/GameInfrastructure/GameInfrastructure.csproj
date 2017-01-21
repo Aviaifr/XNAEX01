@@ -73,6 +73,7 @@
     <Compile Include="ObjectModel\TextComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceInterfaces\ICollisionsManager.cs" />
+    <Compile Include="ServiceInterfaces\IDifficultyManager.cs" />
     <Compile Include="ServiceInterfaces\IInputManager.cs" />
     <Compile Include="ServiceInterfaces\IPlayer.cs" />
     <Compile Include="ServiceInterfaces\IPlayersManager.cs" />

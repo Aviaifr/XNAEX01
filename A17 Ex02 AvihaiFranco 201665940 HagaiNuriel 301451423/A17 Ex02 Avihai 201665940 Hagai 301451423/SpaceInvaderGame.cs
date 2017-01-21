@@ -69,7 +69,7 @@ namespace Space_Invaders
 
         protected override void LoadContent()
         {
-            m_BGMusicSong = Content.Load<Song>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/BGMusic"));
+            //m_BGMusicSong = Content.Load<Song>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/BGMusic"));
             MediaPlayer.Play(m_BGMusicSong);
             MediaPlayer.IsRepeating = true;
             base.LoadContent();

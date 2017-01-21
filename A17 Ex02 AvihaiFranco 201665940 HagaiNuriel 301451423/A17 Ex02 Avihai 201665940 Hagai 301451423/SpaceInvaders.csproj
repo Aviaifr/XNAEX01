@@ -41,6 +41,7 @@
     <Compile Include="Background.cs" />
     <Compile Include="EnemyBatch.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="InvadersDifficultyManager.cs" />
     <Compile Include="IShootingObject.cs" />
     <Compile Include="ScoreBoard.cs" />
     <Compile Include="Screens\LevelTransitionScreen.cs" />

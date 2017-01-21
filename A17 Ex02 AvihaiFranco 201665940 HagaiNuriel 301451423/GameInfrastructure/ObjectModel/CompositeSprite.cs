@@ -49,6 +49,16 @@ namespace GameInfrastructure.ObjectModel
             }
         }
 
+        public virtual void Empty()
+        {
+            foreach(Sprite sprite in m_SpritesList)
+            {
+                sprite.Dispose();
+            }
+
+            m_SpritesList.Clear();
+        }
+
         public override bool IsCollidedWith(ServiceInterfaces.ICollidable i_Source)
         {
             return false;
