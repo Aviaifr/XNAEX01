@@ -35,9 +35,10 @@ namespace Space_Invaders.Screens
             m_endGameText = new TextComponent(Game, string.Empty, @"Fonts/Consolas");
             m_endGameText.Position = new Vector2(100, 250);
             m_endGameText.Scale = Vector2.One * 2.5f;
-            m_endGameText .Tint = Color.Gold;
+            m_endGameText.Tint = Color.Gold;
             Add(m_endGameText);
-            TextComponent startGameTextComponent = new TextComponent(Game,
+            TextComponent startGameTextComponent = new TextComponent(
+                Game,
 @"Press 'Home' To Start A New Game
 Press 'M' For Main Menu
 Press 'Esc' To Quit",
@@ -45,7 +46,7 @@ Press 'Esc' To Quit",
             startGameTextComponent.Tint = Color.GhostWhite;
             startGameTextComponent.Scale = Vector2.One * 1.7f;
             startGameTextComponent.AlignToCenter();
-            startGameTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 500); ;
+            startGameTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 500);
             Add(new MothershipEnemy(Game, ObjectValues.MothershipTextureString, 0));
             Add(startGameTextComponent);
             base.Initialize();

@@ -182,7 +182,6 @@ namespace Space_Invaders
                 if ((i_Collidable as SpaceBullet).Velocity.Y < 0)
                 {
                     this.KilledBy = (i_Collidable as SpaceBullet).Owner;
-                    //this.Dispose();
                     this.OnKilled();
                     this.Dispose();
 

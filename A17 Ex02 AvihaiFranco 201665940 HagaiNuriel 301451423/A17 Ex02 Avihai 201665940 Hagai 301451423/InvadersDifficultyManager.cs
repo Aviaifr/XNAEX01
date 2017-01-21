@@ -13,7 +13,6 @@ namespace Space_Invaders
 {
     public class InvadersDifficultyManager : IDifficultyManager
     {
-        //Initial Const Values
         private const int k_EnemyInitCols = 9;
         private const int k_BarrierInitSpeed = 0;
         private const int k_EnemyFireChance = 1;
@@ -24,8 +23,6 @@ namespace Space_Invaders
 
         private int m_Level = 1;
         private PlayScreen m_GameScreen;
-        //private Vector2 m_BarrierSpeed;
-        //private int m_EnemyCols;
 
         public InvadersDifficultyManager(GameScreen i_GameScreen)
         {

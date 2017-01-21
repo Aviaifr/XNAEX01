@@ -27,9 +27,8 @@ namespace Space_Invaders
         private readonly Color r_Enemy2Tint = Color.LightBlue;
         private readonly Color r_Enemy3Tint = Color.LightYellow;
         private readonly Color r_EnemyBulletTint = Color.Blue;
-
         private int m_BatchColumns;
-        private  int m_BatchRows;
+        private int m_BatchRows;
         private float m_EnemyFireChance;   
         private int m_Enemy1Value;
         private int m_Enemy2Value;

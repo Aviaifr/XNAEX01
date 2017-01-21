@@ -54,7 +54,7 @@ namespace GameInfrastructure.Managers
                 result = m_Players[i_Index];
             }
 
-            return result;;
+            return result;
         }
 
         public void ClearPlayers()

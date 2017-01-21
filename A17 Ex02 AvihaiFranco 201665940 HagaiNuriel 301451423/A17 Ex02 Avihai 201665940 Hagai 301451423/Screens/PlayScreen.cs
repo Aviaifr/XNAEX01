@@ -25,7 +25,7 @@ namespace Space_Invaders.Screens
         private SoundEffect m_GameOverSound;
         private SoundEffect m_LevelWinSound;
 
-        public PlayScreen(Game i_Game):base(i_Game)
+        public PlayScreen(Game i_Game) : base(i_Game)
         {
             m_DifficultyManager = new InvadersDifficultyManager(this);
         }
@@ -194,8 +194,9 @@ namespace Space_Invaders.Screens
 
                 ScreensManager.SetCurrentScreen(m_PauseScreen);
             }
+
             base.Update(gameTime);
-            if (m_EnemyBatch.EnemyCount < 46)
+            if (m_EnemyBatch.EnemyCount  == 0)
             {
                 advanceLevel();
             }
