@@ -27,13 +27,13 @@ namespace Space_Invaders.Screens
         {
             TextComponent TitleTextComponent = new TextComponent(Game, "Game Paused", @"Fonts/Consolas");
             TitleTextComponent.Tint = Color.ForestGreen;
-            TitleTextComponent.Scale = new Vector2(4, 5);
+            TitleTextComponent.Scales = new Vector2(4, 5);
             TitleTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
             TitleTextComponent.AlignToCenter();
             Add(TitleTextComponent);
             TextComponent continueTextComponent = new TextComponent(Game, "Press 'R' To Continue", @"Fonts/Consolas");
             continueTextComponent.Position = new Vector2(100, 350);
-            continueTextComponent.Scale = Vector2.One * 2;
+            continueTextComponent.Scales = Vector2.One * 2;
             continueTextComponent.Tint = Color.Gold;
             Add(continueTextComponent);
 

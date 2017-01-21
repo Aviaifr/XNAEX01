@@ -23,17 +23,15 @@ namespace Space_Invaders.Screens
         {
             (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level = 1;
             TextComponent wellcomTextComponent = new TextComponent(Game, "Wellcome To Space Invaders", @"Fonts/Consolas");
-            wellcomTextComponent.Scale = new Vector2(3, 5);
+            wellcomTextComponent.Scales = new Vector2(3, 5);
             TextComponent startGameTextComponent = new TextComponent(
                 Game,
-@"Press 'Enter' To Start The Game
-Press 'M' For Main Menu
-Press 'Esc' To Quit",
+                "Press 'Enter' To Start The Game" + Environment.NewLine + "Press 'M' For Main Menu" + Environment.NewLine + "Press 'Esc' To Quit",
                     @"Fonts/Consolas");
             wellcomTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
             wellcomTextComponent.AlignToCenter();
             startGameTextComponent.Tint = Color.Gold;
-            startGameTextComponent.Scale = Vector2.One * 2;
+            startGameTextComponent.Scales = Vector2.One * 2;
             startGameTextComponent.AlignToCenter();
             startGameTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 400);
             Add(new Background(this.Game, ObjectValues.BackgroundTextureString));

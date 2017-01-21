@@ -15,6 +15,7 @@ namespace Space_Invaders
 {
     public class EnemyBatch : Sprite
     {
+        private const float k_InitTimeBetweenJumps = 0.5f;
         private readonly int[] r_InitialEnemyValues = new int[] { 240, 170, 140 };
         private readonly int r_MotherShipInitValue = 650;
         private readonly int r_VerticalPadding = 32 * 3;
@@ -27,6 +28,8 @@ namespace Space_Invaders
         private readonly Color r_Enemy2Tint = Color.LightBlue;
         private readonly Color r_Enemy3Tint = Color.LightYellow;
         private readonly Color r_EnemyBulletTint = Color.Blue;
+        private readonly float r_EnemySize = 32;
+        private readonly Color r_EnemyButtletTint = Color.Blue;
         private int m_BatchColumns;
         private int m_BatchRows;
         private float m_EnemyFireChance;   
@@ -34,8 +37,7 @@ namespace Space_Invaders
         private int m_Enemy2Value;
         private int m_Enemy3Value;
         private int m_MotherShipValue;
-        private readonly float r_EnemySize = 32;
-        private readonly Color r_EnemyButtletTint = Color.Blue;
+
         public GameScreen PlayScreen { get; set; }
 
         public void IncreaseEnemyScores(int i_Value)
@@ -77,8 +79,9 @@ namespace Space_Invaders
         public event EventHandler<EventArgs> NoMoreEnemies;
 
         public event EventHandler<EventArgs> EnemyReachedBottom;
-        private const float k_InitTimeBetweenJumps = 0.5f;
+
         private List<Enemy> m_Enemies;
+
         private MothershipEnemy m_MotherShip;
         private int m_maxY = 0;
         private bool m_EnemyHitWall;
@@ -169,6 +172,7 @@ namespace Space_Invaders
                     EnemyKilled(i_Disposed, i_EventArgs);
                 }
             }
+
             (Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger).ActiveScreen.Remove(i_Disposed as IGameComponent);
         }
 

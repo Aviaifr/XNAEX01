@@ -28,12 +28,12 @@ namespace Space_Invaders.Screens
             TextComponent Level = new TextComponent(Game, "Level " + level, @"Fonts/Consolas");
             Level.Tint = Color.PapayaWhip;
             Level.Position = new Vector2(100, 200);
-            Level.Scale = Vector2.One * 6;
+            Level.Scales = Vector2.One * 6;
             Add(Level);
             m_StartingIn = new TextComponent(Game, "Starting in ", @"Fonts/Consolas");
             m_StartingIn.Tint = Color.PapayaWhip;
             m_StartingIn.Position = new Vector2(100, 400);
-            m_StartingIn.Scale = m_StartingIn.Scale * 2;
+            m_StartingIn.Scales = m_StartingIn.Scales * 2;
             m_StartingIn.ExtraText = ((int)Math.Round(m_TimeToStart)).ToString();
             Add(m_StartingIn);
 

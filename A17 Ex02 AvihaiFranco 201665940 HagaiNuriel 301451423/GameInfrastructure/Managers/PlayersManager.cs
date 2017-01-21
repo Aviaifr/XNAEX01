@@ -15,6 +15,7 @@ namespace GameInfrastructure.Managers
         private IInputManager m_InputManager;
         private Dictionary<string, PlayerInfo> m_PlayersInfo = 
             new Dictionary<string, PlayerInfo>();
+
         private List<IPlayer> m_Players = new List<IPlayer>();
 
         public PlayersManager(Game i_Game) :

@@ -137,7 +137,7 @@ namespace GameInfrastructure.ObjectModel
             set { m_HeightBeforeScale = value; }
         }
 
-        public Vector2 Position
+        public override Vector2 Position
         {
             get { return m_Position; }
             set
@@ -203,7 +203,7 @@ namespace GameInfrastructure.ObjectModel
 
         protected Rectangle m_SourceRectangle = Rectangle.Empty;
 
-        public Rectangle SourceRectangle
+        public override Rectangle SourceRectangle
         {
             get { return m_SourceRectangle; }
             set { m_SourceRectangle = value; }
@@ -224,7 +224,7 @@ namespace GameInfrastructure.ObjectModel
 
         protected float m_Rotation = 0;
 
-        public float Rotation
+        public override float Rotation
         {
             get { return m_Rotation; }
             set { m_Rotation = value; }
@@ -232,7 +232,7 @@ namespace GameInfrastructure.ObjectModel
 
         protected Vector2 m_Scales = Vector2.One;
 
-        public Vector2 Scales
+        public override Vector2 Scales
         {
             get { return m_Scales; }
             set
@@ -245,7 +245,7 @@ namespace GameInfrastructure.ObjectModel
             }
         }
 
-        public float Opacity
+        public override float Opacity
         {
             get { return (float)m_TintColor.A / (float)byte.MaxValue; }
             set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
@@ -402,11 +402,6 @@ namespace GameInfrastructure.ObjectModel
             }
 
             return AnimationFound;
-        }
-
-        public Sprite ShallowClone()
-        {
-            return this.MemberwiseClone() as Sprite;
         }
 
         public virtual bool CanCollideWith(ICollidable i_Source)

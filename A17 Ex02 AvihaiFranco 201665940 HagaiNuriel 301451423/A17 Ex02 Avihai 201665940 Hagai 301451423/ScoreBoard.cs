@@ -30,7 +30,7 @@ namespace Space_Invaders
         {
         }
 
-        public Vector2 Position
+        public override Vector2 Position
         {
             get { return m_Position; }
             set { m_Position = value; }

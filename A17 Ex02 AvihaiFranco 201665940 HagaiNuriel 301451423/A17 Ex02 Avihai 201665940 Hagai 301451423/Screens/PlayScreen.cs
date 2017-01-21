@@ -63,13 +63,13 @@ namespace Space_Invaders.Screens
             {
                 player.Score += (i_EnemyKilled as Enemy).Value;
             }
+
             if(i_EnemyKilled is MothershipEnemy)
             {
                 MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
                 motherShip.Velocity = Vector2.Zero;
                 motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
             }
-
         }
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
@@ -220,7 +220,6 @@ namespace Space_Invaders.Screens
             resetPlayers();
             m_WallBatch.Reset();
             m_EnemyBatch.Reset();
-            //m_DrawableComponents.RemoveAll((drawable) => drawable is SpaceBullet);
         }
 
         private void resetPlayers()
@@ -250,12 +249,6 @@ namespace Space_Invaders.Screens
             base.LoadContent();
         }
 
-        public override void Draw(GameTime gameTime)
-        {
-            
-            base.Draw(gameTime);
-        }
-        
         private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
             SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint, -1);

@@ -15,8 +15,8 @@ namespace Space_Invaders
 {
     public class Wall : Sprite, ICollidable2D
     {
-        private Rectangle m_RectangleToErase;
         private static Color[] s_OriginalData;
+        private Rectangle m_RectangleToErase;
         
         public Wall(Game i_Game, string i_TextureString)
             : base(i_Game, i_TextureString)

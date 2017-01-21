@@ -56,8 +56,7 @@ namespace Space_Invaders
             if (m_Level % k_LevelsBeforeReset == 2)
             {
                 m_GameScreen.WallBatch.Velocity = Vector2.UnitX * k_BarrierInitSpeed;
-            }
-            
+            }   
         }
 
         public void ResetDifficulty()

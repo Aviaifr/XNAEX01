@@ -36,6 +36,7 @@ namespace GameInfrastructure.ObjectModel.Screens
                 m_MenuItems.Add(inputAsMenuItem);
                 inputAsMenuItem.Position = new Vector2(m_MenuStartDrawPosition.X, m_MenuStartDrawPosition.Y + (m_MenuItems.Count * 40));
             }
+
             base.Add(i_Component);
         }
         

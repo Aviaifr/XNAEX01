@@ -28,23 +28,21 @@ namespace Space_Invaders.Screens
             Add(background);
             TextComponent gameOverTextComponent = new TextComponent(Game, "Game Over", @"Fonts/Consolas");
             gameOverTextComponent.Tint = Color.DarkRed;
-            gameOverTextComponent.Scale = new Vector2(5, 6);
+            gameOverTextComponent.Scales = new Vector2(5, 6);
             gameOverTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
             gameOverTextComponent.AlignToCenter();
             Add(gameOverTextComponent);
             m_endGameText = new TextComponent(Game, string.Empty, @"Fonts/Consolas");
             m_endGameText.Position = new Vector2(100, 250);
-            m_endGameText.Scale = Vector2.One * 2.5f;
+            m_endGameText.Scales = Vector2.One * 2.5f;
             m_endGameText.Tint = Color.Gold;
             Add(m_endGameText);
             TextComponent startGameTextComponent = new TextComponent(
                 Game,
-@"Press 'Home' To Start A New Game
-Press 'M' For Main Menu
-Press 'Esc' To Quit",
+                "Press 'Home' To Start A New Game" + Environment.NewLine + "Press 'M' For Main Menu" + Environment.NewLine + "Press 'Esc' To Quit",
                     @"Fonts/Consolas");
             startGameTextComponent.Tint = Color.GhostWhite;
-            startGameTextComponent.Scale = Vector2.One * 1.7f;
+            startGameTextComponent.Scales = Vector2.One * 1.7f;
             startGameTextComponent.AlignToCenter();
             startGameTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 500);
             Add(new MothershipEnemy(Game, ObjectValues.MothershipTextureString, 0));
@@ -56,7 +54,11 @@ Press 'Esc' To Quit",
         {
             if ((Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager).GetPlayerByIndex(0) != null)
             {
-                updateScoreText();
+                Player player = (Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager).GetPlayerByIndex(0) as Player;
+                if (player != null)
+                {
+                    updateScoreText();
+                }
             }
 
             base.OnActivated();
@@ -93,6 +95,7 @@ Press 'Esc' To Quit",
             {
                 msg = string.Format("{0}{1} Wins!", msg, winnerList[winnerList.Count - 1]);
             }
+
             m_endGameText.Text = msg;
         }
 
@@ -111,6 +114,7 @@ Press 'Esc' To Quit",
                 (ScreensManager as ScreensMananger).Push(new PlayScreen(Game));
                 this.ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
             }
+
             base.Update(gameTime);
         }
     }

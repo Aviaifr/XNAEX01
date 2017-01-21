@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
-    public class CellAnimator : SpriteAnimator
+    public class CellAnimator : Animator
     {
         private readonly int r_NumOfCells = 1;
         private TimeSpan m_CellTime;
@@ -50,7 +50,7 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
         protected override void RevertToOriginal()
         {
-            this.BoundSprite.SourceRectangle = m_OriginalSpriteInfo.SourceRectangle;
+            this.BoundComponent.SourceRectangle = m_OriginalComponentInfo.SourceRectangle;
         }
 
         protected override void DoFrame(GameTime i_GameTime)
@@ -65,11 +65,11 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
                 }
             }
 
-            this.BoundSprite.SourceRectangle = new Rectangle(
-                m_CurrCellIdx * this.BoundSprite.SourceRectangle.Width,
-                this.BoundSprite.SourceRectangle.Top,
-                this.BoundSprite.SourceRectangle.Width,
-                this.BoundSprite.SourceRectangle.Height);
+            this.BoundComponent.SourceRectangle = new Rectangle(
+                m_CurrCellIdx * this.BoundComponent.SourceRectangle.Width,
+                this.BoundComponent.SourceRectangle.Top,
+                this.BoundComponent.SourceRectangle.Width,
+                this.BoundComponent.SourceRectangle.Height);
         }
     }
 }

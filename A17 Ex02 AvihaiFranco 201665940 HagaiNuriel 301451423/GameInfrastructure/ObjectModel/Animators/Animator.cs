@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators
 {
-    public abstract class SpriteAnimator
+    public abstract class Animator
     {
-        private Sprite m_BoundSprite;
+        private DynamicDrawableComponent m_BoundComponent;
         private TimeSpan m_AnimationLength;
         private TimeSpan m_TimeLeft;
         private bool m_IsFinished = false;
@@ -15,7 +15,7 @@ namespace GameInfrastructure.ObjectModel.Animators
         private bool m_Initialized = false;
         private string m_Name;
         protected bool m_ResetAfterFinish = true;
-        protected internal Sprite m_OriginalSpriteInfo;
+        protected internal DynamicDrawableComponent m_OriginalComponentInfo;
 
         public event EventHandler Finished;
 
@@ -33,16 +33,16 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
-        protected SpriteAnimator(string i_Name, TimeSpan i_AnimationLength)
+        protected Animator(string i_Name, TimeSpan i_AnimationLength)
         {
             m_Name = i_Name;
             m_AnimationLength = i_AnimationLength;
         }
 
-        protected internal Sprite BoundSprite
+        protected internal DynamicDrawableComponent BoundComponent
         {
-            get { return m_BoundSprite; }
-            set { m_BoundSprite = value; }
+            get { return m_BoundComponent; }
+            set { m_BoundComponent = value; }
         }
 
         public string Name
@@ -73,17 +73,17 @@ namespace GameInfrastructure.ObjectModel.Animators
             {
                 m_Initialized = true;
 
-                CloneSpriteInfo();
+                CloneComponentInfo();
 
                 Reset();
             }
         }
 
-        protected virtual void CloneSpriteInfo()
+        protected virtual void CloneComponentInfo()
         {
-            if (m_OriginalSpriteInfo == null)
+            if (m_OriginalComponentInfo == null)
             {
-                m_OriginalSpriteInfo = m_BoundSprite.ShallowClone();
+                m_OriginalComponentInfo = m_BoundComponent.ShallowClone();
             }
         }
 

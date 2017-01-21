@@ -18,8 +18,8 @@ namespace Space_Invaders
         private static readonly int sr_MaxShots = 1;
 
         public event EventHandler<EventArgs> Shoot;
-        public event EventHandler<EventArgs> Killed;
 
+        public event EventHandler<EventArgs> Killed;
 
         private int m_Shots;
         protected float m_timeSinceMoved;
@@ -183,8 +183,6 @@ namespace Space_Invaders
                     this.KilledBy = (i_Collidable as SpaceBullet).Owner;
                     this.OnKilled();
                     this.Dispose();
-
-
                 }
             }
         }

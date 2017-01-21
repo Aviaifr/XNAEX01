@@ -10,7 +10,9 @@ namespace Space_Invaders
     public class Background : DynamicDrawableComponent
     {
         private Vector2 m_Position;
+
         public Color Tint { get; set; }
+
         private Texture2D m_Texture;
 
         public Background(Game i_Game, string i_TextureString) :
