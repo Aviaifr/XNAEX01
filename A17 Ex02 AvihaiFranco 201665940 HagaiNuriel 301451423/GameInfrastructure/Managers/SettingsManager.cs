@@ -100,22 +100,22 @@ namespace GameInfrastructure.Managers
 
         public void BGMusicVolumeUp(float i_VolumeToAdd)
         {
-            MediaPlayer.Volume = BGMusicVolume = MathHelper.Clamp(BGMusicVolume + i_VolumeToAdd, 0f, 1f);
+            MediaPlayer.Volume = BGMusicVolume = BGMusicVolume + i_VolumeToAdd > 1f ? 0f : BGMusicVolume + i_VolumeToAdd;
         }
 
         public void BGMusicVolumeDown(float i_VolumeToDecrease)
         {
-            MediaPlayer.Volume = BGMusicVolume = MathHelper.Clamp(BGMusicVolume - i_VolumeToDecrease, 0f, 1f);
+            MediaPlayer.Volume = BGMusicVolume = BGMusicVolume - i_VolumeToDecrease < 0 ? 1f : BGMusicVolume - i_VolumeToDecrease;
         }
 
         public void SoundFXVolumeUp(float i_VolumeToAdd)
         {
-            SoundFXVolume = MathHelper.Clamp(SoundFXVolume + i_VolumeToAdd, 0f, 1f);
+            SoundFXVolume = SoundFXVolume + i_VolumeToAdd > 1f ? 0f : SoundFXVolume + i_VolumeToAdd;
         }
         
         public void SoundFXVolumeDown(float i_VolumeToDecrease)
         {
-            SoundFXVolume = MathHelper.Clamp(SoundFXVolume - i_VolumeToDecrease, 0f, 1f);
+            SoundFXVolume = SoundFXVolume - i_VolumeToDecrease < 0 ? 1f : SoundFXVolume - i_VolumeToDecrease;
         }
 
         protected override void RegisterAsService()

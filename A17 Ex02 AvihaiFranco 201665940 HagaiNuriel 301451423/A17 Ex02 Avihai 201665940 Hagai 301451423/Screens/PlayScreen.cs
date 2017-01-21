@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
@@ -21,7 +22,8 @@ namespace Space_Invaders.Screens
         private MothershipEnemy m_motherShip;
         private InvadersDifficultyManager m_DifficultyManager;
         private GameScreen m_PauseScreen;
-
+        private SoundEffect m_GameOverSound;
+        private SoundEffect m_LevelWinSound;
 
         public PlayScreen(Game i_Game):base(i_Game)
         {
@@ -114,13 +116,16 @@ namespace Space_Invaders.Screens
 
         public void GameOver()
         {
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(m_GameOverSound);
             ExitScreen();
-            }
+        }
 
         public override void Initialize()
         {
             m_Background = new Background(this.Game, ObjectValues.BackgroundTextureString);
             this.Add(m_Background);
+            m_GameOverSound = Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/GameOver");
+            m_LevelWinSound = Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/LevelWin");
             (Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager).ClearCollidable();
             initPlayers();
             m_EnemyBatch = new EnemyBatch(this.Game);
@@ -190,7 +195,7 @@ namespace Space_Invaders.Screens
                 ScreensManager.SetCurrentScreen(m_PauseScreen);
             }
             base.Update(gameTime);
-            if (m_EnemyBatch.EnemyCount < 48)
+            if (m_EnemyBatch.EnemyCount < 46)
             {
                 advanceLevel();
             }
@@ -199,6 +204,7 @@ namespace Space_Invaders.Screens
         private void advanceLevel()
         {
             (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level++;
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(m_LevelWinSound);
             m_DifficultyManager.IncreaseDifficulty();
             resetGameComponents();
             ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
@@ -242,7 +248,8 @@ namespace Space_Invaders.Screens
         private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
             SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint, -1);
-            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect((i_Sender as UserSpaceship).GetSound("shoot"));
+            SoundEffect shootingSound = (i_Sender as UserSpaceship).GetSound("shoot");
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(shootingSound);
             newBullet.Initialize();
             newBullet.Owner = i_Sender as UserSpaceship;
             setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);

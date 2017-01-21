@@ -22,7 +22,7 @@ namespace Space_Invaders.Screens
 
         public override void Initialize()
         {
-            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>((@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
+            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove");
             TextComponent TitleTextComponent = new TextComponent(Game, "Screen Options", @"Fonts/Consolas");
             TitleTextComponent.Scale = new Vector2(4, 5);
             TitleTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
