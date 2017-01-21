@@ -59,7 +59,7 @@ namespace Space_Invaders
         public void ResetDifficulty()
         {
             m_GameScreen.EnemyBatch.ResetEnemyValues();
-            m_GameScreen.WallBatch.Velocity = k_BarrierInitSpeed;
+            m_GameScreen.WallBatch.Velocity = Vector2.UnitX * k_BarrierInitSpeed;
             m_GameScreen.EnemyBatch.EnemyCols = k_EnemyInitCols;
             m_GameScreen.EnemyBatch.EnemyFireChance = k_EnemyFireChance;
         }

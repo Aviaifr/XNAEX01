@@ -19,14 +19,12 @@ namespace Space_Invaders.Screens
         private EnemyBatch m_EnemyBatch;
         private WallBatch m_WallBatch;
         private MothershipEnemy m_motherShip;
-        private int m_Level;
         private InvadersDifficultyManager m_DifficultyManager;
         private GameScreen m_PauseScreen;
 
 
         public PlayScreen(Game i_Game):base(i_Game)
         {
-            m_Level = 1;
             m_DifficultyManager = new InvadersDifficultyManager(this);
         }
 
@@ -63,22 +61,12 @@ namespace Space_Invaders.Screens
             {
                 player.Score += (i_EnemyKilled as Enemy).Value;
             }
-                if(i_EnemyKilled is MothershipEnemy)
-                {
-                    MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
-                    motherShip.Velocity = Vector2.Zero;
-                    motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
-                }
-            }
-            if (m_EnemyBatch.EnemyCount == 0)
+            if(i_EnemyKilled is MothershipEnemy)
             {
-                levelWin();
+                MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
+                motherShip.Velocity = Vector2.Zero;
+                motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
             }
-        }
-
-        private void levelWin()
-        {
-            (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level ++;
         }
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
@@ -140,15 +128,8 @@ namespace Space_Invaders.Screens
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             m_EnemyBatch.EnemyReachedBottom += Enemy_OnReachBottom;
             this.Add(m_EnemyBatch);
-
-            WallBatch wallBatch = new WallBatch(this.Game);
-            this.Add(wallBatch);
-
-            //m_motherShip = new MothershipEnemy(this.Game, ObjectValues.MothershipTextureString, ObjectValues.MothershipValue);
-            //m_motherShip.Position = new Vector2(0, ObjectValues.EnemyWidth);
-            //m_motherShip.MothershipKilled += Enemy_OnKill;
-            //this.Add(m_motherShip);
-
+            WallBatch = new WallBatch(Game);
+            this.Add(WallBatch);
             base.Initialize();
         }
 
@@ -208,16 +189,19 @@ namespace Space_Invaders.Screens
 
                 ScreensManager.SetCurrentScreen(m_PauseScreen);
             }
-
             base.Update(gameTime);
+            if (m_EnemyBatch.EnemyCount < 48)
+            {
+                advanceLevel();
+            }
         }
 
         private void advanceLevel()
         {
-            m_Level++;
-            //TODO: increase level value in SettingsManager
+            (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level++;
             m_DifficultyManager.IncreaseDifficulty();
             resetGameComponents();
+            ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
         }
 
         private void resetGameComponents()

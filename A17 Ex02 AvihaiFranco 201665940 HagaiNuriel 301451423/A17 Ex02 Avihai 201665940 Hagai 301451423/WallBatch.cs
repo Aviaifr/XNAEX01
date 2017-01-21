@@ -16,17 +16,9 @@ namespace Space_Invaders
     public class WallBatch : CompositeSprite
     {
 
-        private float m_Velocity = 60;
-
         public WallBatch(Game i_Game)
             : base(i_Game)
         {
-        }
-
-        public float Velocity
-        {
-            get { return m_Velocity; }
-            set { m_Velocity = value; }
         }
 
         private readonly int r_WallCount = 4;
@@ -61,7 +53,7 @@ namespace Space_Invaders
                 m_SpritesList[i].Position = new Vector2(startingPosition + (i * 2 * wallWidth), m_Position.Y);
                 Vector2 movingPosition1 = new Vector2(m_SpritesList[i].Position.X - (wallWidth / 2), m_SpritesList[i].Position.Y);
                 Vector2 movingPosition2 = new Vector2(m_SpritesList[i].Position.X + (wallWidth / 2), m_SpritesList[i].Position.Y);
-                SpriteAnimator wpa = new Waypointsanimator(m_Velocity, TimeSpan.Zero, v_LoopAnimation, movingPosition1, movingPosition2);
+                SpriteAnimator wpa = new Waypointsanimator(Velocity.X, TimeSpan.Zero, v_LoopAnimation, movingPosition1, movingPosition2);
                 wpa.Enabled = true;
                 m_SpritesList[i].Animations.Add(wpa);
             }

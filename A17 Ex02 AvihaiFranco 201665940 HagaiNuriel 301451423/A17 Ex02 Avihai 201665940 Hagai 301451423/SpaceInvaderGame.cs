@@ -26,7 +26,6 @@ namespace Space_Invaders
             m_Graphics = new GraphicsDeviceManager(this);
             m_Graphics.PreferredBackBufferHeight = 600;
             m_Graphics.ApplyChanges();
-            //Services.AddService(typeof(IGraphicsDeviceManager), m_Graphics);
             Content.RootDirectory = "Content";
         }
 
