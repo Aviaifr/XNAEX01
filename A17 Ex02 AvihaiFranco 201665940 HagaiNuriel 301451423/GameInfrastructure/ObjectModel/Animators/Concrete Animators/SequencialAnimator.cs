@@ -8,16 +8,16 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
         public SequencialAnimator(
             string i_Name,
             TimeSpan i_AnimationLength,
-            Sprite i_BoundSprite,
-            params SpriteAnimator[] i_Animations)
-            : base(i_Name, i_AnimationLength, i_BoundSprite, i_Animations)
+            DynamicDrawableComponent i_BoundComponent,
+            params Animator[] i_Animations)
+            : base(i_Name, i_AnimationLength, i_BoundComponent, i_Animations)
         {
         }
 
         protected override void DoFrame(GameTime i_GameTime)
         {
             bool allFinished = true;
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (Animator animation in m_AnimationsList)
             {
                 if (!animation.IsFinished)
                 {
@@ -29,7 +29,17 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
             if (allFinished)
             {
-                this.IsFinished = true;
+                if (!IsFinite)
+                {
+                    foreach(Animator animation in m_AnimationsList)
+                    {
+                        animation.Restart();
+                    }
+                }
+                else
+                {
+                    this.IsFinished = true;
+                }
             }
         }
     }

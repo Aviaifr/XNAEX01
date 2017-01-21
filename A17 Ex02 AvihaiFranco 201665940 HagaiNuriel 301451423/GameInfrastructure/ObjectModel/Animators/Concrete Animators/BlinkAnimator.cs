@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
-    public class BlinkAnimator : SpriteAnimator
+    public class BlinkAnimator : Animator
     {
         private TimeSpan m_BlinkLength;
         private TimeSpan m_TimeLeftForNextBlink;
@@ -33,14 +33,14 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
             m_TimeLeftForNextBlink -= i_GameTime.ElapsedGameTime;
             if (m_TimeLeftForNextBlink.TotalSeconds < 0)
             {
-                this.BoundSprite.Visible = !this.BoundSprite.Visible;
+                this.BoundComponent.Visible = !this.BoundComponent.Visible;
                 m_TimeLeftForNextBlink = m_BlinkLength;
             }
         }
 
         protected override void RevertToOriginal()
         {
-            this.BoundSprite.Visible = m_OriginalSpriteInfo.Visible;
+            this.BoundComponent.Visible = m_OriginalComponentInfo.Visible;
         }
     }
 }

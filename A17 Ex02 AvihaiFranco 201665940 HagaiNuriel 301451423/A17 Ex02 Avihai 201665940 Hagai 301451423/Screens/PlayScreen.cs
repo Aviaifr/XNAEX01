@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
@@ -21,9 +22,10 @@ namespace Space_Invaders.Screens
         private MothershipEnemy m_motherShip;
         private InvadersDifficultyManager m_DifficultyManager;
         private GameScreen m_PauseScreen;
+        private SoundEffect m_GameOverSound;
+        private SoundEffect m_LevelWinSound;
 
-
-        public PlayScreen(Game i_Game):base(i_Game)
+        public PlayScreen(Game i_Game) : base(i_Game)
         {
             m_DifficultyManager = new InvadersDifficultyManager(this);
         }
@@ -61,13 +63,13 @@ namespace Space_Invaders.Screens
             {
                 player.Score += (i_EnemyKilled as Enemy).Value;
             }
+
             if(i_EnemyKilled is MothershipEnemy)
             {
                 MothershipEnemy motherShip = i_EnemyKilled as MothershipEnemy;
                 motherShip.Velocity = Vector2.Zero;
                 motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
             }
-
         }
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
@@ -115,6 +117,7 @@ namespace Space_Invaders.Screens
 
         public void GameOver()
         {
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(m_GameOverSound);
             ExitScreen();
             }
 
@@ -122,6 +125,8 @@ namespace Space_Invaders.Screens
         {
             m_Background = new Background(this.Game, ObjectValues.BackgroundTextureString);
             this.Add(m_Background);
+            m_GameOverSound = Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/GameOver");
+            m_LevelWinSound = Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/LevelWin");
             (Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager).ClearCollidable();
             initPlayers();
             m_EnemyBatch = new EnemyBatch(this.Game);
@@ -190,6 +195,7 @@ namespace Space_Invaders.Screens
 
                 ScreensManager.SetCurrentScreen(m_PauseScreen);
             }
+
             base.Update(gameTime);
             if (m_EnemyBatch.EnemyCount == 0)
             {
@@ -200,6 +206,7 @@ namespace Space_Invaders.Screens
         private void advanceLevel()
         {
             (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level++;
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(m_LevelWinSound);
             m_DifficultyManager.IncreaseDifficulty();
             LevelTransitionScreen TransitionScreen = new LevelTransitionScreen(Game);
             TransitionScreen.Closed += resetGameComponents;
@@ -213,7 +220,6 @@ namespace Space_Invaders.Screens
             resetPlayers();
             m_WallBatch.Reset();
             m_EnemyBatch.Reset();
-            //m_DrawableComponents.RemoveAll((drawable) => drawable is SpaceBullet);
         }
 
         private void resetPlayers()
@@ -243,16 +249,11 @@ namespace Space_Invaders.Screens
             base.LoadContent();
         }
 
-        public override void Draw(GameTime gameTime)
-        {
-            
-            base.Draw(gameTime);
-        }
-        
         private void spaceship_Shot(object i_Sender, EventArgs i_EventArgs)
         {
             SpaceBullet newBullet = new SpaceBullet(this.Game, ObjectValues.BulletTextureString, ObjectValues.UserShipBulletTint, -1);
-            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect((i_Sender as UserSpaceship).GetSound("shoot"));
+            SoundEffect shootingSound = (i_Sender as UserSpaceship).GetSound("shoot");
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(shootingSound);
             newBullet.Initialize();
             newBullet.Owner = i_Sender as UserSpaceship;
             setNewSpaceshipBulletPosition(i_Sender as UserSpaceship, newBullet);

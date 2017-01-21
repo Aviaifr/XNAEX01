@@ -27,6 +27,16 @@ namespace GameInfrastructure.ObjectModel
 
         public bool IsVisible { get; set; }
 
+        public virtual Vector2 Position { get; set; }
+
+        public virtual Vector2 Scales { get; set; }
+
+        public virtual float Opacity { get; set; }
+
+        public virtual float Rotation { get; set; }
+
+        public virtual Rectangle SourceRectangle { get; set; }
+
         public DynamicDrawableComponent(
             string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
             : base(i_Game)
@@ -62,6 +72,11 @@ namespace GameInfrastructure.ObjectModel
             {
                 Disposed.Invoke(sender, args);
             }
+        }
+
+        public virtual DynamicDrawableComponent ShallowClone()
+        {
+            return this.MemberwiseClone() as DynamicDrawableComponent;
         }
 
         protected virtual void onDestroyed()

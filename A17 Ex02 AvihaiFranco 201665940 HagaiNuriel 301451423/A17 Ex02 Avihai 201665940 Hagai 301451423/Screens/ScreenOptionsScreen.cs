@@ -22,9 +22,9 @@ namespace Space_Invaders.Screens
 
         public override void Initialize()
         {
-            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>((@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
+            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove");
             TextComponent TitleTextComponent = new TextComponent(Game, "Screen Options", @"Fonts/Consolas");
-            TitleTextComponent.Scale = new Vector2(4, 5);
+            TitleTextComponent.Scales = new Vector2(4, 5);
             TitleTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
             TitleTextComponent.AlignToCenter();
             Add(TitleTextComponent);
@@ -36,24 +36,24 @@ namespace Space_Invaders.Screens
             MouseVisibility.ExtraText = m_SettingsManager.IsMouseVisible ? "Visible" : "Invisible";
             MouseVisibility.ToggleDown += onMouseVisibilityToggled;
             MouseVisibility.ToggleUp += onMouseVisibilityToggled;
-            MouseVisibility.Scale = Vector2.One * 2f;
+            MouseVisibility.Scales = Vector2.One * 2f;
             SettingMenuItem WindowResizing =
                 new SettingMenuItem(Game, "Allow Window Resizing", @"Fonts/Consolas", Color.Blue, Color.Red);
 
             WindowResizing.ExtraText = m_SettingsManager.IsResizeable ? "On" : "Off";
             WindowResizing.ToggleDown += onWindowResizingToggled;
             WindowResizing.ToggleUp += onWindowResizingToggled;
-            WindowResizing.Scale = Vector2.One * 2f;
+            WindowResizing.Scales = Vector2.One * 2f;
             SettingMenuItem FullScreenMode =
                  new SettingMenuItem(Game, "Full Screen Mode", @"Fonts/Consolas", Color.Blue, Color.Red);
 
             FullScreenMode.ExtraText = m_SettingsManager.IsFullScreen ? "On" : "Off";
             FullScreenMode.ToggleDown += onFullScreenModeToggled;
             FullScreenMode.ToggleUp += onFullScreenModeToggled;
-            FullScreenMode.Scale = Vector2.One * 2f;
+            FullScreenMode.Scales = Vector2.One * 2f;
             ChooseableMenuItem DoneOption =
                 new ChooseableMenuItem(Game, "Done", @"Fonts/Consolas", Color.Blue, Color.Red);
-            DoneOption.Scale = Vector2.One * 2f;
+            DoneOption.Scales = Vector2.One * 2f;
             DoneOption.Choose += onDoneSelected;
 
             Add(MouseVisibility);

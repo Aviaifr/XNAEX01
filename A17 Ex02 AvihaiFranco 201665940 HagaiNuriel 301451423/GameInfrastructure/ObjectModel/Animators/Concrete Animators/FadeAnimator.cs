@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
-    public class FadeAnimator : SpriteAnimator
+    public class FadeAnimator : Animator
     {
         private float m_FadingPace;
 
@@ -24,16 +24,16 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
         protected override void DoFrame(GameTime i_GameTime)
         {
-            if (BoundSprite.Opacity > 0)
+            if (BoundComponent.Opacity > 0)
             {
-                BoundSprite.Opacity -= m_FadingPace * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-                BoundSprite.Opacity = MathHelper.Clamp(BoundSprite.Opacity, 0, 1);
+                BoundComponent.Opacity -= m_FadingPace * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+                BoundComponent.Opacity = MathHelper.Clamp(BoundComponent.Opacity, 0, 1);
             }
         }
 
         protected override void RevertToOriginal()
         {
-            BoundSprite.Opacity = m_OriginalSpriteInfo.Opacity;
+            BoundComponent.Opacity = m_OriginalComponentInfo.Opacity;
         }
     }
 }

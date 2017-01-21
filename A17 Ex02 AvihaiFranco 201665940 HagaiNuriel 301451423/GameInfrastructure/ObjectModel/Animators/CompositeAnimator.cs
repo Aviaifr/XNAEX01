@@ -4,15 +4,15 @@ using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators
 {
-    public class CompositeAnimator : SpriteAnimator
+    public class CompositeAnimator : Animator
     {
-        private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary =
-            new Dictionary<string, SpriteAnimator>();
+        private readonly Dictionary<string, Animator> m_AnimationsDictionary =
+            new Dictionary<string, Animator>();
 
-        protected readonly List<SpriteAnimator> m_AnimationsList = new List<SpriteAnimator>();
+        protected readonly List<Animator> m_AnimationsList = new List<Animator>();
 
-        public CompositeAnimator(Sprite i_BoundSprite)
-            : this("AnimationsManager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[] { })
+        public CompositeAnimator(DynamicDrawableComponent i_BoundComponent)
+            : this("AnimationsManager", TimeSpan.Zero, i_BoundComponent, new Animator[] { })
         {
             this.Enabled = false;
         }
@@ -20,21 +20,21 @@ namespace GameInfrastructure.ObjectModel.Animators
         public CompositeAnimator(
             string i_Name,
             TimeSpan i_AnimationLength,
-            Sprite i_BoundSprite,
-            params SpriteAnimator[] i_Animations)
+            DynamicDrawableComponent i_BoundComponent,
+            params Animator[] i_Animations)
             : base(i_Name, i_AnimationLength)
         {
-            this.BoundSprite = i_BoundSprite;
+            this.BoundComponent = i_BoundComponent;
 
-            foreach (SpriteAnimator animation in i_Animations)
+            foreach (Animator animation in i_Animations)
             {
                 this.Add(animation);
             }
         }
 
-        public void Add(SpriteAnimator i_Animation)
+        public void Add(Animator i_Animation)
         {
-            i_Animation.BoundSprite = this.BoundSprite;
+            i_Animation.BoundComponent = this.BoundComponent;
             i_Animation.Enabled = true;
             m_AnimationsDictionary.Add(i_Animation.Name, i_Animation);
             m_AnimationsList.Add(i_Animation);
@@ -42,7 +42,7 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         public void Remove(string i_AnimationName)
         {
-            SpriteAnimator animationToRemove;
+            Animator animationToRemove;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out animationToRemove);
             if (animationToRemove != null)
             {
@@ -53,7 +53,7 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         public void Disable(string i_AnimationName)
         {
-            SpriteAnimator retVal = null;
+            Animator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
             if(retVal != null)
             {
@@ -63,7 +63,7 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         public void Enable(string i_AnimationName)
         {
-            SpriteAnimator retVal = null;
+            Animator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
             if (retVal != null)
             {
@@ -73,7 +73,7 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         public void Reset(string i_AnimationName)
         {
-            SpriteAnimator retVal = null;
+            Animator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
             if (retVal != null)
             {
@@ -83,7 +83,7 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         public void Restart(string i_AnimationName)
         {
-            SpriteAnimator retVal = null;
+            Animator retVal = null;
             m_AnimationsDictionary.TryGetValue(i_AnimationName, out retVal);
             if (retVal != null)
             {
@@ -91,11 +91,11 @@ namespace GameInfrastructure.ObjectModel.Animators
             }
         }
 
-        public SpriteAnimator this[string i_Name]
+        public Animator this[string i_Name]
         {
             get
             {
-                SpriteAnimator retVal = null;
+                Animator retVal = null;
                 m_AnimationsDictionary.TryGetValue(i_Name, out retVal);
                 return retVal;
             }
@@ -105,7 +105,7 @@ namespace GameInfrastructure.ObjectModel.Animators
         {
             base.Restart();
 
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (Animator animation in m_AnimationsList)
             {
                 animation.Restart();
             }
@@ -115,7 +115,7 @@ namespace GameInfrastructure.ObjectModel.Animators
         {
             base.Restart(i_AnimationLength);
 
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (Animator animation in m_AnimationsList)
             {
                 animation.Restart();
             }
@@ -123,25 +123,25 @@ namespace GameInfrastructure.ObjectModel.Animators
 
         protected override void RevertToOriginal()
         {
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (Animator animation in m_AnimationsList)
             {
                 animation.Reset();
             }
         }
 
-        protected override void CloneSpriteInfo()
+        protected override void CloneComponentInfo()
         {
-            base.CloneSpriteInfo();
+            base.CloneComponentInfo();
 
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (Animator animation in m_AnimationsList)
             {
-                animation.m_OriginalSpriteInfo = m_OriginalSpriteInfo;
+                animation.m_OriginalComponentInfo = m_OriginalComponentInfo;
             }
         }
 
         protected override void DoFrame(GameTime i_GameTime)
         {
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (Animator animation in m_AnimationsList)
             {
                 animation.Update(i_GameTime);
             }

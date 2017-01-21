@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
-    public class RotateAnimator : SpriteAnimator
+    public class RotateAnimator : Animator
     {
         private float m_RotationsPerSecond;
 
@@ -24,13 +24,13 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
         protected override void DoFrame(GameTime i_GameTime)
         {
-            BoundSprite.Rotation += 
+            BoundComponent.Rotation += 
                 m_RotationsPerSecond * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
         }
 
         protected override void RevertToOriginal()
         {
-            BoundSprite.Rotation = m_OriginalSpriteInfo.Rotation;
+            BoundComponent.Rotation = m_OriginalComponentInfo.Rotation;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Space_Invaders
     {
         private static readonly int sr_SpaceshipSpeed = 160;
         private static readonly int sr_MaxShots = 2;
+
         public event EventHandler<EventArgs> Shoot;
 
         public event EventHandler DeathAnimationFinished;
@@ -103,6 +104,7 @@ namespace Space_Invaders
             {
                 DeathAnimationFinished(this, EventArgs.Empty);
             }
+
             (Game.Services.GetService(typeof(IScreensMananger)) as ScreensMananger).ActiveScreen.Remove(this);
         }
 

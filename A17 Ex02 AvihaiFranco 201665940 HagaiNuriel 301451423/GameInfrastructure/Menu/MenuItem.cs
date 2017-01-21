@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.ObjectModel;
+using GameInfrastructure.ObjectModel.Animators.ConcreteAnimators;
 using GameInfrastructure.Menu;
 
 namespace GameInfrastructure.Menu
@@ -18,8 +19,26 @@ namespace GameInfrastructure.Menu
         private Color m_ActiveTint;
 
         private Color m_InActiveTint;
-        
-        public bool isActive { get; set; }
+
+        private bool m_IsActive;
+
+        public bool isActive
+        {
+            get
+            {
+                return m_IsActive;
+            }
+
+            set
+            {
+                bool preval = m_IsActive;
+                m_IsActive = value;
+                if (preval != m_IsActive)
+                {
+                    onActiveChange();
+                }
+            }
+        }
         
         public override Color Tint
         {
@@ -34,7 +53,41 @@ namespace GameInfrastructure.Menu
         {
             m_ActiveTint = i_ActiveTint;
             m_InActiveTint = i_InActiveTint;
-            isActive = false;
+            m_IsActive = false;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            this.Animations.Update(gameTime);
+            base.Update(gameTime);
+        }
+
+        private void onActiveChange()
+        {
+            if (m_Animations != null)
+            {
+                if (isActive)
+                {
+                    m_Animations.Enabled = true;
+                }
+                else
+                {
+                    m_Animations.Enabled = false;
+                    m_Animations.Reset();
+                }
+            }
+        }
+
+        protected override void setupAnimation()
+        {
+            m_Animations.ResetAfterFinish = true;
+            SizeAnimator enlarge = new SizeAnimator(TimeSpan.FromSeconds(0.5f), e_SizeType.Enlarge);
+            enlarge.ResetAfterFinish = false;
+            SizeAnimator shrink = new SizeAnimator(TimeSpan.FromSeconds(0.5), e_SizeType.Shrink);
+            SequencialAnimator sequencial = new SequencialAnimator("beating", TimeSpan.Zero, this, enlarge, shrink);
+            sequencial.Enabled = false;
+            m_Animations.Add(sequencial);
+            base.setupAnimation();
         }
 
         protected void onChooseOption()

@@ -13,6 +13,7 @@ namespace GameInfrastructure.ServiceInterfaces
         GameScreen GameToMonitor { get; set; }
 
         void IncreaseDifficulty();
+
         void ResetDifficulty();
     }
 }

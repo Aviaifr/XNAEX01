@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 {
-    public class Waypointsanimator : SpriteAnimator
+    public class Waypointsanimator : Animator
     {
         private float m_VelocityPerSecond;
         private Vector2[] m_Waypoints;
@@ -37,21 +37,21 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
         protected override void RevertToOriginal()
         {
-            this.BoundSprite.Position = m_OriginalSpriteInfo.Position;
+            this.BoundComponent.Position = m_OriginalComponentInfo.Position;
         }
 
         protected override void DoFrame(GameTime i_GameTime)
         {
             float maxDistance = (float)i_GameTime.ElapsedGameTime.TotalSeconds * m_VelocityPerSecond;
 
-            Vector2 remainingVector = m_Waypoints[m_CurrentWaypointIdx] - this.BoundSprite.Position;
+            Vector2 remainingVector = m_Waypoints[m_CurrentWaypointIdx] - this.BoundComponent.Position;
             if (remainingVector.Length() > maxDistance)
             {
                 remainingVector.Normalize();
                 remainingVector *= maxDistance;
             }
 
-            this.BoundSprite.Position += remainingVector;
+            this.BoundComponent.Position += remainingVector;
 
             if (reachedCurrentWaypoint())
             {
@@ -79,7 +79,7 @@ namespace GameInfrastructure.ObjectModel.Animators.ConcreteAnimators
 
         private bool reachedCurrentWaypoint()
         {
-            return this.BoundSprite.Position == m_Waypoints[m_CurrentWaypointIdx];
+            return this.BoundComponent.Position == m_Waypoints[m_CurrentWaypointIdx];
         }
     }
 }
