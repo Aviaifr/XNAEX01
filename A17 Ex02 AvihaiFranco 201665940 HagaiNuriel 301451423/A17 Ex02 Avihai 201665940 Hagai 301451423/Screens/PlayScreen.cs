@@ -69,6 +69,7 @@ namespace Space_Invaders.Screens
                 motherShip.Velocity = Vector2.Zero;
                 motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
             }
+
         }
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
@@ -118,7 +119,7 @@ namespace Space_Invaders.Screens
         {
             (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(m_GameOverSound);
             ExitScreen();
-        }
+            }
 
         public override void Initialize()
         {
@@ -196,7 +197,7 @@ namespace Space_Invaders.Screens
             }
 
             base.Update(gameTime);
-            if (m_EnemyBatch.EnemyCount  == 0)
+            if (m_EnemyBatch.EnemyCount == 0)
             {
                 advanceLevel();
             }
@@ -207,23 +208,32 @@ namespace Space_Invaders.Screens
             (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level++;
             (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect(m_LevelWinSound);
             m_DifficultyManager.IncreaseDifficulty();
-            resetGameComponents();
-            ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
+            LevelTransitionScreen TransitionScreen = new LevelTransitionScreen(Game);
+            TransitionScreen.Closed += resetGameComponents;
+            ScreensManager.SetCurrentScreen(TransitionScreen);
         }
 
-        private void resetGameComponents()
+        private void resetGameComponents(object i_obj, EventArgs i_EventArgs)
         {
+            ClearType(typeof(SpaceBullet));
+            (Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager).ClearCollidable();
             resetPlayers();
             m_WallBatch.Reset();
             m_EnemyBatch.Reset();
+            //m_DrawableComponents.RemoveAll((drawable) => drawable is SpaceBullet);
         }
 
         private void resetPlayers()
         {
-            foreach(Player player in m_Players)
+            ICollisionsManager collisionsManager =
+                Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager;
+
+            foreach (Player player in m_Players)
             {
                 UserSpaceship spaceShip = player.GameComponent as UserSpaceship;
+                spaceShip.Shots = 0;
                 spaceShip.Position = spaceShip.BeginningPosition;
+                collisionsManager.AddObjectToMonitor(spaceShip);
             }
         }
 

@@ -312,6 +312,17 @@ namespace GameInfrastructure.ObjectModel
             m_Components.Clear();
         }
 
+        public void ClearType(Type i_Type) 
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if(m_Components[i].GetType() == i_Type)
+                {
+                    OnComponentRemoved(new GameComponentEventArgs<ComponentType>(m_Components[i]));
+                }
+            }
+        }
+
         public bool Contains(ComponentType i_Component)
         {
             return m_Components.Contains(i_Component);

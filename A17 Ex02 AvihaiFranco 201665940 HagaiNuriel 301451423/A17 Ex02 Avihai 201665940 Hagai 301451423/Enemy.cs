@@ -78,7 +78,6 @@ namespace Space_Invaders
             initSounds();
             m_timeSinceMoved = 0;
             m_Velocity.X = m_Texture.Width / 2;
-            m_TimeBetweenJumps = 0.5f;
             this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
         }
         

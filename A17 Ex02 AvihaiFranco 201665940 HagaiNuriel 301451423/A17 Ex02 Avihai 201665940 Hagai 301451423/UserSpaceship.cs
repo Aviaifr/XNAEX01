@@ -15,7 +15,6 @@ namespace Space_Invaders
     {
         private static readonly int sr_SpaceshipSpeed = 160;
         private static readonly int sr_MaxShots = 2;
-
         public event EventHandler<EventArgs> Shoot;
 
         public event EventHandler DeathAnimationFinished;
@@ -26,6 +25,12 @@ namespace Space_Invaders
         private IPlayersManager m_PlayersManager;
 
         private int m_Shots;
+
+        public int Shots
+        {
+            get { return m_Shots; }
+            set { m_Shots = value; }
+        }
 
         public UserSpaceship(Game i_Game, string i_TextureString)
             : base(i_Game, i_TextureString)

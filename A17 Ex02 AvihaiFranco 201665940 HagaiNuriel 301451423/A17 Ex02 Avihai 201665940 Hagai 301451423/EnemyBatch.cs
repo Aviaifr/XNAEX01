@@ -77,7 +77,7 @@ namespace Space_Invaders
         public event EventHandler<EventArgs> NoMoreEnemies;
 
         public event EventHandler<EventArgs> EnemyReachedBottom;
-
+        private const float k_InitTimeBetweenJumps = 0.5f;
         private List<Enemy> m_Enemies;
         private MothershipEnemy m_MotherShip;
         private int m_maxY = 0;
@@ -201,6 +201,8 @@ namespace Space_Invaders
             m_MotherShip.Dispose();
             m_Enemies.Clear();
             m_MotherShip = null;
+            m_BatchMovingRight = true;
+            m_TimeBetweenJumps = k_InitTimeBetweenJumps;
             Initialize();
         }
 

@@ -16,20 +16,20 @@ namespace Space_Invaders
     public class Wall : Sprite, ICollidable2D
     {
         private Rectangle m_RectangleToErase;
-
         private static Color[] s_OriginalData;
-
+        
         public Wall(Game i_Game, string i_TextureString)
             : base(i_Game, i_TextureString)
         {
-            Texture2D texture = i_Game.Content.Load<Texture2D>(i_TextureString);
+            m_TintColor = Color.White;
+            Texture2D wallTexture = i_Game.Content.Load<Texture2D>(i_TextureString);
             if (s_OriginalData == null)
             {
-                s_OriginalData = new Color[texture.Width * texture.Height];
-                texture.GetData(s_OriginalData);
+                s_OriginalData = new Color[wallTexture.Width * wallTexture.Height];
+                wallTexture.GetData(s_OriginalData);
             }
-            texture.SetData(s_OriginalData);
-            m_TintColor = Color.White;
+
+            wallTexture.SetData(s_OriginalData);
         }
         
         public void Collided(ICollidable i_Collidable)
