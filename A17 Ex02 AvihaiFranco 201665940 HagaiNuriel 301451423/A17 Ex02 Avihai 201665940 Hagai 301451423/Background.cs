@@ -10,13 +10,14 @@ namespace Space_Invaders
     public class Background : DynamicDrawableComponent
     {
         private Vector2 m_Position;
-        private Color m_TintColor;
+        public Color Tint { get; set; }
         private Texture2D m_Texture;
+
         public Background(Game i_Game, string i_TextureString) :
-            base(i_TextureString,i_Game, int.MinValue)
+            base(i_TextureString, i_Game, int.MinValue)
         {
             m_Position = Vector2.Zero;
-            m_TintColor = Color.Gray;
+            Tint = Color.Gray;
             Initialize();
         }
 
@@ -30,7 +31,7 @@ namespace Space_Invaders
         {
             SpriteBatch spriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             spriteBatch.Begin();
-            spriteBatch.Draw(m_Texture, new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height), m_TintColor);
+            spriteBatch.Draw(m_Texture, new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height), Tint);
             spriteBatch.End();
         }
 

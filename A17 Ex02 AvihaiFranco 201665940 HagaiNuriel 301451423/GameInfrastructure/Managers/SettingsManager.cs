@@ -11,18 +11,89 @@ using GameInfrastructure.ServiceInterfaces;
 
 namespace GameInfrastructure.Managers
 {
-    public class SettingsManager: GameService, ISettingsManager
+    public class SettingsManager : GameService, ISettingsManager
     {
         public event EventHandler MutedChange;
-        public bool SoundsMuted { get; set; }
+
+        public event EventHandler MouseVisibilityChange;
+
+        public event EventHandler ResizeableChange;
+
+        public event EventHandler FullScreenChange;
+
+        private GraphicsDeviceManager m_GraficsDeviceManager;
+
+        public int Level { get; set; }
+
         public float BGMusicVolume { get; set; }
+
         public float SoundFXVolume { get; set; }
+
         public int NumOfPlayers { get; set; }
+
+        public bool SoundsMuted
+        {
+            get
+            {
+                return MediaPlayer.IsMuted;
+            }
+
+            set
+            {
+                MediaPlayer.IsMuted = value;
+                muted_OnChange();
+            }
+        }
+
+        public bool IsMouseVisible
+        {
+            get
+            {
+                return Game.IsMouseVisible;
+            }
+ 
+            set
+            {
+                Game.IsMouseVisible = value;
+                mouseVisibility_OnChange();
+            }
+        }
+
+        public bool IsResizeable
+        {
+            get
+            {
+                return Game.Window.AllowUserResizing;
+            }
+
+            set
+            {
+                Game.Window.AllowUserResizing = value;
+                resizeable_OnChange();
+            }
+        }
+
+        public bool IsFullScreen
+        {
+            get
+            {
+                return m_GraficsDeviceManager.IsFullScreen;
+            }
+
+            set
+            {
+                m_GraficsDeviceManager.IsFullScreen = value;
+                m_GraficsDeviceManager.ApplyChanges();
+                fullScreen_OnChange();
+            }
+        }
 
         public SettingsManager(Game i_Game)
             : base(i_Game)
         {
-            SoundsMuted = false;
+            m_GraficsDeviceManager =
+                    Game.Services.GetService(typeof(IGraphicsDeviceManager)) as GraphicsDeviceManager;
+            SoundsMuted = IsFullScreen = false;
             BGMusicVolume = SoundFXVolume = 1f;
             NumOfPlayers = 1;
         }
@@ -41,24 +112,70 @@ namespace GameInfrastructure.Managers
         {
             SoundFXVolume = MathHelper.Clamp(SoundFXVolume + i_VolumeToAdd, 0f, 1f);
         }
+        
         public void SoundFXVolumeDown(float i_VolumeToDecrease)
         {
             SoundFXVolume = MathHelper.Clamp(SoundFXVolume - i_VolumeToDecrease, 0f, 1f);
         }
 
-        public void ToggleSound()
+        protected override void RegisterAsService()
         {
-            MediaPlayer.IsMuted = SoundsMuted = !SoundsMuted;
+            this.Game.Services.AddService(typeof(ISettingsManager), this);
+        }
+
+        public void ToggleSounds()
+        {
+            SoundsMuted = !SoundsMuted;
+        }
+
+        private void muted_OnChange()
+        {
             if (MutedChange != null)
             {
                 MutedChange(null, EventArgs.Empty);
             }
-
         }
 
-        protected override void RegisterAsService()
+        public void ToggleMouseVisibility()
         {
-            this.Game.Services.AddService(typeof(ISettingsManager), this);
+            IsMouseVisible = !IsMouseVisible;
+        }
+
+        private void mouseVisibility_OnChange()
+        {
+            if (MouseVisibilityChange != null)
+            {
+                MouseVisibilityChange(null, EventArgs.Empty);
+            }
+        }
+
+        public void ToggleWindowResizeable()
+        {
+            Game.Window.AllowUserResizing = !Game.Window.AllowUserResizing;
+        }
+
+        private void resizeable_OnChange()
+        {
+            if (ResizeableChange != null)
+            {
+                ResizeableChange(null, EventArgs.Empty);
+            }
+        }
+
+        public void ToggleFullScreen()
+        {
+            if (m_GraficsDeviceManager != null)
+            {
+                IsFullScreen = !IsFullScreen;
+            }
+        }
+
+        private void fullScreen_OnChange()
+        {
+            if (FullScreenChange != null)
+            {
+                FullScreenChange(null, EventArgs.Empty);
+            }
         }
     }
 }

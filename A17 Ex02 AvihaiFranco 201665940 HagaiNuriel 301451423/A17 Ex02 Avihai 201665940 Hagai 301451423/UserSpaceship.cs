@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
@@ -16,6 +17,8 @@ namespace Space_Invaders
         private static readonly int sr_MaxShots = 2;
 
         public event EventHandler<EventArgs> Shoot;
+
+        public event EventHandler DeathAnimationFinished;
 
         private readonly Vector2 m_BeginningPosition;
 
@@ -49,7 +52,14 @@ namespace Space_Invaders
         public override void Initialize()
         {
             base.Initialize();
+            initSounds();
             this.RotationOrigin = new Vector2(this.Width / 2, this.Height / 2);
+        }
+
+        private void initSounds()
+        {
+            m_Sounds.Add("shoot", Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/SSGunShot"));
+            m_Sounds.Add("hit", Game.Content.Load<SoundEffect>(@"C:/Temp/XNA_Assets/Ex03/Sounds/LifeDie"));
         }
 
         protected override void setupAnimations()
@@ -84,7 +94,11 @@ namespace Space_Invaders
 
         private void DeathCompositeAnimator_Finished(object sender, EventArgs e)
         {
-            Game.Components.Remove(this);
+            if (DeathAnimationFinished != null)
+            {
+                DeathAnimationFinished(this, EventArgs.Empty);
+            }
+            (Game.Services.GetService(typeof(IScreensMananger)) as ScreensMananger).ActiveScreen.Remove(this);
         }
 
         private void HitAnimator_Finished(object sender, EventArgs e)

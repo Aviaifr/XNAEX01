@@ -20,7 +20,7 @@ namespace Space_Invaders
         private Color m_Tint;
 
         public ScoreBoard(Game i_Game, string i_Text, string i_SpriteFontLocation)
-            : base(i_SpriteFontLocation,i_Game,int.MaxValue)
+            : base(i_SpriteFontLocation, i_Game, int.MaxValue)
         {
             m_Text = i_Text;
             m_SpriteFontLocation = i_SpriteFontLocation;

@@ -1,4 +1,3 @@
-//*** Guy Ronen © 2008-2011 ***//
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace GameInfrastructure.ObjectModel
         where ComponentType : IGameComponent
     {
         // the entire collection, for general collection methods (count, foreach, etc.):
-        Collection<ComponentType> m_Components = new Collection<ComponentType>();
+        private Collection<ComponentType> m_Components = new Collection<ComponentType>();
 
         #region Selective Collections
         // selective holders for specific operations each frame:
@@ -31,6 +30,7 @@ namespace GameInfrastructure.ObjectModel
 
         #region Events
         public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentAdded;
+        
         public event EventHandler<GameComponentEventArgs<ComponentType>> ComponentRemoved;
         #endregion //Events
 
@@ -93,7 +93,6 @@ namespace GameInfrastructure.ObjectModel
                 m_Sprites.Remove(sprite);
                 sprite.DrawOrderChanged -= childDrawOrderChanged;
             }
-
             else
             {
                 IDrawable drawable = e.GameComponent as IDrawable;
@@ -146,7 +145,8 @@ namespace GameInfrastructure.ObjectModel
 
         public CompositeDrawableComponent(Game i_Game)
             : base(i_Game)
-        { }
+        {
+        }
 
         private void insertSorted(IUpdateable i_Updatable)
         {
@@ -155,6 +155,7 @@ namespace GameInfrastructure.ObjectModel
             {
                 idx = ~idx;
             }
+
             m_UpdateableComponents.Insert(idx, i_Updatable);
         }
 
@@ -168,6 +169,7 @@ namespace GameInfrastructure.ObjectModel
                 {
                     idx = ~idx;
                 }
+
                 m_Sprites.Insert(idx, sprite);
             }
             else
@@ -177,6 +179,7 @@ namespace GameInfrastructure.ObjectModel
                 {
                     idx = ~idx;
                 }
+
                 m_DrawableComponents.Insert(idx, i_Drawable);
             }
         }
@@ -250,10 +253,6 @@ namespace GameInfrastructure.ObjectModel
                 }
             }
 
-            //m_SpriteBatch.Begin(
-            //    this.SpritesSortMode, this.BlendState, this.SamplerState,
-            //    this.DepthStencilState, this.RasterizerState, this.Shader, this.TransformMatrix);
-
             foreach (Sprite sprite in m_Sprites)
             {
                 if (sprite.Visible)
@@ -261,14 +260,12 @@ namespace GameInfrastructure.ObjectModel
                     sprite.Draw(gameTime);
                 }
             }
-            //m_SpriteBatch.End();
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                // Dispose of components in this manager
                 for (int i = 0; i < Count; i++)
                 {
                     IDisposable disposable = m_Components[i] as IDisposable;
@@ -281,7 +278,7 @@ namespace GameInfrastructure.ObjectModel
 
             base.Dispose(disposing);
         }
-        #endregion //Compoiste Drawbale Component
+        #endregion
 
         #region ICollection<ComponentType> Implementations
 
@@ -361,6 +358,7 @@ namespace GameInfrastructure.ObjectModel
 
         #region SpriteBatch Advanced Support
         protected SpriteBatch m_SpriteBatch;
+
         public SpriteBatch SpriteBatch
         {
             get { return m_SpriteBatch; }
@@ -368,6 +366,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected BlendState m_BlendState = BlendState.AlphaBlend;
+
         public BlendState BlendState
         {
             get { return m_BlendState; }
@@ -375,6 +374,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected SpriteSortMode m_SpritesSortMode = SpriteSortMode.Deferred;
+
         public SpriteSortMode SpritesSortMode
         {
             get { return m_SpritesSortMode; }
@@ -382,6 +382,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected SamplerState m_SamplerState = null;
+
         public SamplerState SamplerState
         {
             get { return m_SamplerState; }
@@ -389,6 +390,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected DepthStencilState m_DepthStencilState = null;
+
         public DepthStencilState DepthStencilState
         {
             get { return m_DepthStencilState; }
@@ -396,6 +398,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected RasterizerState m_RasterizerState = null;
+
         public RasterizerState RasterizerState
         {
             get { return m_RasterizerState; }
@@ -403,6 +406,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected Effect m_Shader = null;
+        
         public Effect Shader
         {
             get { return m_Shader; }
@@ -410,6 +414,7 @@ namespace GameInfrastructure.ObjectModel
         }
 
         protected Matrix m_TransformMatrix = Matrix.Identity;
+        
         public Matrix TransformMatrix
         {
             get { return m_TransformMatrix; }
@@ -431,120 +436,5 @@ namespace GameInfrastructure.ObjectModel
             get { return this.Game.Content; }
         }
         #endregion Helping Properties
-    }
-
-    /// <summary>
-    /// A comparer designed to assist with sorting IUpdateable interfaces.
-    /// </summary>
-    public sealed class UpdateableComparer : IComparer<IUpdateable>
-    {
-        /// <summary>
-        /// A static copy of the comparer to avoid the GC.
-        /// </summary>
-        public static readonly UpdateableComparer Default;
-
-        static UpdateableComparer() { Default = new UpdateableComparer(); }
-        private UpdateableComparer() { }
-
-        public int Compare(IUpdateable x, IUpdateable y)
-        {
-            const int k_XBigger = 1;
-            const int k_Equal = 0;
-            const int k_YBigger = -1;
-
-            int retCompareResult = k_YBigger;
-
-            if (x == null && y == null)
-            {
-                retCompareResult = k_Equal;
-            }
-            else if (x != null)
-            {
-                if (y == null)
-                {
-                    retCompareResult = k_XBigger;
-                }
-                else if (x.Equals(y))
-                {
-                    return k_Equal;
-                }
-                else if (x.UpdateOrder > y.UpdateOrder)
-                {
-                    return k_XBigger;
-                }
-            }
-
-            return retCompareResult;
-        }
-    }
-
-    /// <summary>
-    /// A comparer designed to assist with sorting IDrawable interfaces.
-    /// </summary>
-    public sealed class DrawableComparer<TDrawble> : IComparer<TDrawble>
-        where TDrawble : class, IDrawable
-    {
-        /// <summary>
-        /// A static copy of the comparer to avoid the GC.
-        /// </summary>
-        public static readonly DrawableComparer<TDrawble> Default;
-
-        static DrawableComparer() { Default = new DrawableComparer<TDrawble>(); }
-        private DrawableComparer() { }
-
-        #region IComparer<IDrawable> Members
-
-        public int Compare(TDrawble x, TDrawble y)
-        {
-            const int k_XBigger = 1;
-            const int k_Equal = 0;
-            const int k_YBigger = -1;
-
-            int retCompareResult = k_YBigger;
-
-            if (x == null && y == null)
-            {
-                retCompareResult = k_Equal;
-            }
-            else if (x != null)
-            {
-                if (y == null)
-                {
-                    retCompareResult = k_XBigger;
-                }
-                else if (x.Equals(y))
-                {
-                    return k_Equal;
-                }
-                else if (x.DrawOrder > y.DrawOrder)
-                {
-                    return k_XBigger;
-                }
-            }
-
-            return retCompareResult;
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Arguments used with events from the GameComponentCollection.
-    /// </summary>
-    /// <typeparam name="ComponentType"></typeparam>
-    public class GameComponentEventArgs<ComponentType> : EventArgs
-        where ComponentType : IGameComponent
-    {
-        private ComponentType m_Component;
-
-        public GameComponentEventArgs(ComponentType gameComponent)
-        {
-            m_Component = gameComponent;
-        }
-
-        public ComponentType GameComponent
-        {
-            get { return m_Component; }
-        }
     }
 }

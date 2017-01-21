@@ -18,7 +18,7 @@ namespace Space_Invaders.Screens
         private ISettingsManager m_SettingsManager;
         private SettingMenuItem m_ToggleSound;
 
-        public SoundOptionsScreen(Game i_Game):base(i_Game)
+        public SoundOptionsScreen(Game i_Game) : base(i_Game)
         {
         }
 
@@ -26,7 +26,12 @@ namespace Space_Invaders.Screens
         {
             SettingMenuItem SoundFXOption;
             SettingMenuItem MusicOption;
-            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
+            TextComponent TitleTextComponent = new TextComponent(Game, "Sounds Options", @"Fonts/Consolas");
+            TitleTextComponent.Scale = new Vector2(4, 5);
+            TitleTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
+            TitleTextComponent.AlignToCenter();
+            Add(TitleTextComponent);
+            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>((@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
             m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
             m_Background = new Background(this.Game, ObjectValues.BackgroundTextureString);
             this.Add(m_Background);
@@ -34,21 +39,25 @@ namespace Space_Invaders.Screens
             SoundFXOption.ExtraText = Math.Round(m_SettingsManager.SoundFXVolume * 100).ToString();
             SoundFXOption.ToggleUp += onSFXVolumeUp;
             SoundFXOption.ToggleDown += onSFXVolumeDown;
+            SoundFXOption.Scale = Vector2.One * 2f;
             MusicOption = new SettingMenuItem(Game, "Background Music Volume", @"Fonts/Consolas", Color.Blue, Color.Red);
-            MusicOption.ExtraText = Math.Round(m_SettingsManager.BGMusicVolume * 100).ToString(); ;
+            MusicOption.ExtraText = Math.Round(m_SettingsManager.BGMusicVolume * 100).ToString();
             MusicOption.ToggleUp += onBGMusicVolumeUp;
             MusicOption.ToggleDown += onBGMusicVolumeDown;
+            MusicOption.Scale = Vector2.One * 2f;
             m_ToggleSound = new SettingMenuItem(Game, "Toggle Sound", @"Fonts/Consolas", Color.Blue, Color.Red);
-            m_ToggleSound.ExtraText = m_SettingsManager.SoundsMuted ? "On" : "Off";
+            UpdateSoundStatus(null, null);
             m_ToggleSound.ToggleUp += onToggleSounds;
+            m_ToggleSound.Scale = Vector2.One * 2f;
             m_ToggleSound.ToggleDown += onToggleSounds;
             m_SettingsManager.MutedChange += UpdateSoundStatus;
             ChooseableMenuItem Done = new ChooseableMenuItem(Game, "Done", @"Fonts/Consolas", Color.Blue, Color.Red);
-            Done.Choose += onChooseDone; 
-            this.AddOption(MusicOption);
-            this.AddOption(SoundFXOption);
-            this.AddOption(m_ToggleSound);
-            this.AddOption(Done);
+            Done.Choose += onChooseDone;
+            Done.Scale = Vector2.One * 2f;
+            Add(MusicOption);
+            Add(SoundFXOption);
+            Add(m_ToggleSound);
+            Add(Done);
             base.Initialize();
         }
 
@@ -59,13 +68,13 @@ namespace Space_Invaders.Screens
 
         private void onChooseDone(object i_Sender, EventArgs i_EventArgs)
         {
-            this.OnClosed();
+            this.ExitScreen();
         }
 
         private void onToggleSounds(object i_Sender, EventArgs i_EventArgs)
         {
             SettingMenuItem toggledOption = i_Sender as SettingMenuItem;
-            m_SettingsManager.ToggleSound();
+            m_SettingsManager.ToggleSounds();
             UpdateSoundStatus(null, null);
         }
 

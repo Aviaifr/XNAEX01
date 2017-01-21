@@ -13,28 +13,27 @@ namespace Space_Invaders.Screens
 {
     public class LevelTransitionScreen : GameScreen
     {
-        int m_Level;
-        float m_TimeToStart;
-        TextComponent m_StartingIn;
-        public LevelTransitionScreen(Game i_Game, int i_Level)
+        private float m_TimeToStart;
+        private TextComponent m_StartingIn;
+
+        public LevelTransitionScreen(Game i_Game)
             : base(i_Game)
         {
-            m_Level = i_Level;
-            m_TimeToStart = 3f;
-            
+            m_TimeToStart = 3f;   
         }
 
         public override void Initialize()
         {
-            TextComponent Level = new TextComponent(Game, "Level " + m_Level, @"Fonts/Consolas");
+            int level = (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level;
+            TextComponent Level = new TextComponent(Game, "Level " + level, @"Fonts/Consolas");
             Level.Tint = Color.PapayaWhip;
             Level.Position = new Vector2(100, 200);
-            Level.Size = 6;
+            Level.Scale = Vector2.One * 6;
             Add(Level);
             m_StartingIn = new TextComponent(Game, "Starting in ", @"Fonts/Consolas");
             m_StartingIn.Tint = Color.PapayaWhip;
             m_StartingIn.Position = new Vector2(100, 400);
-            m_StartingIn.Size = 2;
+            m_StartingIn.Scale = m_StartingIn.Scale * 2;
             m_StartingIn.ExtraText = ((int)Math.Round(m_TimeToStart)).ToString();
             Add(m_StartingIn);
 
@@ -47,21 +46,17 @@ namespace Space_Invaders.Screens
             m_StartingIn.ExtraText = ((int)Math.Round(m_TimeToStart)).ToString();
             if (m_TimeToStart <= 0)
             {
-                if (m_Level == 1)
-                {
-                    this.ScreensManager = Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger;
-                    ScreensManager.SetCurrentScreen(new PlayScreen(Game));
-                }
-                this.OnClosed();
+                this.ScreensManager = Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger;
+                this.ExitScreen();
             }
+
             base.Update(gameTime);
         }
+
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
         }
-
-    }
-    
+    }   
 }

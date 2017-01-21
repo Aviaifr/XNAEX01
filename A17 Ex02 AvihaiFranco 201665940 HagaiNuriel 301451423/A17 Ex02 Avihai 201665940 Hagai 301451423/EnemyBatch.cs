@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
+using GameInfrastructure.ObjectModel.Screens;
 using GameInfrastructure.ServiceInterfaces;
 
 namespace Space_Invaders
@@ -36,6 +37,7 @@ namespace Space_Invaders
         private int m_MotherShipValue;
         private readonly float r_EnemySize = 32;
         private readonly Color r_EnemyButtletTint = Color.Blue;
+        public GameScreen PlayScreen { get; set; }
 
         public void IncreaseEnemyScores(int i_Value)
         {
@@ -141,12 +143,13 @@ namespace Space_Invaders
         {
             SpaceBullet newBullet = new SpaceBullet
                 (this.Game, ObjectValues.BulletTextureString, r_EnemyBulletTint);
+            (Game.Services.GetService(typeof(ISoundEffectsPlayer)) as ISoundEffectsPlayer).PlaySoundEffect((i_Sender as Enemy).GetSound("shoot"));
             newBullet.Initialize();
             newBullet.Owner = i_Sender as Sprite;
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
             newBullet.Disposed += (i_Sender as Enemy).OnMyBulletDisappear;
-            this.Game.Components.Add(newBullet);
+            PlayScreen.Add(newBullet);
         }
 
         public void onComponentDisposed(object i_Disposed, EventArgs i_EventArgs)
@@ -167,10 +170,7 @@ namespace Space_Invaders
                     EnemyKilled(i_Disposed, i_EventArgs);
                 }
             }
-            else if (this.Game.Components != null)
-            {
-                this.Game.Components.Remove(i_Disposed as IGameComponent);
-            }
+            (Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger).ActiveScreen.Remove(i_Disposed as IGameComponent);
         }
 
         private void setNewEnemyBulletPosition(Enemy i_EnemyShot, SpaceBullet i_newBullet)

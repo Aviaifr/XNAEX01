@@ -163,3 +163,63 @@
 /processorParam:TextureFormat=Color
 /build:Screens/gradient.png
 
+#begin Temp/XNA_Assets/Ex03/Sounds/BarrierHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/BarrierHit.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/BGMusic.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/BGMusic.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/EnemyGunShot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/EnemyGunShot.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/EnemyKill.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/EnemyKill.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/GameOver.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/GameOver.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/LevelWin.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/LevelWin.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/LifeDie.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/LifeDie.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/MenuMove.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/MotherShipKill.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/MotherShipKill.wav
+
+#begin Temp/XNA_Assets/Ex03/Sounds/SSGunShot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:C:/Temp/XNA_Assets/Ex03/Sounds/SSGunShot.wav
+

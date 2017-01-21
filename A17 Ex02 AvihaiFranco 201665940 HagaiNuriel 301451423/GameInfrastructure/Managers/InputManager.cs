@@ -10,7 +10,6 @@ using GameInfrastructure.ServiceInterfaces;
 
 namespace GameInfrastructure.Managers
 {
-
     public class InputManager : GameService, IInputManager
     {
         private KeyboardState m_PrevKeyboardState;

@@ -36,13 +36,15 @@ namespace Space_Invaders
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
             initManagers();
-            new SoundEffectsPlayer(this,m_settingsManager);
+            new SoundEffectsPlayer(this, m_settingsManager);
             initScreens();
             base.Initialize();
         }
         
-        private void initScreens(){
-            m_ScreenManager.SetCurrentScreen(new MainMenu(this));
+        private void initScreens()
+        {
+            m_ScreenManager.Push(new GameOverScreen(this));
+            m_ScreenManager.SetCurrentScreen(new WellcomeScreen(this));
         }
 
         private void initManagers()
@@ -69,7 +71,7 @@ namespace Space_Invaders
 
         protected override void LoadContent()
         {
-            //m_BGMusicSong = Content.Load<Song>(System.IO.Path.GetFullPath(@"../../../../../../../../../Temp/XNA_Assets/Ex03/Sounds/BGMusic"));
+            m_BGMusicSong = Content.Load<Song>(System.IO.Path.GetFullPath(@"C:/Temp/XNA_Assets/Ex03/Sounds/BGMusic"));
             MediaPlayer.Play(m_BGMusicSong);
             MediaPlayer.IsRepeating = true;
             base.LoadContent();
@@ -106,9 +108,11 @@ namespace Space_Invaders
 
         protected override void Update(GameTime gameTime)
         {
-            if(m_inputManager.KeyPressed(Keys.OemMinus)){
-                m_settingsManager.ToggleSound();
+            if(m_inputManager.KeyPressed(Keys.OemMinus))
+            {
+                m_settingsManager.ToggleSounds();
             }
+
             base.Update(gameTime);
         }
     }

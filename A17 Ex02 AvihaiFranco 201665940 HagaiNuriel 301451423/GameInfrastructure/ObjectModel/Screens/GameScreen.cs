@@ -1,4 +1,3 @@
-//*** Guy Ronen © 2008-2011 ***//
 using System;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ServiceInterfaces;
@@ -10,44 +9,49 @@ namespace GameInfrastructure.ObjectModel.Screens
 {
     public abstract class GameScreen : CompositeDrawableComponent<IGameComponent>
     {
-        //CTOR:
         public GameScreen(Game i_Game)
-            : base (i_Game)
+            : base(i_Game)
         {
             this.Enabled = false;
             this.Visible = false;
         }
 
         protected bool m_IsModal = true;
-        public bool IsModal // background screen should not be updated
+
+        public bool IsModal
         {
             get { return m_IsModal; }
             set { m_IsModal = value; }
         }
 
         protected bool m_IsOverlayed;
-        public bool IsOverlayed // background screen should be drawn
+
+        public bool IsOverlayed
         {
             get { return m_IsOverlayed; }
             set { m_IsOverlayed = value; }
         }
 
         protected GameScreen m_PreviousScreen;
-        public GameScreen PreviousScreen // the screen behind me
+
+        public GameScreen PreviousScreen
         {
             get { return m_PreviousScreen; }
             set { m_PreviousScreen = value; }
         }
 
         protected bool m_HasFocus;
-        public bool HasFocus // i should handle the input
+        
+        public bool HasFocus
         {
             get { return m_HasFocus; }
             set { m_HasFocus = value; }
         }
 
         private IInputManager m_InputManager;
+        
         private IInputManager m_DummyInputManager = new DummyInputManager();
+        
         public IInputManager InputManager
         {
             get { return this.HasFocus ? m_InputManager : m_DummyInputManager; }
@@ -91,6 +95,7 @@ namespace GameInfrastructure.ObjectModel.Screens
         }
 
         public event EventHandler Closed;
+
         protected virtual void OnClosed()
         {
             if (Closed != null)
@@ -113,8 +118,8 @@ namespace GameInfrastructure.ObjectModel.Screens
         {
             if (PreviousScreen != null && IsOverlayed)
             {
+                Game.GraphicsDevice.Clear(Color.Black);
                 PreviousScreen.Draw(gameTime);
-
                 drawFadedDarkCoverIfNeeded();
             }
 
@@ -122,6 +127,7 @@ namespace GameInfrastructure.ObjectModel.Screens
         }
 
         protected IScreensMananger m_ScreensManager;
+
         public IScreensMananger ScreensManager
         {
             get { return m_ScreensManager; }
@@ -130,10 +136,11 @@ namespace GameInfrastructure.ObjectModel.Screens
 
         #region Faded Background Support
 
-        Texture2D m_GradientTexture;
-        Texture2D m_BlankTexture;
+        private Texture2D m_GradientTexture;
+        private Texture2D m_BlankTexture;
 
         protected float m_BlackTintAlpha = 0;
+
         public float BlackTintAlpha
         {
             get { return m_BlackTintAlpha; }
@@ -148,6 +155,7 @@ namespace GameInfrastructure.ObjectModel.Screens
         }
 
         protected bool m_UseGradientBackground = false;
+
         public bool UseGradientBackground
         {
             get { return m_UseGradientBackground; }
@@ -160,8 +168,7 @@ namespace GameInfrastructure.ObjectModel.Screens
             Texture2D background = UseGradientBackground ? m_GradientTexture : m_BlankTexture;
 
             SpriteBatch.Begin();
-            SpriteBatch.Draw(background, new Rectangle(0, 0, viewport.Width, viewport.Height),
-                             new Color(0, 0, 0, i_Alpha));
+            SpriteBatch.Draw(background, new Rectangle(0, 0, viewport.Width, viewport.Height), new Color(0, 0, 0, i_Alpha));
             SpriteBatch.End();
         }
 

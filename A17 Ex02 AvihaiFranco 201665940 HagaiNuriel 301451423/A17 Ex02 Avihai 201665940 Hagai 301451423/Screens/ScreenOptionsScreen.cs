@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
 using GameInfrastructure.ServiceInterfaces;
@@ -13,108 +14,85 @@ namespace Space_Invaders.Screens
 {
     public class ScreenOptionsScreen : MenuScreen
     {
+        private ISettingsManager m_SettingsManager;
+        
         public ScreenOptionsScreen(Game i_Game) : base(i_Game)
         {
         }
 
         public override void Initialize()
         {
+            SelectionChangeSoundEffect = Game.Content.Load<SoundEffect>((@"C:/Temp/XNA_Assets/Ex03/Sounds/MenuMove"));
+            TextComponent TitleTextComponent = new TextComponent(Game, "Screen Options", @"Fonts/Consolas");
+            TitleTextComponent.Scale = new Vector2(4, 5);
+            TitleTextComponent.Position = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 150);
+            TitleTextComponent.AlignToCenter();
+            Add(TitleTextComponent);
+            Add(new Background(this.Game, ObjectValues.BackgroundTextureString));
+
+            m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
             SettingMenuItem MouseVisibility =
                 new SettingMenuItem(Game, "Mouse Visibility", @"Fonts/Consolas", Color.Blue, Color.Red);
-
-            MouseVisibility.ExtraText = "Invisible";
+            MouseVisibility.ExtraText = m_SettingsManager.IsMouseVisible ? "Visible" : "Invisible";
             MouseVisibility.ToggleDown += onMouseVisibilityToggled;
             MouseVisibility.ToggleUp += onMouseVisibilityToggled;
-
+            MouseVisibility.Scale = Vector2.One * 2f;
             SettingMenuItem WindowResizing =
                 new SettingMenuItem(Game, "Allow Window Resizing", @"Fonts/Consolas", Color.Blue, Color.Red);
 
-            WindowResizing.ExtraText = "Off";
+            WindowResizing.ExtraText = m_SettingsManager.IsResizeable ? "On" : "Off";
             WindowResizing.ToggleDown += onWindowResizingToggled;
             WindowResizing.ToggleUp += onWindowResizingToggled;
-
-
+            WindowResizing.Scale = Vector2.One * 2f;
             SettingMenuItem FullScreenMode =
                  new SettingMenuItem(Game, "Full Screen Mode", @"Fonts/Consolas", Color.Blue, Color.Red);
 
-            FullScreenMode.ExtraText = "Off";
+            FullScreenMode.ExtraText = m_SettingsManager.IsFullScreen ? "On" : "Off";
             FullScreenMode.ToggleDown += onFullScreenModeToggled;
             FullScreenMode.ToggleUp += onFullScreenModeToggled;
-
+            FullScreenMode.Scale = Vector2.One * 2f;
             ChooseableMenuItem DoneOption =
                 new ChooseableMenuItem(Game, "Done", @"Fonts/Consolas", Color.Blue, Color.Red);
-
+            DoneOption.Scale = Vector2.One * 2f;
             DoneOption.Choose += onDoneSelected;
 
-            this.AddOption(MouseVisibility);
-            this.AddOption(WindowResizing);
-            this.AddOption(FullScreenMode);
-            this.AddOption(DoneOption);
+            Add(MouseVisibility);
+            Add(WindowResizing);
+            Add(FullScreenMode);
+            Add(DoneOption);
             base.Initialize();
         }
 
-        private void onMouseVisibilityToggled(Object i_Object, EventArgs i_EventArgs)
+        private void onMouseVisibilityToggled(object i_Object, EventArgs i_EventArgs)
         {
-            SettingMenuItem MouseVisibility = i_Object as SettingMenuItem;
-            if (MouseVisibility != null)
-            {
-                if (MouseVisibility.ExtraText.Contains("Visible"))
-                {
-                    MouseVisibility.ExtraText = "Invisible";
-                }
-                else
-                {
-                    MouseVisibility.ExtraText = "Visible";
-                }
-
-                Game.IsMouseVisible = !Game.IsMouseVisible;
-            }
+            SettingMenuItem mouseVisibility = i_Object as SettingMenuItem;
+            m_SettingsManager.ToggleMouseVisibility();
+            mouseVisibility.ExtraText = m_SettingsManager.IsMouseVisible ? "Visible" : "Invisible";
         }
 
-        private void onWindowResizingToggled(Object i_Object, EventArgs i_EventArgs)
+        private void onWindowResizingToggled(object i_Object, EventArgs i_EventArgs)
         {
-            SettingMenuItem WindowResizing = i_Object as SettingMenuItem;
-            if (WindowResizing != null)
-            {
-                if (WindowResizing.ExtraText.Contains("On"))
-                {
-                    WindowResizing.ExtraText = "Off";
-                }
-                else
-                {
-                    WindowResizing.ExtraText = "On";
-                }
-
-                Game.Window.AllowUserResizing = !Game.Window.AllowUserResizing;
-            }
+            SettingMenuItem windowResizing = i_Object as SettingMenuItem;
+            m_SettingsManager.ToggleWindowResizeable();
+            windowResizing.ExtraText = m_SettingsManager.IsResizeable ? "On" : "Off";
         }
 
-
-        private void onFullScreenModeToggled(Object i_Object, EventArgs i_EventArgs)
+        private void onFullScreenModeToggled(object i_Object, EventArgs i_EventArgs)
         {
-            SettingMenuItem FullScreenSetting = i_Object as SettingMenuItem;
-            if (FullScreenSetting != null)
-            {
-                if (FullScreenSetting.ExtraText.Contains("On"))
-                {
-                    FullScreenSetting.ExtraText = "Off";
-                }
-                else
-                {
-                    FullScreenSetting.ExtraText = "On";
-                }
-
-                IGraphicsDeviceManager IGraphicsDevice = 
-                    Game.Services.GetService(typeof(IGraphicsDeviceManager)) as IGraphicsDeviceManager;
-                GraphicsDeviceManager GraphicsDevice = IGraphicsDevice as GraphicsDeviceManager;
-                GraphicsDevice.ToggleFullScreen();
-
-            }
+            SettingMenuItem fullScreenSetting = i_Object as SettingMenuItem;
+            m_SettingsManager.ToggleFullScreen();
+            fullScreenSetting.ExtraText = m_SettingsManager.IsFullScreen ? "On" : "Off";
         }
 
-        private void onDoneSelected(Object i_Object, EventArgs i_EventArgs)
+        private void onDoneSelected(object i_Object, EventArgs i_EventArgs)
         {
-            this.OnClosed();
+            this.ExitScreen();
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+            base.Draw(gameTime);
         }
     }
 }
