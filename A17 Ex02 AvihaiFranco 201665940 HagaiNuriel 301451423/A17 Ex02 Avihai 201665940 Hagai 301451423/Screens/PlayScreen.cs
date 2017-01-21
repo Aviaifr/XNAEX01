@@ -17,6 +17,7 @@ namespace Space_Invaders.Screens
         private List<SpaceShipPlayer> m_Players = new List<SpaceShipPlayer>();
         private Background m_Background;
         private EnemyBatch m_EnemyBatch;
+        private GameScreen m_PauseScreen;
 
         public PlayScreen(Game i_Game) : base(i_Game)
         {
@@ -43,14 +44,15 @@ namespace Space_Invaders.Screens
                     motherShip.ActivateAnimation(ObjectValues.DeathAnimation);
                 }
             }
-        }
-
-        public void enemy_OnDisposed(object i_Disposed, EventArgs i_EventArgs)
-        {
             if (m_EnemyBatch.EnemyCount == 0)
             {
-                GameOver();
+                levelWin();
             }
+        }
+
+        private void levelWin()
+        {
+            (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level ++;
         }
 
         public void Player_OnHit(object i_HitPlayer, EventArgs i_EventArgs)
@@ -108,9 +110,9 @@ namespace Space_Invaders.Screens
             (Game.Services.GetService(typeof(ICollisionsManager)) as ICollisionsManager).ClearCollidable();
             initPlayers();
             m_EnemyBatch = new EnemyBatch(this.Game);
+            m_EnemyBatch.PlayScreen = this;
             m_EnemyBatch.EnemyKilled += Enemy_OnKill;
             m_EnemyBatch.EnemyReachedBottom += Enemy_OnReachBottom;
-            m_EnemyBatch.NoMoreEnemies += enemy_OnDisposed;
             this.Add(m_EnemyBatch);
 
             WallBatch wallBatch = new WallBatch(this.Game);
@@ -127,6 +129,7 @@ namespace Space_Invaders.Screens
         private void initPlayers()
         {
             int numOfPlayers = (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).NumOfPlayers;
+            (Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager).ClearPlayers();
             Vector2 startingPosition = 
                 new Vector2(0, this.GraphicsDevice.Viewport.Height - ObjectValues.SpaceshipSize);
             Vector2 scorePosition = new Vector2(5, 20);
@@ -145,7 +148,6 @@ namespace Space_Invaders.Screens
                 player = new SpaceShipPlayer(spaceShip, ObjectValues.PlayerIds[i]);
                 player.PlayerHit += Player_OnHit;
                 player.PlayerDead += Player_OnKilled;
-                (Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager).ClearPlayers();
                 (Game.Services.GetService(typeof(IPlayersManager)) as IPlayersManager).AddPlayer(player);
 
                 string scoreBoardText = "P" + (i + 1) + " Score: ";
@@ -167,6 +169,21 @@ namespace Space_Invaders.Screens
         public void OnSpaceshipDeathAnimationOver(object i_Sender, EventArgs i_EventArgs)
         {
             checkGameOver();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (InputManager.KeyPressed(Keys.P))
+            {
+                if (m_PauseScreen == null)
+                {
+                    m_PauseScreen = new PauseScreen(Game);
+                }
+
+                ScreensManager.SetCurrentScreen(m_PauseScreen);
+            }
+
+            base.Update(gameTime);
         }
 
         private Vector2 getEnemyPosition(int i_row, int i_col)

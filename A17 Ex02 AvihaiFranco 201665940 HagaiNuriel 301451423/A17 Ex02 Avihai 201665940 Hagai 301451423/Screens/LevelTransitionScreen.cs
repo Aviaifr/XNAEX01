@@ -48,7 +48,6 @@ namespace Space_Invaders.Screens
             {
                 this.ScreensManager = Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger;
                 this.ExitScreen();
-                ScreensManager.SetCurrentScreen(new PlayScreen(Game));
             }
 
             base.Update(gameTime);

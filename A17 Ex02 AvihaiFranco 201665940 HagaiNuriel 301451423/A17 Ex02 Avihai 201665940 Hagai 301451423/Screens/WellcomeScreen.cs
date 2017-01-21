@@ -21,6 +21,7 @@ namespace Space_Invaders.Screens
 
         public override void Initialize()
         {
+            (Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager).Level = 1;
             TextComponent wellcomTextComponent = new TextComponent(Game, "Wellcome To Space Invaders", @"Fonts/Consolas");
             wellcomTextComponent.Scale = new Vector2(3, 5);
             TextComponent startGameTextComponent = new TextComponent(Game,
@@ -55,11 +56,12 @@ Press 'Esc' To Quit",
             else if(this.InputManager.KeyPressed(Keys.Enter))
             {
                 ExitScreen();
+                (ScreensManager as ScreensMananger).Push(new PlayScreen(Game));
                 this.ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
             }
             else if (this.InputManager.KeyPressed(Keys.Escape))
             {
-                this.ExitScreen();
+                Game.Exit();
             }
 
             base.Update(gameTime);

@@ -118,8 +118,8 @@ namespace GameInfrastructure.ObjectModel.Screens
         {
             if (PreviousScreen != null && IsOverlayed)
             {
+                Game.GraphicsDevice.Clear(Color.Black);
                 PreviousScreen.Draw(gameTime);
-
                 drawFadedDarkCoverIfNeeded();
             }
 

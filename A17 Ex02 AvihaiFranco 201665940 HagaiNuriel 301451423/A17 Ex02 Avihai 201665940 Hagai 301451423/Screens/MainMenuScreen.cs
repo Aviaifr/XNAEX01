@@ -67,6 +67,7 @@ namespace Space_Invaders.Screens
         {
             this.ExitScreen();
             this.ScreensManager = Game.Services.GetService(typeof(IScreensMananger)) as IScreensMananger;
+            (ScreensManager as ScreensMananger).Push(new PlayScreen(Game));
             ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
         }
 

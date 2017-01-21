@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameInfrastructure.Managers;
 using GameInfrastructure.ObjectModel;
+using GameInfrastructure.ObjectModel.Screens;
 using GameInfrastructure.ServiceInterfaces;
 
 namespace Space_Invaders
@@ -31,6 +32,7 @@ namespace Space_Invaders
         private readonly int r_Enemy3Value = 140;
         private readonly float r_EnemySize = 32;
         private readonly Color r_EnemyButtletTint = Color.Blue;
+        public GameScreen PlayScreen { get; set; }
 
         public event EventHandler<EventArgs> EnemyKilled;
 
@@ -95,7 +97,7 @@ namespace Space_Invaders
             newBullet.Disposed += onComponentDisposed;
             setNewEnemyBulletPosition(i_Sender as Enemy, newBullet);
             newBullet.Disposed += (i_Sender as Enemy).OnMyBulletDisappear;
-            (Game.Services.GetService(typeof(IScreensMananger)) as ScreensMananger).ActiveScreen.Add(newBullet);
+            PlayScreen.Add(newBullet);
         }
 
         public void onComponentDisposed(object i_Disposed, EventArgs i_EventArgs)

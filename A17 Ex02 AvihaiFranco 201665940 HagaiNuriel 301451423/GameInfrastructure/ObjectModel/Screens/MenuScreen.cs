@@ -41,8 +41,7 @@ namespace GameInfrastructure.ObjectModel.Screens
         
         public override void Update(GameTime gameTime)
         {
-            IInputManager inputManager = Game.Services.GetService(typeof(IInputManager)) as IInputManager;
-            if (inputManager.KeyPressed(Keys.Up))
+            if (InputManager.KeyPressed(Keys.Up))
             {
                 m_MenuItems[m_CurrentIndex].isActive = false;
                 m_CurrentIndex--;
@@ -50,7 +49,7 @@ namespace GameInfrastructure.ObjectModel.Screens
                 itemChanged();
             }
             
-            if (inputManager.KeyPressed(Keys.Down))
+            if (InputManager.KeyPressed(Keys.Down))
             {
                 m_MenuItems[m_CurrentIndex].isActive = false;
                 m_CurrentIndex = (m_CurrentIndex + 1) % m_MenuItems.Count;

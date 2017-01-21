@@ -82,5 +82,22 @@ namespace Space_Invaders.Screens
             }
             m_endGameText.Text = msg;
         }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (InputManager.KeyPressed(Keys.Escape))
+            {
+
+            }
+            else if (InputManager.KeyPressed(Keys.M))
+            {
+                
+            }
+            else if (InputManager.KeyPressed(Keys.Home))
+            {
+
+            }
+            base.Update(gameTime);
+        }
     }
 }
