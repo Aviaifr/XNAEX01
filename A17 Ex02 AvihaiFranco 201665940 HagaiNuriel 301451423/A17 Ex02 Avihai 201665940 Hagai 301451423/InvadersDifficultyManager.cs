@@ -15,7 +15,7 @@ namespace Space_Invaders
     {
         //Initial Const Values
         private const int k_EnemyInitCols = 9;
-        private const int k_BarrierInitSpeed = 0;
+        private const int k_BarrierInitSpeed = 60;
         private const int k_EnemyFireChance = 1;
         private const int k_LevelsBeforeReset = 5;
         private const int k_Enemy1InitValue = 240;
@@ -41,11 +41,12 @@ namespace Space_Invaders
 
         public void IncreaseDifficulty()
         {
-            m_Level++;
+            m_Level = (m_Level + 1) % k_LevelsBeforeReset;
 
             if(m_Level % k_LevelsBeforeReset == 0)
             {
                 ResetDifficulty();
+                m_Level = 1;
             }
             else
             {
@@ -54,12 +55,18 @@ namespace Space_Invaders
                 m_GameScreen.EnemyBatch.EnemyFireChance -= 0.2f;
                 m_GameScreen.EnemyBatch.IncreaseEnemyScores(70);
             }
+
+            if (m_Level % k_LevelsBeforeReset == 2)
+            {
+                m_GameScreen.WallBatch.Velocity = Vector2.UnitX * k_BarrierInitSpeed;
+            }
+            
         }
 
         public void ResetDifficulty()
         {
             m_GameScreen.EnemyBatch.ResetEnemyValues();
-            m_GameScreen.WallBatch.Velocity = Vector2.UnitX * k_BarrierInitSpeed;
+            m_GameScreen.WallBatch.Velocity = Vector2.Zero;
             m_GameScreen.EnemyBatch.EnemyCols = k_EnemyInitCols;
             m_GameScreen.EnemyBatch.EnemyFireChance = k_EnemyFireChance;
         }
